@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>退款/售后 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Tab bar */
+  .refund-tabs-bar {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    position: sticky;
+    top: 88px;
+    z-index: 50;
+  }
+  .refund-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+  }
+  .refund-tab:active { background: #f8f8f8; }
+  .refund-tab.active {
+    color: #333;
+    font-weight: 600;
+  }
+  .refund-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: 1px;
+  }
+
+  /* Refund card */
+  .refund-list {
+    padding: 12px;
+  }
+  .refund-card {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .refund-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .refund-card-header .order-no {
+    font-size: 12px;
+    color: #999;
+  }
+  .refund-card-header .status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+  .status.processing {
+    background: #fff3e0;
+    color: #ff9800;
+  }
+  .status.completed {
+    background: #e8f5e9;
+    color: #4caf50;
+  }
+  .status.rejected {
+    background: #ffebee;
+    color: #f44336;
+  }
+
+  .refund-card-body {
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+  }
+  .refund-card .item-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .refund-card .item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .refund-card .item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .refund-card .item-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .refund-card .item-spec {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  .refund-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+  }
+  .refund-type {
+    font-size: 11px;
+    color: #666;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .refund-amount {
+    font-size: 14px;
+    color: #ee0a24;
+    font-weight: 600;
+  }
+
+  /* Timeline mini */
+  .timeline-mini {
+    background: #fafafa;
+    padding: 10px 12px;
+    margin: 0 12px 12px;
+    border-radius: 8px;
+  }
+  .timeline-mini-title {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .timeline-mini-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+  }
+  .timeline-step .step-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    z-index: 1;
+  }
+  .timeline-step .step-dot svg { width: 12px; height: 12px; color: #fff; }
+  .timeline-step.done .step-dot { background: #4caf50; }
+  .timeline-step.active .step-dot { background: #ff6034; }
+  .timeline-step::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: #ddd;
+  }
+  .timeline-step:last-child::after { display: none; }
+  .timeline-step.done::after { background: #4caf50; }
+  .timeline-step .step-text {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+  }
+  .timeline-step.done .step-text,
+  .timeline-step.active .step-text { color: #333; }
+
+  .refund-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    border-top: 1px solid #f5f5f5;
+    gap: 8px;
+  }
+  .btn-sm {
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #666;
+  }
+  .btn-sm:active { opacity: 0.7; }
+  .btn-sm.primary {
+    border-color: #ff6034;
+    color: #ff6034;
+  }
+
+  /* Apply section */
+  .apply-section {
+    background: #fff;
+    margin: 12px;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .apply-section .apply-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .apply-section .apply-icon svg { width: 28px; height: 28px; color: #fff; }
+  .apply-section .apply-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .apply-section .apply-desc {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 16px;
+  }
+  .apply-section .btn-apply {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    padding: 10px 32px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .apply-section .btn-apply:active { opacity: 0.85; }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state svg {
+    width: 64px;
+    height: 64px;
+    color: #ddd;
+    margin-bottom: 12px;
+  }
+  .empty-state .empty-text { font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">退款/售后</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="refund-tabs-bar">
+    <div class="refund-tab active" data-tab="records">申请记录</div>
+    <div class="refund-tab" data-tab="apply">申请售后</div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 16px;">
+    <div id="contentArea"></div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var refunds = [
+    {
+      id: 'RF202604080001',
+      orderNo: 'JS2026040888001',
+      status: 'processing',
+      statusText: '处理中',
+      type: '退货退款',
+      amount: '68.00',
+      product: { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80' },
+      steps: ['submit', 'review', 'return', 'refund'],
+      currentStep: 1
+    },
+    {
+      id: 'RF202603280002',
+      orderNo: 'JS2026032555005',
+      status: 'completed',
+      statusText: '已完成',
+      type: '仅退款',
+      amount: '79.00',
+      product: { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&h=200&q=80' },
+      steps: ['submit', 'review', 'refund'],
+      currentStep: 3
+    },
+    {
+      id: 'RF202603150003',
+      orderNo: 'JS2026031011006',
+      status: 'rejected',
+      statusText: '已拒绝',
+      type: '退货退款',
+      amount: '128.00',
+      product: { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=200&h=200&q=80' },
+      steps: ['submit', 'review'],
+      currentStep: 1
+    }
+  ];
+
+  var currentTab = 'records';
+  var contentArea = document.getElementById('contentArea');
+
+  var stepLabels = {
+    'submit': '提交申请',
+    'review': '商家审核',
+    'return': '退货发货',
+    'refund': '退款成功'
+  };
+
+  function renderRecords() {
+    if (refunds.length === 0) {
+      contentArea.innerHTML = '<div class="empty-state">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>' +
+        '<div class="empty-text">暂无售后记录</div>' +
+      '</div>';
+      return;
+    }
+
+    var html = '<div class="refund-list">';
+    refunds.forEach(function(item) {
+      var stepsHtml = '<div class="timeline-mini">' +
+        '<div class="timeline-mini-title">处理进度</div>' +
+        '<div class="timeline-mini-steps">';
+
+      item.steps.forEach(function(step, idx) {
+        var stepClass = '';
+        if (idx < item.currentStep) stepClass = 'done';
+        else if (idx === item.currentStep) stepClass = 'active';
+
+        stepsHtml += '<div class="timeline-step ' + stepClass + '">' +
+          '<div class="step-dot">' + (stepClass ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div>' +
+          '<span class="step-text">' + stepLabels[step] + '</span>' +
+        '</div>';
+      });
+      stepsHtml += '</div></div>';
+
+      html += '<div class="refund-card">' +
+        '<div class="refund-card-header">' +
+          '<span class="order-no">' + item.id + '</span>' +
+          '<span class="status ' + item.status + '">' + item.statusText + '</span>' +
+        '</div>' +
+        '<div class="refund-card-body">' +
+          '<div class="item-img"><img src="' + item.product.img + '" alt=""></div>' +
+          '<div class="item-info">' +
+            '<div class="item-name">' + item.product.name + '</div>' +
+            '<div class="item-spec">' + item.product.spec + '</div>' +
+            '<div class="refund-info">' +
+              '<span class="refund-type">' + item.type + '</span>' +
+              '<span class="refund-amount">退款 &yen;' + item.amount + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        stepsHtml +
+        '<div class="refund-card-footer">' +
+          (refund.status === 'rejected' ? '<button class="btn-sm" onclick="event.stopPropagation();location.href=\'apply_refund.html\'">重新申请</button>' : '') +
+          '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'refund_detail.html\'">查看详情</button>' +
+        '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+    contentArea.innerHTML = html;
+  }
+
+  function renderApply() {
+    var html = '<div class="apply-section">' +
+      '<div class="apply-icon">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+      '</div>' +
+      '<div class="apply-title">申请售后</div>' +
+      '<div class="apply-desc">如需申请退款或退货，请选择对应订单</div>' +
+      '<button class="btn-apply" onclick="location.href=\'order_list.html\'">选择订单</button>' +
+    '</div>';
+
+    // Show recent orders that can apply for refund
+    html += '<div class="refund-list">';
+    html += '<div style="font-size:14px;font-weight:600;color:#333;padding:12px 0 8px;">可申请售后的订单</div>';
+
+    var recentOrders = [
+      { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&h=200&q=80', orderNo: 'JS2026040888001' },
+      { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&h=200&q=80', orderNo: 'JS2026040355003' }
+    ];
+
+    recentOrders.forEach(function(order) {
+      html += '<div class="refund-card" onclick="location.href=\'apply_refund.html\'">' +
+        '<div class="refund-card-body">' +
+          '<div class="item-img"><img src="' + order.img + '" alt=""></div>' +
+          '<div class="item-info">' +
+            '<div class="item-name">' + order.name + '</div>' +
+            '<div class="item-spec">' + order.spec + '</div>' +
+            '<div class="refund-info">' +
+              '<span class="refund-type">订单号：' + order.orderNo + '</span>' +
+              '<span class="refund-amount">&yen;' + order.price + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+    contentArea.innerHTML = html;
+  }
+
+  function render() {
+    if (currentTab === 'records') {
+      renderRecords();
+    } else {
+      renderApply();
+    }
+  }
+
+  // Tab switching
+  document.querySelectorAll('.refund-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.refund-tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      currentTab = this.dataset.tab;
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

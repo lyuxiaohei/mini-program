@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>在线客服 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Chat area */
+  .chat-area {
+    padding: 12px;
+    padding-bottom: 140px;
+    min-height: calc(100vh - 200px);
+    background: #f5f5f5;
+  }
+
+  /* Time divider */
+  .time-divider {
+    text-align: center;
+    margin: 16px 0;
+  }
+  .time-divider span {
+    background: rgba(0,0,0,0.1);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  /* Message bubble */
+  .message-row {
+    display: flex;
+    margin-bottom: 16px;
+  }
+  .message-row.user {
+    flex-direction: row-reverse;
+  }
+  .message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #fff;
+  }
+  .message-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .message-content {
+    max-width: 70%;
+    margin: 0 10px;
+  }
+  .message-bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .message-row.service .message-bubble {
+    background: #fff;
+    color: #333;
+    border-bottom-left-radius: 4px;
+  }
+  .message-row.user .message-bubble {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  /* Quick questions */
+  .quick-questions {
+    padding: 12px;
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+  .quick-title {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .quick-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .quick-item {
+    background: #fff5f0;
+    color: #ff6034;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    border: 1px solid #ffddcc;
+  }
+  .quick-item:active { background: #ffe8db; }
+
+  /* Input area */
+  .input-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+  .input-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .input-wrapper {
+    flex: 1;
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+  }
+  .input-wrapper textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 14px;
+    background: transparent;
+    color: #333;
+    max-height: 80px;
+    line-height: 1.4;
+  }
+  .input-wrapper textarea::placeholder { color: #bbb; }
+
+  .input-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+  .action-btn:active { background: #eee; }
+  .action-btn svg { width: 20px; height: 20px; color: #666; }
+  .action-btn.send {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+  }
+  .action-btn.send svg { color: #fff; }
+  .action-btn.send:active { opacity: 0.85; }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 14px;
+    background: #fff;
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+  }
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #ccc;
+    border-radius: 50%;
+    animation: typing 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">在线客服</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Chat Area -->
+  <div class="chat-area" id="chatArea">
+    <div class="time-divider"><span>今天 09:30</span></div>
+  </div>
+
+  <!-- Quick Questions -->
+  <div class="quick-questions" id="quickQuestions">
+    <div class="quick-title">快捷问题</div>
+    <div class="quick-list">
+      <span class="quick-item">如何注册账号</span>
+      <span class="quick-item">积分怎么获取</span>
+      <span class="quick-item">退款多久到账</span>
+      <span class="quick-item">修改收货地址</span>
+      <span class="quick-item">联系人工客服</span>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <div class="input-row">
+      <div class="input-wrapper">
+        <textarea id="messageInput" placeholder="输入消息..." rows="1"></textarea>
+      </div>
+      <div class="input-actions">
+        <button class="action-btn" onclick="alert('发送图片')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </button>
+        <button class="action-btn send" id="sendBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var chatArea = document.getElementById('chatArea');
+  var messageInput = document.getElementById('messageInput');
+  var sendBtn = document.getElementById('sendBtn');
+  var quickQuestions = document.getElementById('quickQuestions');
+
+  var autoReplies = {
+    '如何注册账号': '您好，注册账号非常简单：\n1. 点击"我的"页面\n2. 点击"登录/注册"\n3. 输入手机号获取验证码\n4. 设置密码完成注册\n\n新用户注册还可获得500积分奖励哦！',
+    '积分怎么获取': '积分获取方式如下：\n• 新用户注册：500积分\n• 完善个人信息：50积分\n• 每日签到：5-20积分\n• 购物消费：1元=1积分\n• 邀请好友：200积分/人\n\n积分可在下单时抵扣，100积分=1元',
+    '退款多久到账': '退款到账时间：\n• 苏银豆抵扣部分：即时返还\n• 微信支付：1-3个工作日\n• 银行卡支付：3-5个工作日\n\n如有疑问可随时联系我们~',
+    '修改收货地址': '您可以通过以下方式修改收货地址：\n1. 进入"我的" → "收货地址"\n2. 点击要修改的地址\n3. 编辑后点击保存\n\n下单时也可以选择或新增地址哦！',
+    '联系人工客服': '您好，我是智能客服小银，很高兴为您服务！\n\n如需转接人工客服，请拨打：\n400-888-8888\n\n工作时间：周一至周日 9:00-21:00'
+  };
+
+  // Initial greeting
+  setTimeout(function() {
+    addMessage('service', '您好，我是智能客服小银，很高兴为您服务！请问有什么可以帮您的？');
+  }, 500);
+
+  function addMessage(type, text) {
+    var row = document.createElement('div');
+    row.className = 'message-row ' + type;
+
+    var avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = type === 'service'
+      ? '<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80&q=80" alt="">'
+      : '<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80" alt="">';
+
+    var content = document.createElement('div');
+    content.className = 'message-content';
+
+    var bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    bubble.textContent = text;
+
+    content.appendChild(bubble);
+    row.appendChild(avatar);
+    row.appendChild(content);
+    chatArea.appendChild(row);
+
+    // Scroll to bottom
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function showTyping() {
+    var row = document.createElement('div');
+    row.className = 'message-row service';
+    row.id = 'typingRow';
+
+    var avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = '<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80&q=80" alt="">';
+
+    var content = document.createElement('div');
+    content.className = 'message-content';
+
+    var typing = document.createElement('div');
+    typing.className = 'typing-indicator';
+    typing.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+
+    content.appendChild(typing);
+    row.appendChild(avatar);
+    row.appendChild(content);
+    chatArea.appendChild(row);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function hideTyping() {
+    var typingRow = document.getElementById('typingRow');
+    if (typingRow) typingRow.remove();
+  }
+
+  function sendMessage(text) {
+    if (!text.trim()) return;
+
+    addMessage('user', text);
+    messageInput.value = '';
+
+    // Show typing indicator
+    showTyping();
+
+    // Auto reply
+    setTimeout(function() {
+      hideTyping();
+      var reply = autoReplies[text] || '感谢您的咨询，您的问题已收到，我会尽快为您处理。如需更多帮助，请详细描述您的问题。';
+      addMessage('service', reply);
+    }, 1000);
+  }
+
+  // Send button
+  sendBtn.addEventListener('click', function() {
+    sendMessage(messageInput.value);
+  });
+
+  // Enter to send
+  messageInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(this.value);
+    }
+  });
+
+  // Quick questions
+  document.querySelectorAll('.quick-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      sendMessage(this.textContent);
+    });
+  });
+})();
+</script>
+</body>
+</html>

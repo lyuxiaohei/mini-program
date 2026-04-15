@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苏银豆商城 - 页面导航</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .section h2 {
+    font-size: 16px;
+    color: #ee0a24;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    border-left: 3px solid #ee0a24;
+  }
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+  .links a {
+    display: block;
+    padding: 10px 12px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .links a:hover {
+    background: #fff0ed;
+    color: #ee0a24;
+  }
+  .links a .ver {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 5px;
+    background: #ee0a24;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+  .tip {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #ad6800;
+  }
+</style>
+</head>
+<body>
+<h1>苏银豆商城 - 页面导航</h1>
+<p class="subtitle">原型演示页面，直接点击链接打开</p>
+
+<div class="tip">测试前先在浏览器控制台执行 <code>Auth.resetAccounts()</code> 重置账号数据</div>
+
+<div class="section">
+  <h2>一级页面（底部Tab）</h2>
+  <div class="links">
+    <a href="pages/home_page.html">首页</a>
+    <a href="pages/category.html">分类</a>
+    <a href="pages/cart.html">购物车</a>
+    <a href="pages/profile.html">我的 <span class="ver">V0.1</span></a>
+  </div>
+</div>
+
+<div class="section">
+  <h2>二级页面</h2>
+  <div class="links">
+    <a href="pages/search.html">搜索 <span class="ver">V0.1</span></a>
+    <a href="pages/search_filter.html">搜索结果 <span class="ver">V0.1</span></a>
+    <a href="pages/product_detail.html">商品详情</a>
+    <a href="pages/product_list.html">商品列表</a>
+    <a href="pages/brand_list.html">品牌专区</a>
+    <a href="pages/activity_page.html">活动专题</a>
+    <a href="pages/flash_sale.html">限时秒杀</a>
+    <a href="pages/browse_history.html">浏览记录 <span class="ver">V0.1</span></a>
+    <a href="pages/order_list.html">我的订单</a>
+    <a href="pages/favorites.html">我的收藏 <span class="ver">V0.1</span></a>
+    <a href="pages/coupon.html">卡券包</a>
+    <a href="pages/wallet.html">我的钱包</a>
+    <a href="pages/points_detail.html">积分明细</a>
+    <a href="pages/vip_center.html">会员中心</a>
+    <a href="pages/newuser_gift.html">新人专享</a>
+    <a href="pages/message.html">消息中心</a>
+    <a href="pages/settings.html">设置 <span class="ver">V0.1</span></a>
+  </div>
+</div>
+
+<div class="section">
+  <h2>三级页面</h2>
+  <div class="links">
+    <a href="pages/login.html">登录 <span class="ver">V0.1</span></a>
+    <a href="pages/register.html">注册 <span class="ver">V0.1</span></a>
+    <a href="pages/profile_edit.html">个人资料 <span class="ver">V0.1</span></a>
+    <a href="pages/change_phone.html">修改手机号 <span class="ver">V0.1</span></a>
+    <a href="pages/address.html">收货地址 <span class="ver">V0.1</span></a>
+    <a href="pages/coupon_bind.html">卡券绑定</a>
+    <a href="pages/order.html">确认订单</a>
+    <a href="pages/payment.html">订单支付</a>
+    <a href="pages/pay_success.html">支付成功</a>
+    <a href="pages/order_detail.html">订单详情</a>
+    <a href="pages/order_cancel.html">取消订单</a>
+    <a href="pages/order_complaint.html">订单投诉</a>
+    <a href="pages/logistics.html">物流追踪</a>
+    <a href="pages/refund.html">退款/售后</a>
+    <a href="pages/apply_refund.html">申请退款</a>
+    <a href="pages/refund_detail.html">退款详情</a>
+    <a href="pages/apply_exchange.html">申请换货</a>
+    <a href="pages/review.html">评价中心</a>
+    <a href="pages/write_review.html">发表评价</a>
+    <a href="pages/account_cancel.html">账号注销</a>
+  </div>
+</div>
+
+<div class="section">
+  <h2>辅助页面</h2>
+  <div class="links">
+    <a href="pages/customer_service.html">在线客服</a>
+    <a href="pages/help.html">帮助中心</a>
+    <a href="pages/feedback.html">意见反馈</a>
+    <a href="pages/about.html">关于我们</a>
+  </div>
+</div>
+
+</body>
+</html>

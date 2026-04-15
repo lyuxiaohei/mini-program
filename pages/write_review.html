@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>发表评价 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Product card */
+  .product-card {
+    background: #fff;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+  }
+  .product-card .prod-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .product-card .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+  .product-card .prod-info { flex: 1; min-width: 0; }
+  .product-card .prod-name {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .product-card .prod-spec {
+    font-size: 12px;
+    color: #999;
+  }
+
+  /* Rating section */
+  .rating-section {
+    background: #fff;
+    margin-top: 8px;
+    padding: 16px 12px;
+  }
+  .rating-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  .star-rating {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .star-rating .star {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .star-rating .star:active { transform: scale(0.9); }
+  .star-rating .star svg { width: 32px; height: 32px; }
+  .star-rating .star svg.active { fill: #ff6034; color: #ff6034; }
+  .star-rating .star svg.inactive { fill: #ddd; color: #ddd; }
+
+  /* Tags */
+  .tag-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag-item {
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #666;
+    background: #f5f5f5;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .tag-item:active { opacity: 0.7; }
+  .tag-item.selected {
+    color: #ff6034;
+    background: #fff5f0;
+    border-color: #ffccbb;
+  }
+
+  /* Content section */
+  .content-section {
+    background: #fff;
+    margin-top: 8px;
+    padding: 12px;
+  }
+  .content-section textarea {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    background: transparent;
+  }
+  .content-section textarea::placeholder { color: #bbb; }
+  .char-count {
+    text-align: right;
+    font-size: 12px;
+    color: #bbb;
+    margin-top: 8px;
+  }
+
+  /* Image upload */
+  .image-upload {
+    background: #fff;
+    padding: 12px;
+    margin-top: 8px;
+  }
+  .upload-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .upload-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .upload-item {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: #f8f8f8;
+  }
+  .upload-item img { width: 100%; height: 100%; object-fit: cover; }
+  .upload-item .delete-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 18px;
+    height: 18px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .upload-item .delete-btn svg { width: 12px; height: 12px; color: #fff; }
+  .upload-add {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    gap: 4px;
+    color: #999;
+  }
+  .upload-add:active { background: #f8f8f8; }
+  .upload-add svg { width: 24px; height: 24px; }
+  .upload-add span { font-size: 10px; }
+
+  /* Anonymous toggle */
+  .anonymous-section {
+    background: #fff;
+    margin-top: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .anonymous-label {
+    font-size: 14px;
+    color: #333;
+  }
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    background: #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .toggle-switch.active { background: #ff6034; }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch.active::after { transform: translateX(20px); }
+
+  /* Submit button */
+  .submit-section {
+    padding: 16px 12px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .btn-submit {
+    width: 100%;
+    height: 44px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-submit:active { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">发表评价</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 80px;">
+
+    <!-- Product Card -->
+    <div class="product-card">
+      <div class="prod-img"><img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80" alt=""></div>
+      <div class="prod-info">
+        <div class="prod-name">日本进口保温杯 不锈钢真空便携水杯500ml 大容量男女通用</div>
+        <div class="prod-spec">白色 500ml</div>
+      </div>
+    </div>
+
+    <!-- Rating Section -->
+    <div class="rating-section">
+      <div class="rating-label">商品评分</div>
+      <div class="star-rating" id="starRating">
+        <div class="star" data-index="1">
+          <svg class="inactive" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="star" data-index="2">
+          <svg class="inactive" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="star" data-index="3">
+          <svg class="inactive" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="star" data-index="4">
+          <svg class="inactive" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="star" data-index="5">
+          <svg class="inactive" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+      </div>
+
+      <div class="rating-label">评价标签</div>
+      <div class="tag-area" id="tagArea">
+        <div class="tag-item" data-tag="1">质量好</div>
+        <div class="tag-item" data-tag="2">物流快</div>
+        <div class="tag-item" data-tag="3">服务好</div>
+        <div class="tag-item" data-tag="4">性价比高</div>
+        <div class="tag-item" data-tag="5">包装精美</div>
+        <div class="tag-item" data-tag="6">外观漂亮</div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content-section">
+      <textarea id="reviewContent" placeholder="分享您的购物体验，帮助其他用户做出选择（最多200字）" maxlength="200"></textarea>
+      <div class="char-count"><span id="charCount">0</span>/200</div>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="image-upload">
+      <div class="upload-label">上传图片（最多9张）</div>
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-add" id="uploadAdd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>添加图片</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anonymous Toggle -->
+    <div class="anonymous-section">
+      <span class="anonymous-label">匿名评价</span>
+      <div class="toggle-switch" id="anonymousToggle"></div>
+    </div>
+
+  </div>
+
+  <!-- Submit Button -->
+  <div class="submit-section">
+    <button class="btn-submit" id="submitBtn">提交评价</button>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var currentRating = 0;
+  var selectedTags = new Set();
+  var uploadedImages = [];
+  var isAnonymous = false;
+
+  // Star rating
+  var stars = document.querySelectorAll('.star-rating .star');
+  stars.forEach(function(star) {
+    star.addEventListener('click', function() {
+      currentRating = parseInt(this.dataset.index);
+      updateStars();
+    });
+  });
+
+  function updateStars() {
+    stars.forEach(function(star) {
+      var svg = star.querySelector('svg');
+      var idx = parseInt(star.dataset.index);
+      if (idx <= currentRating) {
+        svg.classList.remove('inactive');
+        svg.classList.add('active');
+      } else {
+        svg.classList.remove('active');
+        svg.classList.add('inactive');
+      }
+    });
+  }
+
+  // Tag selection
+  var tagItems = document.querySelectorAll('.tag-item');
+  tagItems.forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      var tagId = this.dataset.tag;
+      if (selectedTags.has(tagId)) {
+        selectedTags.delete(tagId);
+        this.classList.remove('selected');
+      } else {
+        selectedTags.add(tagId);
+        this.classList.add('selected');
+      }
+    });
+  });
+
+  // Character count
+  var textarea = document.getElementById('reviewContent');
+  var charCount = document.getElementById('charCount');
+  textarea.addEventListener('input', function() {
+    charCount.textContent = this.value.length;
+  });
+
+  // Image upload simulation
+  var uploadArea = document.getElementById('uploadArea');
+  var uploadAdd = document.getElementById('uploadAdd');
+  var sampleImages = [
+    'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80'
+  ];
+
+  uploadAdd.addEventListener('click', function() {
+    if (uploadedImages.length >= 9) {
+      alert('最多上传9张图片');
+      return;
+    }
+    // Simulate adding an image
+    var imgSrc = sampleImages[uploadedImages.length % sampleImages.length];
+    uploadedImages.push(imgSrc);
+    renderImages();
+  });
+
+  function renderImages() {
+    var html = '';
+    uploadedImages.forEach(function(src, idx) {
+      html += '<div class="upload-item">' +
+        '<img src="' + src + '" alt="">' +
+        '<div class="delete-btn" data-idx="' + idx + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+        '</div>' +
+      '</div>';
+    });
+    html += '<div class="upload-add" id="uploadAdd">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+      '<span>添加图片</span>' +
+    '</div>';
+    uploadArea.innerHTML = html;
+
+    // Rebind add button
+    document.getElementById('uploadAdd').addEventListener('click', function() {
+      if (uploadedImages.length >= 9) {
+        alert('最多上传9张图片');
+        return;
+      }
+      var imgSrc = sampleImages[uploadedImages.length % sampleImages.length];
+      uploadedImages.push(imgSrc);
+      renderImages();
+    });
+
+    // Bind delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = parseInt(this.dataset.idx);
+        uploadedImages.splice(idx, 1);
+        renderImages();
+      });
+    });
+  }
+
+  // Anonymous toggle
+  var anonymousToggle = document.getElementById('anonymousToggle');
+  anonymousToggle.addEventListener('click', function() {
+    isAnonymous = !isAnonymous;
+    this.classList.toggle('active', isAnonymous);
+  });
+
+  // Submit
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    if (currentRating === 0) {
+      alert('请选择商品评分');
+      return;
+    }
+    alert('评价提交成功！');
+    location.href = 'review.html';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>会员中心 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* VIP header */
+  .vip-header {
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    padding: 20px 16px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .vip-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.3), transparent);
+    border-radius: 50%;
+  }
+  .vip-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.2), transparent);
+    border-radius: 50%;
+  }
+
+  .vip-level-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .vip-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37, #f4e5b0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  }
+  .vip-badge svg { width: 36px; height: 36px; color: #8b6914; }
+  .vip-info { flex: 1; }
+  .vip-level {
+    font-size: 22px;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 4px;
+  }
+  .vip-progress {
+    background: rgba(255,255,255,0.1);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .vip-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d4af37, #f4e5b0);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .vip-progress-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Level tabs */
+  .level-tabs {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .level-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .level-tab.active {
+    color: #1a1a1a;
+    background: linear-gradient(135deg, #d4af37, #f4e5b0);
+    font-weight: 600;
+  }
+  .level-tab.current {
+    position: relative;
+  }
+
+  /* Privileges section */
+  .privileges-section {
+    background: #fff;
+    margin: -16px 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title svg { width: 18px; height: 18px; color: #d4af37; }
+
+  .privileges-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .privilege-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .privilege-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fff9e6, #fff5cc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .privilege-icon svg { width: 24px; height: 24px; color: #d4af37; }
+  .privilege-icon.locked svg { color: #ccc; }
+  .privilege-icon .lock-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: #999;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .privilege-icon .lock-badge svg { width: 10px; height: 10px; color: #fff; }
+  .privilege-name {
+    font-size: 11px;
+    color: #333;
+  }
+  .privilege-name.locked { color: #999; }
+
+  /* Tasks section */
+  .tasks-section {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .task-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  .task-icon svg { width: 20px; height: 20px; color: #fff; }
+  .task-info { flex: 1; }
+  .task-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  .task-desc {
+    font-size: 11px;
+    color: #999;
+  }
+  .task-reward {
+    font-size: 12px;
+    color: #d4af37;
+    font-weight: 600;
+    margin-right: 12px;
+  }
+  .task-btn {
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+  }
+  .task-btn.go {
+    background: linear-gradient(135deg, #d4af37, #f4e5b0);
+    color: #8b6914;
+  }
+  .task-btn.done {
+    background: #f5f5f5;
+    color: #999;
+  }
+
+  /* Benefits section */
+  .benefits-section {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+  .benefit-item:last-child { border-bottom: none; }
+  .benefit-item:active { background: #fafafa; }
+  .benefit-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    background: linear-gradient(135deg, #fff9e6, #fff5cc);
+  }
+  .benefit-icon svg { width: 20px; height: 20px; color: #d4af37; }
+  .benefit-info { flex: 1; }
+  .benefit-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  .benefit-desc {
+    font-size: 11px;
+    color: #999;
+  }
+  .benefit-arrow { color: #ccc; }
+  .benefit-arrow svg { width: 16px; height: 16px; }
+
+  /* Level comparison */
+  .level-comparison {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .level-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .level-table th,
+  .level-table td {
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .level-table th {
+    color: #999;
+    font-weight: 500;
+  }
+  .level-table td {
+    color: #333;
+  }
+  .level-table tr:last-child td { border-bottom: none; }
+  .level-table .level-name {
+    font-weight: 600;
+    color: #d4af37;
+  }
+  .level-table .current-level {
+    background: #fff9e6;
+  }
+  .check-icon { color: #4caf50; }
+  .cross-icon { color: #ccc; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">会员中心</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 16px;">
+
+    <!-- VIP Header -->
+    <div class="vip-header">
+      <div class="vip-level-card">
+        <div class="vip-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="vip-info">
+          <div class="vip-level">黄金会员</div>
+          <div class="vip-progress">
+            <div class="vip-progress-bar" style="width: 65%;"></div>
+          </div>
+          <div class="vip-progress-text">成长值 650/1000 距离铂金会员还需350</div>
+        </div>
+      </div>
+
+      <div class="level-tabs">
+        <div class="level-tab">普通</div>
+        <div class="level-tab">白银</div>
+        <div class="level-tab active current">黄金</div>
+        <div class="level-tab">铂金</div>
+        <div class="level-tab">钻石</div>
+      </div>
+    </div>
+
+    <!-- Privileges -->
+    <div class="privileges-section">
+      <div class="section-title">
+        <span>会员权益</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="privileges-grid">
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <span class="privilege-name">积分加倍</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <span class="privilege-name">专属折扣</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          </div>
+          <span class="privilege-name">免邮特权</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <span class="privilege-name">专属客服</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span class="privilege-name">优先发货</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 00-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+          </div>
+          <span class="privilege-name">生日礼包</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon locked">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="lock-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          </div>
+          <span class="privilege-name locked">专属商品</span>
+        </div>
+        <div class="privilege-item">
+          <div class="privilege-icon locked">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="lock-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          </div>
+          <span class="privilege-name locked">尊享活动</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="tasks-section">
+      <div class="section-title">
+        <span>升级任务</span>
+      </div>
+      <div class="task-item">
+        <div class="task-icon" style="background: linear-gradient(135deg, #ff6034, #ee0a24);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        </div>
+        <div class="task-info">
+          <div class="task-title">完成一笔订单</div>
+          <div class="task-desc">购物可获得成长值</div>
+        </div>
+        <span class="task-reward">+50成长值</span>
+        <button class="task-btn go">去完成</button>
+      </div>
+      <div class="task-item">
+        <div class="task-icon" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="task-info">
+          <div class="task-title">邀请好友注册</div>
+          <div class="task-desc">每邀请1位好友注册</div>
+        </div>
+        <span class="task-reward">+100成长值</span>
+        <button class="task-btn go">去邀请</button>
+      </div>
+      <div class="task-item">
+        <div class="task-icon" style="background: linear-gradient(135deg, #2196f3, #1565c0);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="task-info">
+          <div class="task-title">发表商品评价</div>
+          <div class="task-desc">完成评价获得奖励</div>
+        </div>
+        <span class="task-reward">+20成长值</span>
+        <button class="task-btn done">已完成</button>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="benefits-section">
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 00-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+        </div>
+        <div class="benefit-info">
+          <div class="benefit-title">积分加倍卡</div>
+          <div class="benefit-desc">购物积分翻倍</div>
+        </div>
+        <span class="benefit-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="benefit-info">
+          <div class="benefit-title">会员日特权</div>
+          <div class="benefit-desc">每月8号专享优惠</div>
+        </div>
+        <span class="benefit-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="benefit-info">
+          <div class="benefit-title">专属客服通道</div>
+          <div class="benefit-desc">优先响应服务</div>
+        </div>
+        <span class="benefit-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- Level Comparison -->
+    <div class="level-comparison">
+      <div class="section-title">
+        <span>等级对比</span>
+      </div>
+      <table class="level-table">
+        <thead>
+          <tr>
+            <th>等级</th>
+            <th>成长值</th>
+            <th>积分倍数</th>
+            <th>专属折扣</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="level-name">普通</td>
+            <td>0</td>
+            <td>1倍</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td class="level-name">白银</td>
+            <td>300</td>
+            <td>1.2倍</td>
+            <td>95折</td>
+          </tr>
+          <tr class="current-level">
+            <td class="level-name">黄金</td>
+            <td>1000</td>
+            <td>1.5倍</td>
+            <td>92折</td>
+          </tr>
+          <tr>
+            <td class="level-name">铂金</td>
+            <td>3000</td>
+            <td>2倍</td>
+            <td>88折</td>
+          </tr>
+          <tr>
+            <td class="level-name">钻石</td>
+            <td>8000</td>
+            <td>3倍</td>
+            <td>85折</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  // Level tabs
+  document.querySelectorAll('.level-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.level-tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+
+  // Task buttons
+  document.querySelectorAll('.task-btn.go').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      alert('跳转到对应任务页面');
+    });
+  });
+
+  // Privilege items
+  document.querySelectorAll('.privilege-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var name = this.querySelector('.privilege-name').textContent;
+      var locked = this.querySelector('.privilege-icon.locked');
+      if (locked) {
+        alert('升级至铂金会员解锁该权益');
+      } else {
+        alert('查看权益详情：' + name);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

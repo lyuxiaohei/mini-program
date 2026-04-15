@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>评价中心 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Tab bar */
+  .review-tabs-bar {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    position: sticky;
+    top: 88px;
+    z-index: 50;
+  }
+  .review-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+  }
+  .review-tab:active { background: #f8f8f8; }
+  .review-tab.active {
+    color: #333;
+    font-weight: 600;
+  }
+  .review-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: 1px;
+  }
+  .review-tab .tab-badge {
+    display: inline-block;
+    background: #ee0a24;
+    color: #fff;
+    font-size: 10px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    line-height: 16px;
+    margin-left: 4px;
+    padding: 0 4px;
+  }
+
+  /* Review item */
+  .review-list {
+    padding: 12px;
+  }
+  .review-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .review-item-header {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 10px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .review-item .item-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .review-item .item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .review-item .item-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .review-item .item-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .review-item .item-spec {
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* Pending review actions */
+  .review-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .btn-review {
+    padding: 6px 16px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #666;
+  }
+  .btn-review:active { opacity: 0.7; }
+  .btn-review.primary {
+    border-color: #ff6034;
+    color: #ff6034;
+    font-weight: 500;
+  }
+
+  /* Completed review content */
+  .review-content-area {
+    padding: 12px;
+    background: #fafafa;
+  }
+  .review-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+  .review-stars .star {
+    font-size: 14px;
+    color: #ff6034;
+  }
+  .review-stars .star.empty { color: #ddd; }
+  .review-text {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .review-images {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .review-images img {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .review-date {
+    font-size: 11px;
+    color: #bbb;
+    margin-top: 8px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    color: #999;
+  }
+  .empty-state svg {
+    width: 80px;
+    height: 80px;
+    color: #ddd;
+    margin-bottom: 16px;
+  }
+  .empty-state .empty-text {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .empty-state .go-shopping {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 13px;
+    padding: 8px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">评价中心</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="review-tabs-bar">
+    <div class="review-tab active" data-tab="pending">待评价<span class="tab-badge">2</span></div>
+    <div class="review-tab" data-tab="done">已评价</div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 16px;">
+    <div class="review-list" id="reviewList"></div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  // Pending reviews data
+  var pendingReviews = [
+    { id: 1, name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 2, name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80' }
+  ];
+
+  // Completed reviews data
+  var completedReviews = [
+    {
+      id: 3,
+      name: '纯棉短袖T恤男女款 夏季宽松百搭潮流',
+      spec: '白色 L码',
+      price: '39.90',
+      img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&h=200&q=80',
+      stars: 5,
+      text: '面料很舒服，颜色和图片一样，尺码标准，物流也很快，下次还会回购！',
+      images: [
+        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=120&h=120&q=80'
+      ],
+      date: '2026-03-25'
+    },
+    {
+      id: 4,
+      name: '时尚运动鞋 透气网面跑步鞋轻便缓震',
+      spec: '黑色 42码',
+      price: '159.00',
+      img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&h=200&q=80',
+      stars: 4,
+      text: '鞋子很轻便，穿着舒服，透气性好，就是颜色稍微有点偏差。',
+      images: [],
+      date: '2026-03-18'
+    }
+  ];
+
+  var currentTab = 'pending';
+
+  function renderStars(count) {
+    var html = '';
+    for (var i = 0; i < 5; i++) {
+      html += '<span class="star ' + (i < count ? '' : 'empty') + '">&#9733;</span>';
+    }
+    return html;
+  }
+
+  function renderList() {
+    var list = document.getElementById('reviewList');
+    var data = currentTab === 'pending' ? pendingReviews : completedReviews;
+
+    if (data.length === 0) {
+      list.innerHTML = '<div class="empty-state">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>' +
+        '<div class="empty-text">' + (currentTab === 'pending' ? '暂无待评价商品' : '暂无已评价商品') + '</div>' +
+        (currentTab === 'pending' ? '<a href="home_page.html" class="go-shopping">去逛逛</a>' : '') +
+      '</div>';
+      return;
+    }
+
+    var html = '';
+    if (currentTab === 'pending') {
+      pendingReviews.forEach(function(item) {
+        html += '<div class="review-item">' +
+          '<div class="review-item-header">' +
+            '<a href="product_detail.html" class="item-img"><img src="' + item.img + '" alt=""></a>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="review-item-footer">' +
+            '<a href="product_detail.html" class="btn-review">再次购买</a>' +
+            '<a href="write_review.html" class="btn-review primary">去评价</a>' +
+          '</div>' +
+        '</div>';
+      });
+    } else {
+      completedReviews.forEach(function(item) {
+        var imagesHtml = '';
+        if (item.images && item.images.length > 0) {
+          imagesHtml = '<div class="review-images">';
+          item.images.forEach(function(img) {
+            imagesHtml += '<img src="' + img + '" alt="">';
+          });
+          imagesHtml += '</div>';
+        }
+
+        html += '<div class="review-item">' +
+          '<div class="review-item-header">' +
+            '<a href="product_detail.html" class="item-img"><img src="' + item.img + '" alt=""></a>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="review-content-area">' +
+            '<div class="review-stars">' + renderStars(item.stars) + '</div>' +
+            '<div class="review-text">' + item.text + '</div>' +
+            imagesHtml +
+            '<div class="review-date">评价时间：' + item.date + '</div>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+    list.innerHTML = html;
+  }
+
+  // Tab switching
+  document.querySelectorAll('.review-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.review-tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      currentTab = this.dataset.tab;
+      renderList();
+    });
+  });
+
+  renderList();
+})();
+</script>
+</body>
+</html>

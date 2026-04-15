@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>注册 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .register-container {
+    min-height: 100vh;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+  }
+
+  /* Header */
+  .register-header {
+    padding-top: 24px;
+    margin-bottom: 32px;
+  }
+  .back-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    margin-left: -8px;
+  }
+  .back-btn:active { background: #f5f5f5; }
+  .back-btn svg { width: 24px; height: 24px; color: #333; }
+
+  .register-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+    margin-top: 16px;
+  }
+  .register-subtitle {
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+  }
+
+  /* Form area */
+  .form-area {
+    flex: 1;
+  }
+  .input-group {
+    margin-bottom: 24px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+  }
+  .input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+    background: transparent;
+  }
+  .input-wrapper input::placeholder { color: #bbb; }
+  .input-wrapper .input-suffix {
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .btn-code {
+    font-size: 13px;
+    color: #ff6034;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    white-space: nowrap;
+  }
+  .btn-code:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Agreement */
+  .agreement {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.5;
+    margin-top: 16px;
+  }
+  .agreement input { margin-top: 2px; }
+  .agreement a { color: #ff6034; }
+
+  /* Register button */
+  .btn-register {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 32px;
+  }
+  .btn-register:active { opacity: 0.85; }
+  .btn-register:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Footer */
+  .register-footer {
+    padding: 24px 0;
+    text-align: center;
+  }
+  .login-link {
+    font-size: 14px;
+    color: #666;
+  }
+  .login-link a {
+    color: #ff6034;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <div class="register-container">
+    <!-- Header -->
+    <div class="register-header">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <div class="register-title">注册账号</div>
+      <div class="register-subtitle">注册成为苏银豆商城会员</div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-area">
+      <div class="input-group">
+        <label>手机号</label>
+        <div class="input-wrapper">
+          <input type="tel" id="phone" placeholder="请输入手机号" maxlength="11">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>验证码</label>
+        <div class="input-wrapper">
+          <input type="text" id="code" placeholder="请输入验证码" maxlength="6">
+          <div class="input-suffix">
+            <button class="btn-code" id="sendCode">获取验证码</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="agreement">
+        <input type="checkbox" id="agree" checked>
+        <label for="agree">注册即表示同意 <a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></label>
+      </div>
+
+      <button class="btn-register" id="registerBtn">注 册</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="register-footer">
+      <div class="login-link">
+        已有账号？<a href="login.html">立即登录</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+(function() {
+  // Clean up stale temp sessions
+  Auth.clearTempSession();
+
+  // If already logged in, redirect to home
+  if (Auth.isLoggedIn()) {
+    location.href = 'home_page.html';
+    return;
+  }
+
+  var phone = document.getElementById('phone');
+  var code = document.getElementById('code');
+  var sendCode = document.getElementById('sendCode');
+  var registerBtn = document.getElementById('registerBtn');
+  var agree = document.getElementById('agree');
+
+  var countdown = 0;
+  var timer = null;
+
+  // Send code
+  sendCode.addEventListener('click', function() {
+    var phoneVal = phone.value.trim();
+    if (!phoneVal) {
+      alert('请输入手机号');
+      return;
+    }
+    if (!/^1\d{10}$/.test(phoneVal)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    if (Auth.isRegistered(phoneVal)) {
+      alert('该手机号已注册，请直接登录');
+      return;
+    }
+    if (countdown > 0) return;
+
+    countdown = 60;
+    sendCode.disabled = true;
+    sendCode.textContent = countdown + 's';
+
+    timer = setInterval(function() {
+      countdown--;
+      if (countdown <= 0) {
+        clearInterval(timer);
+        sendCode.disabled = false;
+        sendCode.textContent = '获取验证码';
+      } else {
+        sendCode.textContent = countdown + 's';
+      }
+    }, 1000);
+
+    alert('验证码已发送');
+  });
+
+  // Register
+  registerBtn.addEventListener('click', function() {
+    var phoneVal = phone.value.trim();
+    var codeVal = code.value.trim();
+
+    if (!phoneVal) {
+      alert('请输入手机号');
+      return;
+    }
+    if (!/^1\d{10}$/.test(phoneVal)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    if (!codeVal) {
+      alert('请输入验证码');
+      return;
+    }
+    if (!agree.checked) {
+      alert('请阅读并同意用户协议');
+      return;
+    }
+    if (Auth.isRegistered(phoneVal)) {
+      alert('该手机号已注册，请直接登录');
+      location.href = 'login.html';
+      return;
+    }
+
+    var result = Auth.loginWithPhone(phoneVal);
+    alert('注册成功');
+    location.href = 'home_page.html';
+  });
+})();
+</script>
+</body>
+</html>

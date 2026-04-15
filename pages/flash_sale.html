@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>限时秒杀 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Header countdown */
+  .flash-header {
+    background: linear-gradient(135deg, #ee0a24, #ff6034);
+    padding: 16px;
+    color: #fff;
+    text-align: center;
+  }
+  .flash-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .flash-title svg { width: 28px; height: 28px; }
+  .flash-subtitle {
+    font-size: 13px;
+    opacity: 0.9;
+    margin-bottom: 12px;
+  }
+  .countdown-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .countdown-label {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .countdown-num {
+    background: #fff;
+    color: #ee0a24;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 28px;
+    text-align: center;
+  }
+  .countdown-sep {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  /* Time slots */
+  .time-slots {
+    display: flex;
+    background: #fff;
+    padding: 8px 12px;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .time-slots::-webkit-scrollbar { display: none; }
+  .time-slot {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #f5f5f5;
+  }
+  .time-slot.active {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+  }
+  .time-slot.past { opacity: 0.5; }
+  .time-slot .time {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .time-slot .status {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  /* Product list */
+  .flash-list {
+    padding: 12px;
+  }
+  .flash-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+  }
+  .flash-item:active { opacity: 0.95; }
+  .flash-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .flash-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .flash-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #ee0a24;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 0 0 8px 0;
+  }
+  .flash-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .flash-name {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .flash-desc {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .flash-price-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .flash-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .flash-price .current {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ee0a24;
+  }
+  .flash-price .current small {
+    font-size: 12px;
+  }
+  .flash-price .original {
+    font-size: 12px;
+    color: #999;
+    text-decoration: line-through;
+  }
+  .flash-stock {
+    text-align: right;
+  }
+  .stock-bar {
+    width: 80px;
+    height: 4px;
+    background: #ffe8e8;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .stock-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: 2px;
+  }
+  .stock-text {
+    font-size: 10px;
+    color: #ee0a24;
+  }
+  .btn-buy {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .btn-buy:active { opacity: 0.85; }
+  .btn-buy.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Tips banner */
+  .tips-banner {
+    background: #fff5f0;
+    margin: 0 12px 12px;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tips-banner svg { width: 16px; height: 16px; color: #ff6034; flex-shrink: 0; }
+  .tips-banner span { font-size: 12px; color: #ff6034; }
+
+  /* Empty */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state svg {
+    width: 80px;
+    height: 80px;
+    color: #ddd;
+    margin-bottom: 16px;
+  }
+  .empty-state .empty-text { font-size: 14px; }
+
+  /* Reminder toast */
+  .reminder-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 1000;
+    display: none;
+  }
+  .reminder-toast.show { display: block; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">限时秒杀</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="flash-header">
+    <div class="flash-title">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/></svg>
+      限时秒杀
+    </div>
+    <div class="flash-subtitle">限时抢购，先到先得</div>
+    <div class="countdown-row">
+      <span class="countdown-label">距结束</span>
+      <span class="countdown-num" id="hour">02</span>
+      <span class="countdown-sep">:</span>
+      <span class="countdown-num" id="minute">34</span>
+      <span class="countdown-sep">:</span>
+      <span class="countdown-num" id="second">56</span>
+    </div>
+  </div>
+
+  <!-- Time Slots -->
+  <div class="time-slots" id="timeSlots">
+    <div class="time-slot past">
+      <div class="time">08:00</div>
+      <div class="status">已结束</div>
+    </div>
+    <div class="time-slot active">
+      <div class="time">10:00</div>
+      <div class="status">抢购中</div>
+    </div>
+    <div class="time-slot">
+      <div class="time">12:00</div>
+      <div class="status">即将开始</div>
+    </div>
+    <div class="time-slot">
+      <div class="time">14:00</div>
+      <div class="status">即将开始</div>
+    </div>
+    <div class="time-slot">
+      <div class="time">16:00</div>
+      <div class="status">即将开始</div>
+    </div>
+    <div class="time-slot">
+      <div class="time">20:00</div>
+      <div class="status">即将开始</div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-banner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>秒杀商品数量有限，售完即止；每人限购1件</span>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 16px;">
+    <div class="flash-list" id="flashList"></div>
+  </div>
+
+  <!-- Reminder Toast -->
+  <div class="reminder-toast" id="reminderToast">已设置开抢提醒</div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var products = [
+    { id: 1, name: '无线蓝牙降噪耳机 迷你入耳式超长续航', desc: '黑色 标准版', price: 49.9, original: 199, stock: 85, total: 100, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 2, name: '日本进口保温杯 不锈钢真空便携水杯', desc: '白色 500ml', price: 39.9, original: 128, stock: 60, total: 100, img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 3, name: '潮流太阳眼镜 防紫外线偏光墨镜', desc: '黑色', price: 29.9, original: 159, stock: 92, total: 100, img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 4, name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', desc: '白色 L码', price: 19.9, original: 79, stock: 35, total: 100, img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 5, name: '时尚运动鞋 透气网面跑步鞋轻便缓震', desc: '黑色 42码', price: 89, original: 299, stock: 15, total: 100, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&h=200&q=80' }
+  ];
+
+  var flashList = document.getElementById('flashList');
+
+  function renderProducts() {
+    var html = '';
+    products.forEach(function(item) {
+      var percent = Math.round((item.total - item.stock) / item.total * 100);
+      var isLow = item.stock < 20;
+
+      html += '<a href="product_detail.html" class="flash-item">' +
+        '<div class="flash-img">' +
+          '<img src="' + item.img + '" alt="">' +
+          '<span class="flash-tag">秒杀</span>' +
+        '</div>' +
+        '<div class="flash-info">' +
+          '<div>' +
+            '<div class="flash-name">' + item.name + '</div>' +
+            '<div class="flash-desc">' + item.desc + '</div>' +
+          '</div>' +
+          '<div class="flash-price-row">' +
+            '<div>' +
+              '<div class="flash-price">' +
+                '<span class="current"><small>&yen;</small>' + item.price + '</span>' +
+                '<span class="original">&yen;' + item.original + '</span>' +
+              '</div>' +
+              '<div class="flash-stock">' +
+                '<div class="stock-bar"><div class="stock-fill" style="width:' + percent + '%"></div></div>' +
+                '<div class="stock-text">' + (isLow ? '仅剩' + item.stock + '件' : '已抢' + percent + '%') + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<button class="btn-buy' + (item.stock === 0 ? ' disabled' : '') + '" onclick="event.preventDefault();' + (item.stock === 0 ? '' : 'alert(\'抢购成功\')') + '">' + (item.stock === 0 ? '已抢光' : '立即抢') + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    });
+    flashList.innerHTML = html;
+  }
+
+  // Time slots
+  document.querySelectorAll('.time-slot').forEach(function(slot) {
+    slot.addEventListener('click', function() {
+      if (this.classList.contains('past')) return;
+      document.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('active'); });
+      this.classList.add('active');
+      renderProducts();
+    });
+  });
+
+  // Countdown
+  var hour = document.getElementById('hour');
+  var minute = document.getElementById('minute');
+  var second = document.getElementById('second');
+
+  var totalSeconds = 2 * 3600 + 34 * 60 + 56;
+
+  function updateCountdown() {
+    totalSeconds--;
+    if (totalSeconds <= 0) {
+      totalSeconds = 0;
+    }
+
+    var h = Math.floor(totalSeconds / 3600);
+    var m = Math.floor((totalSeconds % 3600) / 60);
+    var s = totalSeconds % 60;
+
+    hour.textContent = h < 10 ? '0' + h : h;
+    minute.textContent = m < 10 ? '0' + m : m;
+    second.textContent = s < 10 ? '0' + s : s;
+  }
+
+  setInterval(updateCountdown, 1000);
+
+  renderProducts();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>购物车 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Cart edit bar */
+  .cart-edit-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #fff;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  /* Cart item */
+  .cart-list {
+    padding: 8px 12px;
+  }
+  .cart-item-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+  .cart-item-wrapper .delete-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 72px;
+    background: #ee0a24;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .cart-item-wrapper .delete-btn:active { background: #c0091e; }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+    transition: transform 0.2s ease;
+    z-index: 1;
+  }
+  .cart-item .checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .cart-item .checkbox.checked {
+    background: #ff6034;
+    border-color: #ff6034;
+  }
+  .cart-item .checkbox.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+  .cart-item .item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .cart-item .item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .cart-item .item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cart-item .item-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cart-item .item-spec {
+    font-size: 11px;
+    color: #999;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+  .cart-item .item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+  }
+  .cart-item .item-price {
+    color: #ee0a24;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .cart-item .item-price .symbol { font-size: 10px; }
+
+  /* Quantity control */
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .qty-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+  }
+  .qty-btn:first-child { border-radius: 4px 0 0 4px; }
+  .qty-btn:last-child { border-radius: 0 4px 4px 0; }
+  .qty-btn:active { background: #f5f5f5; }
+  .qty-btn.disabled { color: #ddd; pointer-events: none; }
+  .qty-num {
+    width: 32px;
+    height: 24px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #333;
+  }
+
+  /* Off-shelf item (已下架) */
+  .cart-item.offshelf {
+    /* 不使用整体opacity，只对图片区域处理 */
+  }
+  .cart-item.offshelf .item-img {
+    position: relative;
+    opacity: 0.6;
+  }
+  .cart-item.offshelf .item-img::after {
+    content: '已失效';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  .cart-item.offshelf .item-name,
+  .cart-item.offshelf .item-spec,
+  .cart-item.offshelf .item-price {
+    color: #999;
+  }
+  .cart-item.offshelf .checkbox {
+    display: none;
+  }
+  .cart-item.offshelf .qty-control {
+    display: none;
+  }
+  .cart-item.offshelf .offshelf-text {
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* Bottom checkout bar */
+  .checkout-bar {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    border-top: 1px solid #eee;
+    z-index: 200;
+    padding-bottom: 8px;
+  }
+  .checkout-bar .select-all {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+  }
+  .checkout-bar .select-all .checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .checkout-bar .select-all .checkbox.checked {
+    background: #ff6034;
+    border-color: #ff6034;
+  }
+  .checkout-bar .select-all .checkbox.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+  .checkout-bar .total-area {
+    flex: 1;
+    text-align: right;
+    padding-right: 12px;
+  }
+  .checkout-bar .total-label { font-size: 13px; color: #333; }
+  .checkout-bar .total-price { font-size: 16px; color: #ee0a24; font-weight: 700; }
+  .checkout-bar .total-price .symbol { font-size: 11px; }
+  .checkout-bar .btn-checkout {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    padding: 0 20px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  .checkout-bar .btn-checkout:active { opacity: 0.85; }
+
+  /* Empty state */
+  .empty-cart {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    gap: 16px;
+  }
+  .empty-cart svg { width: 80px; height: 80px; color: #ddd; }
+  .empty-cart p { font-size: 14px; color: #999; }
+  .empty-cart a {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">购物车</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 128px;">
+
+    <div class="cart-edit-bar">
+      <span>共 <b id="cartCount">3</b> 件商品</span>
+    </div>
+
+    <!-- Cart List -->
+    <div class="cart-list" id="cartList"></div>
+
+  </div>
+
+  <!-- Bottom Checkout Bar -->
+  <div class="checkout-bar">
+    <div class="select-all" id="selectAll">
+      <div class="checkbox checked" id="selectAllBox"></div>
+      <span>全选</span>
+    </div>
+    <div class="total-area">
+      <span class="total-label">合计：</span>
+      <span class="total-price"><span class="symbol">&yen;</span><span id="totalAmount">195.90</span></span>
+    </div>
+    <button class="btn-checkout" onclick="location.href='order.html'">结算(<span id="checkoutCount">3</span>)</button>
+  </div>
+
+  <!-- Bottom Tab Bar -->
+  <div class="tab-bar">
+    <a href="home_page.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>首页</span>
+    </a>
+    <a href="category.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>分类</span>
+    </a>
+    <div class="tab-item active">
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="badge">3</span>
+      </div>
+      <span>购物车</span>
+    </div>
+    <a href="favorites.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>收藏</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>我的</span>
+    </a>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var cartItems = [
+    { id: 1, name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: 68, qty: 1, checked: true, img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 2, name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: 89, qty: 1, checked: true, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 3, name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: 39.9, qty: 1, checked: true, img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&h=200&q=80' },
+    { id: 4, name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: 59, qty: 1, checked: false, img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=200&h=200&q=80', offshelf: true }
+  ];
+
+  function renderCart() {
+    var html = '';
+    cartItems.forEach(function(item) {
+      if (item.offshelf) {
+        // 已下架商品：无勾选框、无数量控制、仅支持删除
+        html += '<div class="cart-item-wrapper" data-id="' + item.id + '">' +
+          '<div class="delete-btn" data-id="' + item.id + '">删除</div>' +
+          '<div class="cart-item offshelf">' +
+            '<div class="item-img"><img src="' + item.img + '" alt=""></div>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+              '<div class="item-bottom">' +
+                '<span class="item-price"><span class="symbol">&yen;</span>' + item.price.toFixed(2) + '</span>' +
+                '<span class="offshelf-text">已下架</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      } else {
+        html += '<div class="cart-item-wrapper" data-id="' + item.id + '">' +
+          '<div class="delete-btn" data-id="' + item.id + '">删除</div>' +
+          '<div class="cart-item">' +
+            '<div class="checkbox' + (item.checked ? ' checked' : '') + '" data-id="' + item.id + '"></div>' +
+            '<a href="product_detail.html" class="item-img"><img src="' + item.img + '" alt=""></a>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+              '<div class="item-bottom">' +
+                '<span class="item-price"><span class="symbol">&yen;</span>' + item.price.toFixed(2) + '</span>' +
+                '<div class="qty-control">' +
+                  '<div class="qty-btn' + (item.qty <= 1 ? ' disabled' : '') + '" data-action="minus" data-id="' + item.id + '">-</div>' +
+                  '<div class="qty-num">' + item.qty + '</div>' +
+                  '<div class="qty-btn" data-action="plus" data-id="' + item.id + '">+</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+    });
+    document.getElementById('cartList').innerHTML = html;
+    // Count only non-offshelf items
+    var activeCount = cartItems.filter(function(i) { return !i.offshelf; }).length;
+    document.getElementById('cartCount').textContent = activeCount;
+    updateTotal();
+    bindEvents();
+    bindSwipeEvents();
+  }
+
+  function updateTotal() {
+    var total = 0, count = 0;
+    cartItems.forEach(function(item) {
+      if (item.checked && !item.offshelf) {
+        total += item.price * item.qty;
+        count += item.qty;
+      }
+    });
+    document.getElementById('totalAmount').textContent = total.toFixed(2);
+    document.getElementById('checkoutCount').textContent = count;
+    var allChecked = cartItems.filter(function(i) { return !i.offshelf; }).length > 0 &&
+      cartItems.filter(function(i) { return !i.offshelf; }).every(function(i) { return i.checked; });
+    document.getElementById('selectAllBox').classList.toggle('checked', allChecked);
+  }
+
+  function bindEvents() {
+    // Checkbox toggle
+    document.querySelectorAll('.cart-item .checkbox').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = +this.dataset.id;
+        cartItems.forEach(function(item) {
+          if (item.id === id) item.checked = !item.checked;
+        });
+        this.classList.toggle('checked');
+        updateTotal();
+      });
+    });
+
+    // Qty controls
+    document.querySelectorAll('.qty-btn').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = +this.dataset.id;
+        var action = this.dataset.action;
+        cartItems.forEach(function(item) {
+          if (item.id === id) {
+            if (action === 'plus') item.qty++;
+            if (action === 'minus' && item.qty > 1) item.qty--;
+          }
+        });
+        renderCart();
+      });
+    });
+
+    // Delete button
+    document.querySelectorAll('.delete-btn').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = +this.dataset.id;
+        var wrapper = this.closest('.cart-item-wrapper');
+        cartItems = cartItems.filter(function(item) { return item.id !== id; });
+        wrapper.style.transition = 'height 0.2s, margin 0.2s, opacity 0.2s';
+        wrapper.style.height = wrapper.offsetHeight + 'px';
+        requestAnimationFrame(function() {
+          wrapper.style.height = '0px';
+          wrapper.style.marginBottom = '0px';
+          wrapper.style.opacity = '0';
+          wrapper.style.overflow = 'hidden';
+        });
+        setTimeout(function() {
+          renderCart();
+        }, 220);
+      });
+    });
+  }
+
+  // Swipe to delete
+  function bindSwipeEvents() {
+    var currentSwipe = null;
+    var startX = 0;
+    var DELETE_WIDTH = 72;
+
+    // Reset all swiped items
+    function resetAllSwipe() {
+      document.querySelectorAll('.cart-item').forEach(function(el) {
+        el.style.transform = 'translateX(0)';
+      });
+    }
+
+    document.querySelectorAll('.cart-item-wrapper').forEach(function(wrapper) {
+      var cartItem = wrapper.querySelector('.cart-item');
+
+      // Touch events
+      cartItem.addEventListener('touchstart', function(e) {
+        if (currentSwipe && currentSwipe !== cartItem) {
+          currentSwipe.style.transform = 'translateX(0)';
+        }
+        currentSwipe = cartItem;
+        startX = e.touches[0].clientX;
+        cartItem.style.transition = 'none';
+      });
+
+      cartItem.addEventListener('touchmove', function(e) {
+        var diff = e.touches[0].clientX - startX;
+        var offset = Math.min(0, Math.max(-DELETE_WIDTH, diff));
+        cartItem.style.transform = 'translateX(' + offset + 'px)';
+      });
+
+      cartItem.addEventListener('touchend', function(e) {
+        cartItem.style.transition = 'transform 0.2s ease';
+        var diff = e.changedTouches[0].clientX - startX;
+        if (diff < -DELETE_WIDTH / 2) {
+          cartItem.style.transform = 'translateX(-' + DELETE_WIDTH + 'px)';
+        } else {
+          cartItem.style.transform = 'translateX(0)';
+          currentSwipe = null;
+        }
+      });
+
+      // Mouse events (for desktop preview)
+      var mouseDown = false;
+      cartItem.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.qty-btn') || e.target.closest('.checkbox') || e.target.closest('a')) return;
+        if (currentSwipe && currentSwipe !== cartItem) {
+          currentSwipe.style.transition = 'transform 0.2s ease';
+          currentSwipe.style.transform = 'translateX(0)';
+        }
+        currentSwipe = cartItem;
+        mouseDown = true;
+        startX = e.clientX;
+        cartItem.style.transition = 'none';
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function(e) {
+        if (!mouseDown) return;
+        var diff = e.clientX - startX;
+        var offset = Math.min(0, Math.max(-DELETE_WIDTH, diff));
+        cartItem.style.transform = 'translateX(' + offset + 'px)';
+      });
+
+      document.addEventListener('mouseup', function(e) {
+        if (!mouseDown) return;
+        mouseDown = false;
+        cartItem.style.transition = 'transform 0.2s ease';
+        var diff = e.clientX - startX;
+        if (diff < -DELETE_WIDTH / 2) {
+          cartItem.style.transform = 'translateX(-' + DELETE_WIDTH + 'px)';
+        } else {
+          cartItem.style.transform = 'translateX(0)';
+          currentSwipe = null;
+        }
+      });
+    });
+  }
+
+  // Select all
+  document.getElementById('selectAll').addEventListener('click', function() {
+    var activeItems = cartItems.filter(function(i) { return !i.offshelf; });
+    var allChecked = activeItems.every(function(i) { return i.checked; });
+    activeItems.forEach(function(item) { item.checked = !allChecked; });
+    renderCart();
+  });
+
+  renderCart();
+})();
+</script>
+</body>
+</html>

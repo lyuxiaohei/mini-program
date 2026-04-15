@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>卡券包 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Tab bar */
+  .coupon-tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    position: sticky;
+    top: 88px;
+    z-index: 50;
+  }
+  .coupon-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .coupon-tab.active {
+    color: #ff6034;
+    font-weight: 600;
+  }
+  .coupon-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: 2px;
+  }
+
+  /* Tab content */
+  .tab-content {
+    display: none;
+    padding: 12px;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  /* ===== Card Pack (卡包) ===== */
+  .card-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .card-item:active { transform: scale(0.98); }
+
+  .card-top {
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top.membership {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+  }
+  .card-top.gift {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+  }
+  .card-top.vip {
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  }
+  .card-top::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+
+  .card-top-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-icon svg { width: 20px; height: 20px; color: #fff; }
+  .card-top-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .card-top-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    margin-left: auto;
+  }
+
+  .card-balance {
+    position: relative;
+    z-index: 1;
+  }
+  .card-balance-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 4px;
+  }
+  .card-balance-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .card-balance-value .symbol { font-size: 14px; }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-top: 1px dashed #eee;
+  }
+  .card-no {
+    font-size: 11px;
+    color: #999;
+  }
+  .card-expire {
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* ===== Coupon Pack (优惠券包) ===== */
+  .coupon-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .coupon-item:active { transform: scale(0.98); }
+
+  .coupon-top {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .coupon-amount-box {
+    min-width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .coupon-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ee0a24;
+    line-height: 1;
+  }
+  .coupon-amount .symbol { font-size: 14px; }
+  .coupon-amount .unit { font-size: 11px; color: #ee0a24; }
+  .coupon-condition {
+    font-size: 10px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  .coupon-info {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+  .coupon-info::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 40px;
+    border-left: 1px dashed #eee;
+  }
+
+  .coupon-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .coupon-scope {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .coupon-date {
+    font-size: 10px;
+    color: #bbb;
+  }
+
+  .coupon-use-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  .coupon-use-btn:active { opacity: 0.85; }
+
+  /* Expired / Used coupon */
+  .coupon-item.used .coupon-amount,
+  .coupon-item.expired .coupon-amount {
+    color: #bbb;
+  }
+  .coupon-item.used .coupon-use-btn,
+  .coupon-item.expired .coupon-use-btn {
+    background: #ddd;
+    color: #999;
+  }
+  .coupon-item.used .coupon-name,
+  .coupon-item.expired .coupon-name {
+    color: #999;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .empty-state.show { display: block; }
+  .empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+    color: #ddd;
+  }
+  .empty-text {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 20px;
+  }
+  .empty-btn {
+    display: inline-block;
+    padding: 8px 24px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 13px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .empty-btn:active { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">卡券包</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="coupon-tabs">
+    <div class="coupon-tab active" data-tab="cards">卡包</div>
+    <div class="coupon-tab" data-tab="coupons">优惠券包</div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-top: 132px;">
+
+    <!-- 卡包 Tab Content -->
+    <div class="tab-content active" id="tabCards">
+      <!-- 电影次卡 -->
+      <div class="card-item">
+        <div class="card-top membership">
+          <div class="card-top-row">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+            </div>
+            <span class="card-top-title">电影次卡</span>
+            <span class="card-top-tag">可使用</span>
+          </div>
+          <div class="card-balance">
+            <div class="card-balance-label">剩余次数</div>
+            <div class="card-balance-value">5<span style="font-size:14px;font-weight:400;"> 次</span></div>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-no">NO. MV202604010001</span>
+          <span class="card-expire">2026-12-31 到期</span>
+        </div>
+      </div>
+
+      <!-- 电影积分卡 -->
+      <div class="card-item">
+        <div class="card-top gift">
+          <div class="card-top-row">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </div>
+            <span class="card-top-title">电影积分卡</span>
+            <span class="card-top-tag">已激活</span>
+          </div>
+          <div class="card-balance">
+            <div class="card-balance-label">积分余额</div>
+            <div class="card-balance-value">3,600</div>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-no">NO. MP202603150018</span>
+          <span class="card-expire">长期有效</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 优惠券包 Tab Content -->
+    <div class="tab-content" id="tabCoupons">
+      <!-- 满减券 -->
+      <div class="coupon-item">
+        <div class="coupon-top">
+          <div class="coupon-amount-box">
+            <div class="coupon-amount"><span class="symbol">&yen;</span>20</div>
+            <div class="coupon-condition">满100可用</div>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-name">满100减20元券</div>
+            <div class="coupon-scope">全品类通用</div>
+            <div class="coupon-date">2026.04.01 - 2026.04.30</div>
+          </div>
+          <button class="coupon-use-btn" onclick="location.href='home_page.html'">去使用</button>
+        </div>
+      </div>
+
+      <!-- 满减券2 -->
+      <div class="coupon-item">
+        <div class="coupon-top">
+          <div class="coupon-amount-box">
+            <div class="coupon-amount"><span class="symbol">&yen;</span>50</div>
+            <div class="coupon-condition">满200可用</div>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-name">满200减50元券</div>
+            <div class="coupon-scope">全品类通用</div>
+            <div class="coupon-date">2026.04.01 - 2026.05.31</div>
+          </div>
+          <button class="coupon-use-btn" onclick="location.href='home_page.html'">去使用</button>
+        </div>
+      </div>
+
+      <!-- 折扣券 -->
+      <div class="coupon-item">
+        <div class="coupon-top">
+          <div class="coupon-amount-box">
+            <div class="coupon-amount">8<span class="unit">折</span></div>
+            <div class="coupon-condition">满150可用</div>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-name">限时8折优惠券</div>
+            <div class="coupon-scope">仅限生活百货类</div>
+            <div class="coupon-date">2026.04.08 - 2026.04.15</div>
+          </div>
+          <button class="coupon-use-btn" onclick="location.href='home_page.html'">去使用</button>
+        </div>
+      </div>
+
+      <!-- 已使用 -->
+      <div class="coupon-item used">
+        <div class="coupon-top">
+          <div class="coupon-amount-box">
+            <div class="coupon-amount"><span class="symbol">&yen;</span>10</div>
+            <div class="coupon-condition">满50可用</div>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-name">满50减10元券</div>
+            <div class="coupon-scope">全品类通用</div>
+            <div class="coupon-date">2026.03.01 - 2026.03.31</div>
+          </div>
+          <button class="coupon-use-btn">已使用</button>
+        </div>
+      </div>
+
+      <!-- 已过期 -->
+      <div class="coupon-item expired">
+        <div class="coupon-top">
+          <div class="coupon-amount-box">
+            <div class="coupon-amount"><span class="symbol">&yen;</span>30</div>
+            <div class="coupon-condition">满150可用</div>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-name">满150减30元券</div>
+            <div class="coupon-scope">仅限数码家电</div>
+            <div class="coupon-date">2026.02.01 - 2026.02.28</div>
+          </div>
+          <button class="coupon-use-btn">已过期</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  // Tab switch
+  var tabs = document.querySelectorAll('.coupon-tab');
+  var contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = this.getAttribute('data-tab');
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      contents.forEach(function(c) { c.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById('tab' + target.charAt(0).toUpperCase() + target.slice(1)).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

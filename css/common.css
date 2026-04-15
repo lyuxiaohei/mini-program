@@ -1,0 +1,304 @@
+/* ===== 江苏银行苏银豆商城 - 公共样式 ===== */
+
+/* ===== Reset & Base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { font-size: 16px; height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  background: #ededed;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== Mini-Program Container ===== */
+.phone-frame {
+  width: 375px;
+  min-height: 100vh;
+  background: #f5f5f5;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ===== Scrollable Content ===== */
+.page-scroll {
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 60px;
+  -webkit-overflow-scrolling: touch;
+}
+.page-scroll::-webkit-scrollbar { width: 0; }
+
+/* ===== Status Bar (统一：绝对定位在容器顶部) ===== */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  padding: 14px 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: #fff;
+  font-size: 12px;
+  z-index: 2;
+}
+.status-bar .time { font-weight: 700; font-size: 15px; margin-top: 2px; }
+.status-bar .icons { display: flex; gap: 4px; align-items: center; }
+.status-bar .icons svg { width: 17px; height: 17px; fill: #fff; }
+.status-bar.dark { color: #333; }
+.status-bar.dark .time { color: #333; }
+.status-bar.dark .icons svg { fill: #333; }
+
+/* ===== Page Top Container (统一：所有页面顶部容器的基石) =====
+ * 所有页面顶部容器统一规则：
+ * - position: sticky; top: 0; z-index: 100
+ * - padding-top: 44px (为状态栏预留空间)
+ * - 各页面通过 background 控制背景色
+ */
+.sub-nav,
+.header-area,
+.search-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: 44px;
+}
+.sub-nav { background: #fff; }
+.header-area { background: transparent; }
+.search-header { background: #fff; }
+
+/* ===== Navigation Bar (统一：44px 高，相对定位供胶囊使用) ===== */
+.nav-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.nav-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  max-width: calc(100% - 120px);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.back-btn {
+  position: absolute;
+  left: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.back-btn:active { background: rgba(0,0,0,0.05); }
+.back-btn svg { width: 20px; height: 20px; color: #333; }
+
+/* ===== WeChat Capsule Button (统一：垂直居中于父容器右侧) ===== */
+.capsule-btn {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  z-index: 10;
+  flex-shrink: 0;
+}
+.capsule-btn img {
+  width: 87px;
+  height: 32px;
+  display: block;
+}
+
+/* ===== Bottom Tab Bar ===== */
+.tab-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 56px;
+  border-top: 1px solid #eee;
+  z-index: 200;
+  padding-bottom: 8px;
+}
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-item svg { width: 20px; height: 20px; }
+.tab-item span { font-size: 10px; color: #999; }
+.tab-item.active svg { color: #ff6034; }
+.tab-item.active span { color: #ff6034; font-weight: 600; }
+.tab-item .cart-badge { position: relative; }
+.tab-item .cart-badge .badge {
+  position: absolute;
+  top: -4px;
+  right: -7px;
+  background: #ee0a24;
+  color: #fff;
+  font-size: 9px;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+/* ===== Section Header ===== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 8px;
+}
+.section-header .left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.section-header .title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+.section-header .more {
+  font-size: 11px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+.section-header .more svg { width: 14px; height: 14px; }
+
+/* ===== Product Card (Grid) ===== */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.product-card:active { transform: scale(0.97); }
+.product-card .product-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f8f8f8;
+  position: relative;
+  overflow: hidden;
+}
+.product-card .product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-card .product-info { padding: 8px; }
+.product-card .product-name {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+  min-height: 34px;
+}
+.product-card .product-tags {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.product-card .tag {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #ff6034;
+  color: #ff6034;
+}
+.product-card .product-bottom {
+  display: flex;
+  align-items: center;
+  padding: 0 8px 8px;
+}
+.product-card .price-now {
+  color: #ee0a24;
+  font-size: 15px;
+  font-weight: 700;
+}
+.product-card .price-now .symbol { font-size: 10px; }
+.product-card .price-old {
+  font-size: 10px;
+  color: #bbb;
+  text-decoration: line-through;
+  margin-left: 3px;
+}
+.product-card .sold {
+  font-size: 9px;
+  color: #bbb;
+  margin-left: auto;
+}
+
+/* ===== Common Card ===== */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  margin: 12px;
+  overflow: hidden;
+}
+
+/* ===== Common Button ===== */
+.btn-primary {
+  background: linear-gradient(135deg, #ff6034, #ee0a24);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-primary:active { opacity: 0.85; }
+
+/* ===== Responsive ===== */
+@media (max-width: 430px) {
+  .phone-frame { width: 100%; }
+  .sub-nav,
+  .header-area,
+  .search-header { padding-top: env(safe-area-inset-top, 0); }
+}
+
+/* ===== Animations ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

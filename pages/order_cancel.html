@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>取消订单 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Reason section */
+  .reason-section {
+    background: #fff;
+    margin: 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title svg { width: 18px; height: 18px; color: #ff6034; }
+
+  /* Reason options */
+  .reason-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .reason-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 12px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .reason-item:active { background: #f0f0f0; }
+  .reason-item.selected {
+    background: #fff5f0;
+    border-color: #ff6034;
+  }
+  .reason-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .reason-item.selected .reason-radio {
+    border-color: #ff6034;
+    background: #ff6034;
+  }
+  .reason-item.selected .reason-radio::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .reason-text {
+    font-size: 14px;
+    color: #333;
+    flex: 1;
+  }
+
+  /* Other reason input */
+  .other-reason-input {
+    margin-top: 12px;
+    display: none;
+  }
+  .other-reason-input.show { display: block; }
+  .other-reason-input textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+    resize: none;
+    outline: none;
+  }
+  .other-reason-input textarea:focus {
+    border-color: #ff6034;
+  }
+  .other-reason-input textarea::placeholder {
+    color: #bbb;
+  }
+
+  /* Order summary */
+  .order-summary {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .order-card {
+    display: flex;
+    gap: 12px;
+  }
+  .order-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .order-img img { width: 100%; height: 100%; object-fit: cover; }
+  .order-info { flex: 1; min-width: 0; }
+  .order-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .order-spec {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .order-price {
+    font-size: 14px;
+    color: #ee0a24;
+    font-weight: 600;
+  }
+
+  .order-meta {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f5f5f5;
+  }
+  .meta-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .meta-item .label { color: #999; }
+  .meta-item .value { color: #333; }
+  .meta-item .value.highlight { color: #ee0a24; font-weight: 600; }
+
+  /* Refund info */
+  .refund-info-section {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .refund-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .refund-row .label { font-size: 13px; color: #666; }
+  .refund-row .value { font-size: 14px; color: #333; font-weight: 500; }
+  .refund-row .value.green { color: #4caf50; }
+
+  /* Tips */
+  .tips-box {
+    background: #fff5f0;
+    margin: 0 12px 12px;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .tips-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ff6034;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tips-title svg { width: 14px; height: 14px; }
+  .tips-list {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.8;
+  }
+
+  /* Confirm checkbox */
+  .confirm-section {
+    background: #fff;
+    margin: 0 12px 12px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .confirm-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .confirm-checkbox input {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    accent-color: #ff6034;
+  }
+  .confirm-checkbox label {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 12px 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 12px;
+    z-index: 200;
+  }
+  .btn-cancel {
+    flex: 1;
+    height: 44px;
+    border: 1px solid #ddd;
+    border-radius: 22px;
+    background: #fff;
+    color: #666;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .btn-cancel:active { background: #f5f5f5; }
+  .btn-confirm {
+    flex: 2;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-confirm:active { opacity: 0.85; }
+  .btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Warning modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .modal-overlay.show { display: block; }
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 280px;
+    text-align: center;
+  }
+  .modal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fff3e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .modal-icon svg { width: 28px; height: 28px; color: #ff9800; }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .modal-desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .modal-btns {
+    display: flex;
+    gap: 12px;
+  }
+  .modal-btn {
+    flex: 1;
+    height: 40px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .modal-btn.secondary {
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #666;
+  }
+  .modal-btn.primary {
+    border: none;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">取消订单</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 80px;">
+
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
+        订单信息
+      </div>
+      <div class="order-card">
+        <div class="order-img">
+          <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80" alt="">
+        </div>
+        <div class="order-info">
+          <div class="order-name">日本进口保温杯 不锈钢真空便携水杯500ml</div>
+          <div class="order-spec">白色 500ml</div>
+          <div class="order-price">&yen;68.00 x1</div>
+        </div>
+      </div>
+      <div class="order-meta">
+        <div class="meta-item">
+          <span class="label">订单编号</span>
+          <span class="value">JS2026040888001</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">下单时间</span>
+          <span class="value">2026-04-08 14:35:20</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">订单金额</span>
+          <span class="value highlight">&yen;68.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancel Reason -->
+    <div class="reason-section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        取消原因
+      </div>
+      <div class="reason-options" id="reasonOptions">
+        <div class="reason-item" data-reason="not_want">
+          <div class="reason-radio"></div>
+          <span class="reason-text">不想要了</span>
+        </div>
+        <div class="reason-item" data-reason="wrong_info">
+          <div class="reason-radio"></div>
+          <span class="reason-text">信息填写错误</span>
+        </div>
+        <div class="reason-item" data-reason="price_change">
+          <div class="reason-radio"></div>
+          <span class="reason-text">商品降价了</span>
+        </div>
+        <div class="reason-item" data-reason="timeout">
+          <div class="reason-radio"></div>
+          <span class="reason-text">等待时间过长</span>
+        </div>
+        <div class="reason-item" data-reason="other">
+          <div class="reason-radio"></div>
+          <span class="reason-text">其他原因</span>
+        </div>
+      </div>
+      <div class="other-reason-input" id="otherReasonInput">
+        <textarea placeholder="请输入具体原因（选填）" maxlength="100"></textarea>
+      </div>
+    </div>
+
+    <!-- Refund Info -->
+    <div class="refund-info-section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        退款信息
+      </div>
+      <div class="refund-row">
+        <span class="label">支付方式</span>
+        <span class="value">微信支付</span>
+      </div>
+      <div class="refund-row">
+        <span class="label">支付金额</span>
+        <span class="value">&yen;68.00</span>
+      </div>
+      <div class="refund-row">
+        <span class="label">苏银豆抵扣</span>
+        <span class="value green">680豆 将返还</span>
+      </div>
+      <div class="refund-row">
+        <span class="label">预计到账</span>
+        <span class="value">1-3个工作日</span>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="tips-box">
+      <div class="tips-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        温馨提示
+      </div>
+      <div class="tips-list">
+        • 订单取消后不可恢复<br>
+        • 使用积分抵扣部分将原路返还<br>
+        • 如有疑问可联系客服咨询
+      </div>
+    </div>
+
+    <!-- Confirm -->
+    <div class="confirm-section">
+      <div class="confirm-checkbox">
+        <input type="checkbox" id="confirmCheck">
+        <label for="confirmCheck">我已阅读并同意《订单取消说明》，确认取消此订单</label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <button class="btn-cancel" onclick="history.back()">暂不取消</button>
+    <button class="btn-confirm" id="confirmBtn" disabled>确认取消</button>
+  </div>
+
+  <!-- Warning Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="modal-title">确认取消订单？</div>
+      <div class="modal-desc">订单取消后将无法恢复，已支付金额将在1-3个工作日内原路退回。</div>
+      <div class="modal-btns">
+        <button class="modal-btn secondary" onclick="closeModal()">再想想</button>
+        <button class="modal-btn primary" onclick="submitCancel()">确认取消</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var reasonOptions = document.getElementById('reasonOptions');
+  var otherReasonInput = document.getElementById('otherReasonInput');
+  var confirmCheck = document.getElementById('confirmCheck');
+  var confirmBtn = document.getElementById('confirmBtn');
+  var modalOverlay = document.getElementById('modalOverlay');
+
+  var selectedReason = '';
+
+  // Reason selection
+  reasonOptions.querySelectorAll('.reason-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      reasonOptions.querySelectorAll('.reason-item').forEach(function(i) {
+        i.classList.remove('selected');
+      });
+      this.classList.add('selected');
+      selectedReason = this.dataset.reason;
+
+      // Show other reason input
+      if (selectedReason === 'other') {
+        otherReasonInput.classList.add('show');
+      } else {
+        otherReasonInput.classList.remove('show');
+      }
+
+      updateSubmitBtn();
+    });
+  });
+
+  // Checkbox
+  confirmCheck.addEventListener('change', updateSubmitBtn);
+
+  function updateSubmitBtn() {
+    confirmBtn.disabled = !(selectedReason && confirmCheck.checked);
+  }
+
+  // Submit
+  confirmBtn.addEventListener('click', function() {
+    if (this.disabled) return;
+    modalOverlay.classList.add('show');
+  });
+
+  function closeModal() {
+    modalOverlay.classList.remove('show');
+  }
+
+  function submitCancel() {
+    modalOverlay.classList.remove('show');
+    alert('订单已取消');
+    location.href = 'order_list.html';
+  }
+
+  window.closeModal = closeModal;
+  window.submitCancel = submitCancel;
+})();
+</script>
+</body>
+</html>

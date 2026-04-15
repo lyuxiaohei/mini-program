@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>卡券绑定 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .bind-section {
+    margin: 16px 12px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 16px;
+  }
+  .bind-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .bind-desc {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group:last-of-type {
+    margin-bottom: 24px;
+  }
+  .form-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus {
+    border-color: #ff6034;
+  }
+  .form-input::placeholder {
+    color: #ccc;
+  }
+
+  /* Type selector */
+  .type-selector {
+    display: flex;
+    gap: 10px;
+  }
+  .type-option {
+    flex: 1;
+    height: 44px;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .type-option svg { width: 18px; height: 18px; }
+  .type-option.active {
+    border-color: #ff6034;
+    color: #ff6034;
+    background: rgba(255, 96, 52, 0.05);
+  }
+
+  /* Submit button */
+  .btn-submit {
+    width: 100%;
+    height: 46px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    border-radius: 23px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-submit:active { opacity: 0.85; }
+
+  /* Tips */
+  .bind-tips {
+    margin: 16px 12px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .tips-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  .tips-list {
+    list-style: none;
+  }
+  .tips-list li {
+    font-size: 12px;
+    color: #999;
+    line-height: 2;
+    padding-left: 14px;
+    position: relative;
+  }
+  .tips-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #ddd;
+  }
+
+  /* Recent bind records */
+  .bind-records {
+    margin: 0 12px 20px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .records-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  .record-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .record-item:last-child { border-bottom: none; }
+  .record-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .record-icon svg { width: 18px; height: 18px; color: #fff; }
+  .record-icon.card-type { background: linear-gradient(135deg, #ff6034, #ee0a24); }
+  .record-icon.coupon-type { background: linear-gradient(135deg, #ff9800, #f57c00); }
+
+  .record-info { flex: 1; min-width: 0; }
+  .record-name {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  .record-time {
+    font-size: 11px;
+    color: #bbb;
+  }
+  .record-status {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .record-status.success { color: #4caf50; }
+  .record-status.fail { color: #ee0a24; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">卡券绑定</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 20px;">
+
+    <!-- Bind Form -->
+    <div class="bind-section">
+      <div class="bind-title">绑定卡券</div>
+      <div class="bind-desc">输入卡券码将实体卡券绑定到您的账户</div>
+
+      <!-- Type selector -->
+      <div class="form-group">
+        <div class="form-label">卡券类型</div>
+        <div class="type-selector">
+          <div class="type-option active" data-type="card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            实体卡
+          </div>
+          <div class="type-option" data-type="coupon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 00-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+            券码
+          </div>
+        </div>
+      </div>
+
+      <!-- Card code input -->
+      <div class="form-group">
+        <div class="form-label">卡券码</div>
+        <input class="form-input" type="text" placeholder="请输入卡券码" maxlength="20" id="codeInput">
+      </div>
+
+      <!-- Password input -->
+      <div class="form-group">
+        <div class="form-label">密码（选填）</div>
+        <input class="form-input" type="password" placeholder="部分卡券需要输入密码" id="pwdInput">
+      </div>
+
+      <button class="btn-submit" id="bindBtn">立即绑定</button>
+    </div>
+
+    <!-- Tips -->
+    <div class="bind-tips">
+      <div class="tips-title">温馨提示</div>
+      <ul class="tips-list">
+        <li>请刮开实体卡涂层获取卡券码</li>
+        <li>每张卡券仅可绑定一次，绑定后不可解绑</li>
+        <li>卡券绑定成功后可在"卡券包"中查看</li>
+        <li>如遇问题请联系客服处理</li>
+      </ul>
+    </div>
+
+    <!-- Recent bind records -->
+    <div class="bind-records">
+      <div class="records-header">最近绑定记录</div>
+      <div class="record-item">
+        <div class="record-icon card-type">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="record-info">
+          <div class="record-name">电影次卡 MV2026***001</div>
+          <div class="record-time">2026-04-10 14:30</div>
+        </div>
+        <span class="record-status success">绑定成功</span>
+      </div>
+      <div class="record-item">
+        <div class="record-icon coupon-type">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 00-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+        </div>
+        <div class="record-info">
+          <div class="record-name">满100减20优惠券 CP2026***035</div>
+          <div class="record-time">2026-04-08 09:15</div>
+        </div>
+        <span class="record-status success">绑定成功</span>
+      </div>
+      <div class="record-item">
+        <div class="record-icon card-type">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="record-info">
+          <div class="record-name">实体卡 XK2026***099</div>
+          <div class="record-time">2026-04-05 16:42</div>
+        </div>
+        <span class="record-status fail">码无效</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  // Type selector
+  var options = document.querySelectorAll('.type-option');
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      options.forEach(function(o) { o.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+
+  // Bind button
+  document.getElementById('bindBtn').addEventListener('click', function() {
+    var code = document.getElementById('codeInput').value.trim();
+    if (!code) {
+      alert('请输入卡券码');
+      return;
+    }
+    alert('绑定成功');
+      setTimeout(function(){ location.href='coupon.html'; }, 1000);;
+    document.getElementById('codeInput').value = '';
+    document.getElementById('pwdInput').value = '';
+  });
+})();
+</script>
+</body>
+</html>
