@@ -3,142 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>积分明细 - 苏银豆商城</title>
+<title>积分变动明细 - 苏银豆商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
-  /* Points header */
-  .points-header {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    padding: 24px 16px;
+  .detail-sub-nav {
+    background: linear-gradient(180deg, rgba(65, 67, 72, 0.96) 0%, rgba(86, 83, 77, 0.92) 100%);
+  }
+  .detail-sub-nav .status-bar,
+  .detail-sub-nav .nav-title,
+  .detail-sub-nav .back-btn svg {
     color: #fff;
   }
-  .points-label {
-    font-size: 14px;
-    opacity: 0.9;
-    margin-bottom: 8px;
+  .detail-sub-nav .status-bar .icons svg {
+    fill: #fff;
   }
-  .points-value {
-    font-size: 40px;
-    font-weight: 700;
+  .detail-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  .points-unit {
-    font-size: 14px;
-    font-weight: 400;
-    margin-left: 4px;
+  .detail-title .bean {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.35);
   }
-
-  /* Tab bar */
-  .detail-tabs-bar {
-    display: flex;
+  .detail-page {
+    background: #f5f6f8;
+    min-height: calc(100vh - 88px);
+  }
+  .hero-wrap {
+    padding: 0 12px 12px;
+    background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
+  }
+  .summary-box {
     background: #fff;
-    border-bottom: 1px solid #f0f0f0;
-    position: sticky;
-    top: 88px;
-    z-index: 50;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
-  .detail-tab {
-    flex: 1;
-    text-align: center;
-    padding: 12px 0;
-    font-size: 14px;
+  .record-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .summary-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+  }
+  .summary-copy {
+    font-size: 12px;
+    color: #8a8f99;
+  }
+  .summary-number {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ee0a24;
+    white-space: nowrap;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-top: 16px;
+    padding-bottom: 2px;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    background: #f5f6f8;
+    border-radius: 999px;
+    font-size: 12px;
     color: #666;
     cursor: pointer;
-    position: relative;
   }
-  .detail-tab:active { background: #f8f8f8; }
-  .detail-tab.active {
-    color: #ff9800;
+  .tab.active {
+    background: #fff1eb;
+    color: #ee0a24;
     font-weight: 600;
   }
-  .detail-tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 24px;
-    height: 2px;
-    background: #ff9800;
-    border-radius: 1px;
+  .main {
+    padding: 0 12px 16px;
   }
-
-  /* Detail list */
-  .detail-list {
-    padding: 12px;
-  }
-  .detail-item {
+  .table-card {
     background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .table-head,
+  .table-row {
+    display: grid;
+    grid-template-columns: 108px 54px 54px 1fr 54px;
+    gap: 8px;
+    align-items: start;
+  }
+  .table-head {
+    padding: 12px 14px;
+    font-size: 11px;
+    color: #8a8f99;
+    background: #fafafb;
+    border-bottom: 1px solid #eceef2;
+  }
+  .table-group {
+    display: none;
+  }
+  .table-group.active {
+    display: block;
+  }
+  .table-row {
     padding: 14px;
-    display: flex;
-    align-items: center;
-  }
-  .detail-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    flex-shrink: 0;
-  }
-  .detail-icon svg { width: 20px; height: 20px; color: #fff; }
-  .detail-icon.income { background: linear-gradient(135deg, #4caf50, #2e7d32); }
-  .detail-icon.expense { background: linear-gradient(135deg, #ff9800, #f57c00); }
-
-  .detail-info { flex: 1; min-width: 0; }
-  .detail-title {
-    font-size: 14px;
+    font-size: 11px;
     color: #333;
-    margin-bottom: 4px;
+    border-top: 1px solid #f3f4f6;
   }
-  .detail-time {
-    font-size: 11px;
-    color: #bbb;
+  .table-row:first-child {
+    border-top: none;
   }
-
-  .detail-right {
-    text-align: right;
-    flex-shrink: 0;
-  }
-  .detail-amount {
-    font-size: 16px;
+  .amount-plus {
+    color: #12a150;
     font-weight: 600;
-    margin-bottom: 4px;
   }
-  .detail-amount.income { color: #4caf50; }
-  .detail-amount.expense { color: #333; }
-  .detail-balance {
-    font-size: 11px;
-    color: #bbb;
+  .amount-minus {
+    color: #f04d4f;
+    font-weight: 600;
   }
-
-  /* Empty state */
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 20px;
-    color: #999;
+  .tip-box,
+  .footer-note {
+    margin-top: 12px;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.7;
   }
-  .empty-state svg {
-    width: 80px;
-    height: 80px;
-    color: #ddd;
-    margin-bottom: 16px;
+  .tip-box {
+    background: #fff7f2;
+    color: #7a4b36;
   }
-  .empty-state .empty-text { font-size: 14px; }
+  .footer-note {
+    background: #fff;
+    color: #8a8f99;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.06);
+  }
 </style>
 </head>
 <body>
 <div class="phone-frame">
 
-  <!-- Sub-page Navigation -->
-  <div class="sub-nav">
-    <div class="status-bar dark">
+  <div class="sub-nav detail-sub-nav">
+    <div class="status-bar">
       <span class="time">09:41</span>
       <div class="icons">
         <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
@@ -149,27 +169,128 @@
       <div class="back-btn" onclick="history.back()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
       </div>
-      <span class="nav-title">积分明细</span>
+      <span class="nav-title">
+        <span class="detail-title"><span class="bean"></span><span>积分变动明细</span></span>
+      </span>
       <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
     </div>
   </div>
 
-  <!-- Points Header -->
-  <div class="points-header">
-    <div class="points-label">当前积分</div>
-    <div class="points-value">1,280<span class="points-unit">豆</span></div>
-  </div>
+  <div class="page-scroll detail-page">
+    <div class="hero-wrap">
+      <div class="summary-box">
+        <div class="record-row">
+          <div>
+            <div class="summary-title">当前可用积分</div>
+            <div class="summary-copy">账单实时更新，按类型查看更清晰</div>
+          </div>
+          <div class="summary-number">2,860</div>
+        </div>
+        <div class="tabs">
+          <span class="tab active" data-filter="all">全部</span>
+          <span class="tab" data-filter="gain">获得积分</span>
+          <span class="tab" data-filter="consume">消费积分</span>
+          <span class="tab" data-filter="expire">失效积分</span>
+        </div>
+      </div>
+    </div>
 
-  <!-- Tabs -->
-  <div class="detail-tabs-bar">
-    <div class="detail-tab active" data-tab="all">全部</div>
-    <div class="detail-tab" data-tab="income">收入</div>
-    <div class="detail-tab" data-tab="expense">支出</div>
-  </div>
+    <div class="main">
+      <div class="table-card">
+        <div class="table-head">
+          <div>交易时间</div>
+          <div>积分数</div>
+          <div>类型</div>
+          <div>交易内容</div>
+          <div>余额</div>
+        </div>
 
-  <!-- Scrollable Content -->
-  <div class="page-scroll" style="padding-bottom: 16px;">
-    <div class="detail-list" id="detailList"></div>
+        <div class="table-group active" data-group="all">
+          <div class="table-row">
+            <div>2026-04-08 12:16:03</div>
+            <div>120</div>
+            <div class="amount-minus">减少</div>
+            <div>积分兑换(订单号 YP202604081216038612)</div>
+            <div>2,860</div>
+          </div>
+          <div class="table-row">
+            <div>2026-04-08 12:15:34</div>
+            <div>120</div>
+            <div class="amount-plus">增加</div>
+            <div>退单返还(退单号 R202604081215341268)</div>
+            <div>2,980</div>
+          </div>
+          <div class="table-row">
+            <div>2026-04-07 18:20:11</div>
+            <div>80</div>
+            <div class="amount-minus">减少</div>
+            <div>订单抵扣(订单号 12511061820115732)</div>
+            <div>2,860</div>
+          </div>
+          <div class="table-row">
+            <div>2026-04-06 09:22:47</div>
+            <div>200</div>
+            <div class="amount-plus">增加</div>
+            <div>退单返还(退单号 R202604060922471965)</div>
+            <div>2,940</div>
+          </div>
+          <div class="table-row">
+            <div>2026-03-01 00:00:00</div>
+            <div>60</div>
+            <div class="amount-minus">减少</div>
+            <div>积分过期(2025 年度未使用积分到期)</div>
+            <div>2,800</div>
+          </div>
+        </div>
+
+        <div class="table-group" data-group="gain">
+          <div class="table-row">
+            <div>2026-04-08 12:15:34</div>
+            <div>120</div>
+            <div class="amount-plus">增加</div>
+            <div>退单返还(退单号 R202604081215341268)</div>
+            <div>2,980</div>
+          </div>
+          <div class="table-row">
+            <div>2026-04-06 09:22:47</div>
+            <div>200</div>
+            <div class="amount-plus">增加</div>
+            <div>退单返还(退单号 R202604060922471965)</div>
+            <div>2,940</div>
+          </div>
+        </div>
+
+        <div class="table-group" data-group="consume">
+          <div class="table-row">
+            <div>2026-04-08 12:16:03</div>
+            <div>120</div>
+            <div class="amount-minus">减少</div>
+            <div>积分兑换(订单号 YP202604081216038612)</div>
+            <div>2,860</div>
+          </div>
+          <div class="table-row">
+            <div>2026-04-07 18:20:11</div>
+            <div>80</div>
+            <div class="amount-minus">减少</div>
+            <div>订单抵扣(订单号 12511061820115732)</div>
+            <div>2,860</div>
+          </div>
+        </div>
+
+        <div class="table-group" data-group="expire">
+          <div class="table-row">
+            <div>2026-03-01 00:00:00</div>
+            <div>60</div>
+            <div class="amount-minus">减少</div>
+            <div>积分过期(2025 年度未使用积分到期)</div>
+            <div>2,800</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">说明：积分变动明细记录所有积分账务变化，包含订单抵扣、积分兑换、退单返还和积分过期；如果只看已消费积分，可进入“积分消费记录”页查看。</div>
+      <div class="footer-note">详情页：从“我的积分”点击“积分变动明细”进入。</div>
+    </div>
   </div>
 
 </div>
@@ -178,63 +299,17 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  var details = [
-    { type: 'income', title: '购物返积分', desc: '订单JS2026040888001', amount: 128, balance: 1280, time: '2026-04-08 14:35' },
-    { type: 'expense', title: '积分兑换商品', desc: '保温杯', amount: -500, balance: 1152, time: '2026-04-07 10:20' },
-    { type: 'income', title: '签到奖励', desc: '连续签到第7天', amount: 10, balance: 1652, time: '2026-04-07 08:00' },
-    { type: 'income', title: '邀请好友奖励', desc: '邀请成功1人', amount: 200, balance: 1642, time: '2026-04-05 16:42' },
-    { type: 'expense', title: '积分兑换优惠券', desc: '满100减20优惠券', amount: -100, balance: 1442, time: '2026-04-03 11:15' },
-    { type: 'income', title: '新用户注册奖励', desc: '注册送积分', amount: 500, balance: 1542, time: '2026-04-01 09:30' },
-    { type: 'income', title: '完善信息奖励', desc: '完善个人信息', amount: 50, balance: 1042, time: '2026-04-01 10:00' }
-  ];
-
-  var currentTab = 'all';
-  var list = document.getElementById('detailList');
-
-  function renderList() {
-    var filtered = currentTab === 'all' ? details : details.filter(function(d) { return d.type === currentTab; });
-
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty-state">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
-        '<div class="empty-text">暂无记录</div>' +
-      '</div>';
-      return;
-    }
-
-    var html = '';
-    filtered.forEach(function(item) {
-      var amountStr = item.amount > 0 ? '+' + item.amount : item.amount;
-      html += '<div class="detail-item">' +
-        '<div class="detail-icon ' + item.type + '">' +
-          (item.type === 'income'
-            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
-            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>') +
-        '</div>' +
-        '<div class="detail-info">' +
-          '<div class="detail-title">' + item.title + '</div>' +
-          '<div class="detail-time">' + item.desc + ' · ' + item.time + '</div>' +
-        '</div>' +
-        '<div class="detail-right">' +
-          '<div class="detail-amount ' + item.type + '">' + amountStr + '</div>' +
-          '<div class="detail-balance">余额 ' + item.balance + '</div>' +
-        '</div>' +
-      '</div>';
-    });
-    list.innerHTML = html;
-  }
-
-  // Tab switching
-  document.querySelectorAll('.detail-tab').forEach(function(tab) {
+  document.querySelectorAll('.tab[data-filter]').forEach(function(tab) {
     tab.addEventListener('click', function() {
-      document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
-      this.classList.add('active');
-      currentTab = this.dataset.tab;
-      renderList();
+      var filter = tab.dataset.filter;
+      document.querySelectorAll('.tab[data-filter]').forEach(function(item) {
+        item.classList.toggle('active', item === tab);
+      });
+      document.querySelectorAll('.table-group').forEach(function(group) {
+        group.classList.toggle('active', group.dataset.group === filter);
+      });
     });
   });
-
-  renderList();
 })();
 </script>
 </body>

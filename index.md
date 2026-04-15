@@ -23,7 +23,7 @@
 - [我的收藏](pages/favorites.html) `V0.1`
 - [卡券包](pages/coupon.html)
 - [我的钱包](pages/wallet.html)
-- [积分明细](pages/points_detail.html)
+- [我的积分](pages/points_center.html) `V0.2`
 - [会员中心](pages/vip_center.html)
 - [新人专享](pages/newuser_gift.html)
 - [消息中心](pages/message.html)
@@ -36,6 +36,9 @@
 - [个人资料](pages/profile_edit.html) `V0.1`
 - [修改手机号](pages/change_phone.html) `V0.1`
 - [收货地址](pages/address.html) `V0.1`
+- [积分变动明细](pages/points_detail.html) `V0.2`
+- [积分消费记录](pages/points_consume.html) `V0.2`
+- [积分兑换规则](pages/points_rules.html) `V0.2`
 - [卡券绑定](pages/coupon_bind.html)
 - [确认订单](pages/order.html)
 - [订单支付](pages/payment.html)

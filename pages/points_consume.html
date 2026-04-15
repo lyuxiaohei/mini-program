@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>积分消费记录 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .consume-sub-nav {
+    background: linear-gradient(180deg, rgba(65, 67, 72, 0.96) 0%, rgba(86, 83, 77, 0.92) 100%);
+  }
+  .consume-sub-nav .status-bar,
+  .consume-sub-nav .nav-title,
+  .consume-sub-nav .back-btn svg {
+    color: #fff;
+  }
+  .consume-sub-nav .status-bar .icons svg {
+    fill: #fff;
+  }
+  .title-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .title-wrap .bean {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+  }
+  .consume-page {
+    background: #f5f6f8;
+    min-height: calc(100vh - 88px);
+  }
+  .hero-wrap {
+    padding: 0 12px 12px;
+    background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
+  }
+  .filter-strip {
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .filter-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .chip {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff1eb;
+    color: #ee0a24;
+    font-size: 12px;
+  }
+  .main {
+    padding: 0 12px 16px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .stat-card,
+  .section,
+  .tip-box,
+  .footer-note {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .stat-card {
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-card strong {
+    display: block;
+    font-size: 24px;
+    color: #ee0a24;
+    margin-bottom: 4px;
+  }
+  .stat-card span {
+    font-size: 12px;
+    color: #8a8f99;
+  }
+  .section {
+    padding: 14px;
+  }
+  .record-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .consume-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f1f4;
+  }
+  .consume-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .consume-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff8d53, #ee0a24);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .consume-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .consume-main strong {
+    display: block;
+    font-size: 14px;
+    color: #222;
+    margin-bottom: 4px;
+  }
+  .consume-main p {
+    font-size: 12px;
+    color: #8a8f99;
+    line-height: 1.7;
+  }
+  .consume-points {
+    color: #f04d4f;
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .tip-box,
+  .footer-note {
+    margin-top: 12px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .tip-box {
+    background: #fff7f2;
+    color: #7a4b36;
+  }
+  .footer-note {
+    color: #8a8f99;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <div class="sub-nav consume-sub-nav">
+    <div class="status-bar">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">
+        <span class="title-wrap"><span class="bean"></span><span>积分消费记录</span></span>
+      </span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="page-scroll consume-page">
+    <div class="hero-wrap">
+      <div class="filter-strip">
+        <div class="filter-chips">
+          <span class="chip">近 30 天</span>
+          <span class="chip">全部场景</span>
+          <span class="chip">已完成</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="stats">
+        <div class="stat-card">
+          <strong>3</strong>
+          <span>兑换次数</span>
+        </div>
+        <div class="stat-card">
+          <strong>420</strong>
+          <span>消耗积分</span>
+        </div>
+        <div class="stat-card">
+          <strong>2</strong>
+          <span>待使用权益</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="record-list">
+          <div class="consume-item">
+            <div class="consume-icon">券</div>
+            <div class="consume-main">
+              <strong>10 元无门槛券</strong>
+              <p>2026/04/05 17:08 兑换成功 · 已发放至券包</p>
+              <p>适用商城全场实物商品，满 0 元可用</p>
+            </div>
+            <div class="consume-points">-120</div>
+          </div>
+          <div class="consume-item">
+            <div class="consume-icon">邮</div>
+            <div class="consume-main">
+              <strong>包邮券</strong>
+              <p>2026/03/26 20:11 兑换成功 · 待使用</p>
+              <p>下单自动抵扣首重运费，有效期至 2026/05/31</p>
+            </div>
+            <div class="consume-points">-80</div>
+          </div>
+          <div class="consume-item">
+            <div class="consume-icon">礼</div>
+            <div class="consume-main">
+              <strong>会员礼盒兑换</strong>
+              <p>2026/03/08 13:45 兑换成功 · 已发货</p>
+              <p>订单号 202603081119，物流已签收</p>
+            </div>
+            <div class="consume-points">-220</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">消费记录仅展示已扣减积分的兑换行为。若兑换后发生取消、退款或回退，积分回补将在“积分变动明细”中单独体现。</div>
+      <div class="footer-note">详情页：从“我的积分”点击“积分消费记录”进入。</div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>
