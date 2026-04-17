@@ -48,36 +48,36 @@
       linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.12);
   }
-  .hero-badge-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .hero-badge {
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.16);
-    font-size: 12px;
-  }
   .hero-value {
     font-size: 40px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 10px;
-  }
-  .hero-label {
-    font-size: 13px;
-    line-height: 1.7;
-    color: rgba(255,255,255,0.92);
+    margin-bottom: 14px;
   }
   .hero-foot {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 16px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.86);
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-metric {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(6px);
+  }
+  .hero-metric-label {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 4px;
+  }
+  .hero-metric-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
   }
   .main {
     padding: 0 12px 16px;
@@ -89,18 +89,11 @@
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .section-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 12px;
   }
   .section-title h3 {
     font-size: 16px;
     color: #222;
-  }
-  .section-title span {
-    font-size: 12px;
-    color: #8a8f99;
   }
   .service-list {
     display: flex;
@@ -143,13 +136,6 @@
     display: block;
     font-size: 14px;
     color: #222;
-    margin-bottom: 4px;
-  }
-  .service-text span {
-    display: block;
-    font-size: 12px;
-    color: #8a8f99;
-    line-height: 1.6;
   }
   .entry-arrow {
     font-size: 18px;
@@ -183,15 +169,16 @@
   <div class="page-scroll points-page">
     <div class="hero-wrap">
       <div class="hero-card">
-        <div class="hero-badge-row">
-          <span class="hero-badge">会员等级 Lv.3</span>
-          <span class="hero-badge">2026.12.31 前有效</span>
-        </div>
         <div class="hero-value">2,860</div>
-        <div class="hero-label">当前积分可用于商城兑换、权益领取和活动抵扣，已把你做的积分中心入口独立接入到“我的”页中。</div>
         <div class="hero-foot">
-          <span>本月新增 +168</span>
-          <span>即将失效 120</span>
+          <div class="hero-metric">
+            <span class="hero-metric-label">本月新增</span>
+            <span class="hero-metric-value">+168</span>
+          </div>
+          <div class="hero-metric">
+            <span class="hero-metric-label">即将失效</span>
+            <span class="hero-metric-value">120</span>
+          </div>
         </div>
       </div>
     </div>
@@ -200,7 +187,6 @@
       <div class="section">
         <div class="section-title">
           <h3>积分服务</h3>
-          <span>核心入口</span>
         </div>
         <div class="service-list">
           <div class="service-item" onclick="location.href='points_detail.html'">
@@ -208,17 +194,33 @@
               <div class="service-icon">明</div>
               <div class="service-text">
                 <strong>积分变动明细</strong>
-                <span>查看获得、消费、失效等账务流水</span>
+              </div>
+            </div>
+            <div class="entry-arrow">›</div>
+          </div>
+          <div class="service-item" onclick="location.href='points_exchange.html'">
+            <div class="service-left">
+              <div class="service-icon">卡</div>
+              <div class="service-text">
+                <strong>积分卡券兑换</strong>
+              </div>
+            </div>
+            <div class="entry-arrow">›</div>
+          </div>
+          <div class="service-item" onclick="location.href='points_movie.html'">
+            <div class="service-left">
+              <div class="service-icon">影</div>
+              <div class="service-text">
+                <strong>兑换电影票</strong>
               </div>
             </div>
             <div class="entry-arrow">›</div>
           </div>
           <div class="service-item" onclick="location.href='points_consume.html'">
             <div class="service-left">
-              <div class="service-icon">兑</div>
+              <div class="service-icon">消</div>
               <div class="service-text">
                 <strong>积分消费记录</strong>
-                <span>查看已扣减积分的兑换与使用状态</span>
               </div>
             </div>
             <div class="entry-arrow">›</div>
@@ -228,7 +230,6 @@
               <div class="service-icon">规</div>
               <div class="service-text">
                 <strong>积分兑换规则</strong>
-                <span>查看获取、使用、有效期与退回规则</span>
               </div>
             </div>
             <div class="entry-arrow">›</div>

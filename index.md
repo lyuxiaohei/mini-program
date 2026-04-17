@@ -39,6 +39,8 @@
 - [积分变动明细](pages/points_detail.html) `V0.2`
 - [积分消费记录](pages/points_consume.html) `V0.2`
 - [积分兑换规则](pages/points_rules.html) `V0.2`
+- [积分卡券兑换](pages/points_exchange.html) `V0.2`
+- [兑换电影票](pages/points_movie.html) `V0.2`
 - [卡券绑定](pages/coupon_bind.html)
 - [确认订单](pages/order.html)
 - [订单支付](pages/payment.html)

@@ -32,34 +32,8 @@
     background: #f5f6f8;
     min-height: calc(100vh - 88px);
   }
-  .hero-wrap {
-    padding: 0 12px 12px;
-    background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
-  }
-  .filter-strip {
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
-  }
-  .filter-chips {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-  }
-  .filter-chips::-webkit-scrollbar {
-    display: none;
-  }
-  .chip {
-    flex-shrink: 0;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: #fff1eb;
-    color: #ee0a24;
-    font-size: 12px;
-  }
   .main {
-    padding: 0 12px 16px;
+    padding: 12px 12px 16px;
   }
   .stats {
     display: grid;
@@ -69,8 +43,7 @@
   }
   .stat-card,
   .section,
-  .tip-box,
-  .footer-note {
+  .section {
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
@@ -99,10 +72,11 @@
   }
   .consume-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
     padding-bottom: 12px;
     border-bottom: 1px solid #f0f1f4;
+    min-height: 60px;
   }
   .consume-item:last-child {
     padding-bottom: 0;
@@ -129,32 +103,14 @@
     display: block;
     font-size: 14px;
     color: #222;
-    margin-bottom: 4px;
-  }
-  .consume-main p {
-    font-size: 12px;
-    color: #8a8f99;
-    line-height: 1.7;
+    margin: 0;
+    line-height: 1.4;
   }
   .consume-points {
     color: #f04d4f;
     font-size: 18px;
     font-weight: 700;
     white-space: nowrap;
-  }
-  .tip-box,
-  .footer-note {
-    margin-top: 12px;
-    padding: 12px 14px;
-    font-size: 12px;
-    line-height: 1.7;
-  }
-  .tip-box {
-    background: #fff7f2;
-    color: #7a4b36;
-  }
-  .footer-note {
-    color: #8a8f99;
   }
 </style>
 </head>
@@ -181,16 +137,6 @@
   </div>
 
   <div class="page-scroll consume-page">
-    <div class="hero-wrap">
-      <div class="filter-strip">
-        <div class="filter-chips">
-          <span class="chip">近 30 天</span>
-          <span class="chip">全部场景</span>
-          <span class="chip">已完成</span>
-        </div>
-      </div>
-    </div>
-
     <div class="main">
       <div class="stats">
         <div class="stat-card">
@@ -213,8 +159,6 @@
             <div class="consume-icon">券</div>
             <div class="consume-main">
               <strong>10 元无门槛券</strong>
-              <p>2026/04/05 17:08 兑换成功 · 已发放至券包</p>
-              <p>适用商城全场实物商品，满 0 元可用</p>
             </div>
             <div class="consume-points">-120</div>
           </div>
@@ -222,8 +166,6 @@
             <div class="consume-icon">邮</div>
             <div class="consume-main">
               <strong>包邮券</strong>
-              <p>2026/03/26 20:11 兑换成功 · 待使用</p>
-              <p>下单自动抵扣首重运费，有效期至 2026/05/31</p>
             </div>
             <div class="consume-points">-80</div>
           </div>
@@ -231,16 +173,12 @@
             <div class="consume-icon">礼</div>
             <div class="consume-main">
               <strong>会员礼盒兑换</strong>
-              <p>2026/03/08 13:45 兑换成功 · 已发货</p>
-              <p>订单号 202603081119，物流已签收</p>
             </div>
             <div class="consume-points">-220</div>
           </div>
         </div>
       </div>
 
-      <div class="tip-box">消费记录仅展示已扣减积分的兑换行为。若兑换后发生取消、退款或回退，积分回补将在“积分变动明细”中单独体现。</div>
-      <div class="footer-note">详情页：从“我的积分”点击“积分消费记录”进入。</div>
     </div>
   </div>
 

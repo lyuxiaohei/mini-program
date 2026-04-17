@@ -55,10 +55,6 @@
     color: #222;
     margin-bottom: 4px;
   }
-  .summary-copy {
-    font-size: 12px;
-    color: #8a8f99;
-  }
   .summary-number {
     font-size: 30px;
     font-weight: 700;
@@ -101,9 +97,9 @@
   .table-head,
   .table-row {
     display: grid;
-    grid-template-columns: 108px 54px 54px 1fr 54px;
-    gap: 8px;
-    align-items: start;
+    grid-template-columns: 42px 42px 54px minmax(128px, 1fr) 46px;
+    gap: 6px;
+    align-items: center;
   }
   .table-head {
     padding: 12px 14px;
@@ -124,6 +120,15 @@
     color: #333;
     border-top: 1px solid #f3f4f6;
   }
+  .table-head div,
+  .table-row div {
+    min-width: 0;
+    word-break: keep-all;
+  }
+  .content-cell {
+    line-height: 1.5;
+    word-break: break-all;
+  }
   .table-row:first-child {
     border-top: none;
   }
@@ -134,23 +139,6 @@
   .amount-minus {
     color: #f04d4f;
     font-weight: 600;
-  }
-  .tip-box,
-  .footer-note {
-    margin-top: 12px;
-    border-radius: 14px;
-    padding: 12px 14px;
-    font-size: 12px;
-    line-height: 1.7;
-  }
-  .tip-box {
-    background: #fff7f2;
-    color: #7a4b36;
-  }
-  .footer-note {
-    background: #fff;
-    color: #8a8f99;
-    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.06);
   }
 </style>
 </head>
@@ -182,15 +170,14 @@
         <div class="record-row">
           <div>
             <div class="summary-title">当前可用积分</div>
-            <div class="summary-copy">账单实时更新，按类型查看更清晰</div>
           </div>
           <div class="summary-number">2,860</div>
         </div>
         <div class="tabs">
           <span class="tab active" data-filter="all">全部</span>
-          <span class="tab" data-filter="gain">获得积分</span>
-          <span class="tab" data-filter="consume">消费积分</span>
-          <span class="tab" data-filter="expire">失效积分</span>
+          <span class="tab" data-filter="increase">增加</span>
+          <span class="tab" data-filter="deduct">扣除</span>
+          <span class="tab" data-filter="expire">失效</span>
         </div>
       </div>
     </div>
@@ -198,98 +185,110 @@
     <div class="main">
       <div class="table-card">
         <div class="table-head">
-          <div>交易时间</div>
-          <div>积分数</div>
-          <div>类型</div>
+          <div>月日</div>
+          <div>积分</div>
+          <div>方式</div>
           <div>交易内容</div>
           <div>余额</div>
         </div>
 
         <div class="table-group active" data-group="all">
           <div class="table-row">
-            <div>2026-04-08 12:16:03</div>
+            <div>04-08</div>
             <div>120</div>
-            <div class="amount-minus">减少</div>
-            <div>积分兑换(订单号 YP202604081216038612)</div>
+            <div class="amount-minus">扣除</div>
+            <div class="content-cell">订单号：JS24040801，消费积分120</div>
             <div>2,860</div>
           </div>
           <div class="table-row">
-            <div>2026-04-08 12:15:34</div>
+            <div>04-08</div>
             <div>120</div>
             <div class="amount-plus">增加</div>
-            <div>退单返还(退单号 R202604081215341268)</div>
+            <div class="content-cell">订单号：JS24040801，退回积分120</div>
             <div>2,980</div>
           </div>
           <div class="table-row">
-            <div>2026-04-07 18:20:11</div>
-            <div>80</div>
-            <div class="amount-minus">减少</div>
-            <div>订单抵扣(订单号 12511061820115732)</div>
+            <div>04-07</div>
+            <div>200</div>
+            <div class="amount-plus">增加</div>
+            <div class="content-cell">新增积分200（活动补发）</div>
             <div>2,860</div>
           </div>
           <div class="table-row">
-            <div>2026-04-06 09:22:47</div>
-            <div>200</div>
-            <div class="amount-plus">增加</div>
-            <div>退单返还(退单号 R202604060922471965)</div>
-            <div>2,940</div>
-          </div>
-          <div class="table-row">
-            <div>2026-03-01 00:00:00</div>
+            <div>04-06</div>
             <div>60</div>
-            <div class="amount-minus">减少</div>
-            <div>积分过期(2025 年度未使用积分到期)</div>
-            <div>2,800</div>
+            <div class="amount-minus">扣除</div>
+            <div class="content-cell">扣除积分60（异常修正）</div>
+            <div>2,660</div>
+          </div>
+          <div class="table-row">
+            <div>04-05</div>
+            <div>100</div>
+            <div class="amount-plus">增加</div>
+            <div class="content-cell">新增积分100，批次号Q24040501</div>
+            <div>2,720</div>
+          </div>
+          <div class="table-row">
+            <div>03-28</div>
+            <div>80</div>
+            <div class="amount-minus">失效</div>
+            <div class="content-cell">积分失效（2025年度到期）</div>
+            <div>2,620</div>
           </div>
         </div>
 
-        <div class="table-group" data-group="gain">
+        <div class="table-group" data-group="increase">
           <div class="table-row">
-            <div>2026-04-08 12:15:34</div>
+            <div>04-08</div>
             <div>120</div>
             <div class="amount-plus">增加</div>
-            <div>退单返还(退单号 R202604081215341268)</div>
+            <div class="content-cell">订单号：JS24040801，退回积分120</div>
             <div>2,980</div>
           </div>
           <div class="table-row">
-            <div>2026-04-06 09:22:47</div>
+            <div>04-07</div>
             <div>200</div>
             <div class="amount-plus">增加</div>
-            <div>退单返还(退单号 R202604060922471965)</div>
-            <div>2,940</div>
+            <div class="content-cell">新增积分200（活动补发）</div>
+            <div>2,860</div>
+          </div>
+          <div class="table-row">
+            <div>04-05</div>
+            <div>100</div>
+            <div class="amount-plus">增加</div>
+            <div class="content-cell">新增积分100，批次号Q24040501</div>
+            <div>2,720</div>
           </div>
         </div>
 
-        <div class="table-group" data-group="consume">
+        <div class="table-group" data-group="deduct">
           <div class="table-row">
-            <div>2026-04-08 12:16:03</div>
+            <div>04-08</div>
             <div>120</div>
-            <div class="amount-minus">减少</div>
-            <div>积分兑换(订单号 YP202604081216038612)</div>
+            <div class="amount-minus">扣除</div>
+            <div class="content-cell">订单号：JS24040801，消费积分120</div>
             <div>2,860</div>
           </div>
           <div class="table-row">
-            <div>2026-04-07 18:20:11</div>
-            <div>80</div>
-            <div class="amount-minus">减少</div>
-            <div>订单抵扣(订单号 12511061820115732)</div>
-            <div>2,860</div>
+            <div>04-06</div>
+            <div>60</div>
+            <div class="amount-minus">扣除</div>
+            <div class="content-cell">扣除积分60（异常修正）</div>
+            <div>2,660</div>
           </div>
         </div>
 
         <div class="table-group" data-group="expire">
           <div class="table-row">
-            <div>2026-03-01 00:00:00</div>
-            <div>60</div>
-            <div class="amount-minus">减少</div>
-            <div>积分过期(2025 年度未使用积分到期)</div>
-            <div>2,800</div>
+            <div>03-28</div>
+            <div>80</div>
+            <div class="amount-minus">失效</div>
+            <div class="content-cell">积分失效（2025年度到期）</div>
+            <div>2,620</div>
           </div>
         </div>
       </div>
 
-      <div class="tip-box">说明：积分变动明细记录所有积分账务变化，包含订单抵扣、积分兑换、退单返还和积分过期；如果只看已消费积分，可进入“积分消费记录”页查看。</div>
-      <div class="footer-note">详情页：从“我的积分”点击“积分变动明细”进入。</div>
     </div>
   </div>
 
