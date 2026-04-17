@@ -13,7 +13,7 @@
 
 - [搜索](pages/search.html) `V0.1`
 - [搜索结果](pages/search_filter.html) `V0.1`
-- [商品详情](pages/product_detail.html)
+- [商品详情](pages/product_detail.html) `V0.3`
 - [商品列表](pages/product_list.html)
 - [品牌专区](pages/brand_list.html)
 - [活动专题](pages/activity_page.html)
