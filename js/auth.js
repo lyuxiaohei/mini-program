@@ -14,8 +14,8 @@
   var DEFAULT_AVATAR = '../images/icons/default-avatar.svg';
 
   var defaultAccounts = [
-    { phone: '13800001111', name: '张三', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80', gender: 'male', birthday: '1995-06-15', email: '', wechatBound: true, wechatNickname: '张三' },
-    { phone: '13800002222', name: '李四', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80', gender: 'male', birthday: '1990-03-20', email: '', wechatBound: false, wechatNickname: '' },
+    { phone: '13800001111', name: '张三', avatar: '../images/unsplash/1535713875002-d1d0cf377fde.jpg', gender: 'male', birthday: '1995-06-15', email: '', wechatBound: true, wechatNickname: '张三' },
+    { phone: '13800002222', name: '李四', avatar: '../images/unsplash/1535713875002-d1d0cf377fde.jpg', gender: 'male', birthday: '1990-03-20', email: '', wechatBound: false, wechatNickname: '' },
     // 13800003333 is NOT in list = unregistered
   ];
 
@@ -93,7 +93,7 @@
     localStorage.setItem(CURRENT_KEY, JSON.stringify({
       temp: true,
       name: '微信用户',
-      wxAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80',
+      wxAvatar: '../images/unsplash/1535713875002-d1d0cf377fde.jpg',
       wxNickname: '微信用户'
     }));
     return { name: '微信用户' };
@@ -119,7 +119,7 @@
     var account = {
       phone: phone,
       name: '微信用户',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80',
+      avatar: '../images/unsplash/1535713875002-d1d0cf377fde.jpg',
       gender: 'secret',
       birthday: '1970-01-01',
       email: '',
@@ -137,7 +137,7 @@
     var current = getCurrentUser();
     if (!current) return;
     updateCurrentUser({
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80',
+      avatar: '../images/unsplash/1535713875002-d1d0cf377fde.jpg',
       name: '微信用户'
     });
   }

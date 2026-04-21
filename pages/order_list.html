@@ -230,9 +230,9 @@
       statusText: '待付款',
       total: '171.90',
       products: [
-        { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=200&h=200&q=80' },
-        { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', qty: 1, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80' },
-        { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', qty: 1, img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, img: '../images/unsplash/1602143407151-7111542de6e8.jpg' },
+        { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', qty: 1, img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' },
+        { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', qty: 1, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' }
       ],
       actions: ['取消订单', '去支付']
     },
@@ -242,7 +242,7 @@
       statusText: '待发货',
       total: '89.00',
       products: [
-        { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '白色 标准版', price: '89.00', qty: 1, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '白色 标准版', price: '89.00', qty: 1, img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' }
       ],
       actions: ['查看详情']
     },
@@ -252,7 +252,7 @@
       statusText: '待收货',
       total: '159.00',
       products: [
-        { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', qty: 1, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', qty: 1, img: '../images/unsplash/1542291026-7eec264c27ff.jpg' }
       ],
       actions: ['查看物流', '确认收货']
     },
@@ -262,7 +262,7 @@
       statusText: '运输中',
       total: '199.00',
       products: [
-        { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', qty: 1, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', qty: 1, img: '../images/unsplash/1523275335684-37898b6baf30.jpg' }
       ],
       actions: ['查看物流', '确认收货']
     },
@@ -272,7 +272,7 @@
       statusText: '已完成',
       total: '79.00',
       products: [
-        { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: '79.00', qty: 1, img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: '79.00', qty: 1, img: '../images/unsplash/1572635196237-14b3f281503f.jpg' }
       ],
       actions: ['再次购买', '评价']
     },
@@ -282,7 +282,7 @@
       statusText: '已完成',
       total: '128.00',
       products: [
-        { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', price: '128.00', qty: 1, img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=200&h=200&q=80' }
+        { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', price: '128.00', qty: 1, img: '../images/unsplash/1578985545062-69928b1d9587.jpg' }
       ],
       actions: ['再次购买', '评价']
     }
@@ -327,6 +327,8 @@
         if (a === '查看物流') href = 'logistics.html';
         if (a === '去支付') href = 'payment.html';
         if (a === '取消订单') href = 'order_cancel.html';
+        if (a === '评价') href = 'write_review.html';
+        if (a === '再次购买') href = 'product_detail.html';
         actionsHtml += '<a href="' + href + '" class="btn-sm' + cls + '">' + a + '</a>';
       });
 
