@@ -199,125 +199,255 @@
 
   <!-- Scrollable Content -->
   <div class="page-scroll" style="padding-bottom: 64px;">
-
-    <!-- Address -->
-    <div class="detail-address">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <div class="addr-text">
-        <span class="addr-name">张三 138****8888</span><br>
-        北京市朝阳区建国路88号 悦享大厦A座12层
-      </div>
-    </div>
-
-    <!-- Package 1 -->
-    <div class="package-card">
-      <a href="logistics.html" class="logistics-quick">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        <div class="lg-info">
-          <div class="lg-status">顺丰速运 SF1234567890 <span class="lg-status-tag shipping">运输中</span></div>
-          <div class="lg-desc">【北京市】 快件已到达 北京朝阳区营业点，正在派送中</div>
-        </div>
-        <div class="lg-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </a>
-      <div class="detail-products">
-        <div class="detail-prod-row">
-          <div class="dp-img"><img src="../images/unsplash/1602143407151-7111542de6e8.jpg" alt=""></div>
-          <div class="dp-info">
-            <div class="dp-name">日本进口保温杯 不锈钢真空便携水杯500ml</div>
-            <div class="dp-spec">白色 500ml</div>
-            <div class="dp-bottom">
-              <span class="dp-price">&yen;68.00</span>
-              <span class="dp-qty">x1</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-prod-row">
-          <div class="dp-img"><img src="../images/unsplash/1521572163474-6864f9cf17ab.jpg" alt=""></div>
-          <div class="dp-info">
-            <div class="dp-name">纯棉短袖T恤男女款 夏季宽松百搭潮流</div>
-            <div class="dp-spec">白色 L码</div>
-            <div class="dp-bottom">
-              <span class="dp-price">&yen;39.90</span>
-              <span class="dp-qty">x1</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Package 2 -->
-    <div class="package-card">
-      <a href="logistics.html" class="logistics-quick">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        <div class="lg-info">
-          <div class="lg-status">中通快递 ZT2026040700001 <span class="lg-status-tag delivered">已签收</span></div>
-          <div class="lg-desc">【北京市】 已签收，签收人：本人签收</div>
-        </div>
-        <div class="lg-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </a>
-      <div class="detail-products">
-        <div class="detail-prod-row">
-          <div class="dp-img"><img src="../images/unsplash/1505740420928-5e560c06d30e.jpg" alt=""></div>
-          <div class="dp-info">
-            <div class="dp-name">无线蓝牙降噪耳机 迷你入耳式超长续航</div>
-            <div class="dp-spec">黑色 标准版</div>
-            <div class="dp-bottom">
-              <span class="dp-price">&yen;89.00</span>
-              <span class="dp-qty">x1</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Info -->
-    <div class="detail-info">
-      <div class="info-item">
-        <span class="lbl">订单编号</span>
-        <span class="val">JS2026040888001</span>
-      </div>
-      <div class="info-item">
-        <span class="lbl">下单时间</span>
-        <span class="val">2026-04-08 14:35:20</span>
-      </div>
-      <div class="info-item">
-        <span class="lbl">支付方式</span>
-        <span class="val">苏银豆+现金组合</span>
-      </div>
-      <div class="info-item">
-        <span class="lbl">苏银豆抵扣</span>
-        <span class="val red">-&yen;171.90 (172豆)</span>
-      </div>
-      <div class="info-item">
-        <span class="lbl">现金支付</span>
-        <span class="val">&yen;179.10</span>
-      </div>
-      <div class="info-item">
-        <span class="lbl">运费</span>
-        <span class="val">&yen;0.00</span>
-      </div>
-      <div class="info-item total-row">
-        <span class="lbl">实付金额</span>
-        <span class="val">&yen;191.90</span>
-      </div>
-    </div>
+    <div id="detailAddress" class="detail-address"></div>
+    <div id="packageList"></div>
+    <div id="orderInfo" class="detail-info"></div>
 
   </div>
 
   <!-- Bottom Actions -->
-  <div class="detail-bottom-bar">
-    <button class="btn-sm" onclick="location.href='order_cancel.html'">取消订单</button>
-    <a href="logistics.html" class="btn-sm primary">查看物流</a>
-    <button class="btn-sm danger" onclick="alert('已确认收货')">确认收货</button>
-  </div>
+  <div id="orderActions" class="detail-bottom-bar"></div>
 
 </div>
 <script src="../js/auth.js"></script>
 <script src="../js/auth-guard.js"></script>
 <script src="../js/common.js"></script>
+<script>
+(function() {
+  var detailAddress = document.getElementById('detailAddress');
+  var packageList = document.getElementById('packageList');
+  var orderInfo = document.getElementById('orderInfo');
+  var orderActions = document.getElementById('orderActions');
+  var orderNo = new URLSearchParams(window.location.search).get('orderNo') || 'JS202604210001';
+
+  var orders = {
+    JS202604210001: {
+      orderNo: 'JS202604210001',
+      createdAt: '2026-04-21 09:26:18',
+      payMethod: '积分兑换',
+      pointsDeduction: '-120豆',
+      cashPay: '¥0.00',
+      freight: '¥0.00',
+      totalPay: '¥0.00',
+      address: {
+        name: '张三',
+        phone: '138****8888',
+        detail: '北京市朝阳区建国路88号 悦享大厦A座12层'
+      },
+      packages: [
+        {
+          company: '顺丰速运',
+          logisticsNo: 'SF202604210001',
+          statusClass: 'shipping',
+          statusText: '运输中',
+          desc: '【北京市】 快件已到达北京朝阳区营业点，正在派送中',
+          products: [
+            {
+              name: '日本进口保温杯 不锈钢真空便携水杯500ml',
+              spec: '白色 500ml',
+              price: '¥68.00',
+              qty: 'x1',
+              img: '../images/unsplash/1602143407151-7111542de6e8.jpg'
+            },
+            {
+              name: '纯棉短袖T恤男女款 夏季宽松百搭潮流',
+              spec: '白色 L码',
+              price: '¥52.00',
+              qty: 'x1',
+              img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg'
+            }
+          ]
+        }
+      ],
+      actions: [
+        { type: 'link', text: '查看物流', className: 'btn-sm primary', href: 'logistics.html?orderNo=JS202604210001' },
+        { type: 'button', text: '确认收货', className: 'btn-sm danger', handler: "alert('已确认收货')" }
+      ]
+    },
+    JS202604180002: {
+      orderNo: 'JS202604180002',
+      createdAt: '2026-04-18 14:08:32',
+      payMethod: '积分兑换',
+      pointsDeduction: '-80豆',
+      cashPay: '¥0.00',
+      freight: '¥0.00',
+      totalPay: '¥0.00',
+      address: {
+        name: '张三',
+        phone: '138****8888',
+        detail: '北京市朝阳区朝外大街99号 国贸公寓3单元1002室'
+      },
+      packages: [
+        {
+          company: '中通快递',
+          logisticsNo: 'ZT202604180002',
+          statusClass: 'delivered',
+          statusText: '已签收',
+          desc: '【北京市】 已签收，签收人：本人签收',
+          products: [
+            {
+              name: '无线蓝牙降噪耳机 迷你入耳式超长续航',
+              spec: '黑色 标准版',
+              price: '¥89.00',
+              qty: 'x1',
+              img: '../images/unsplash/1505740420928-5e560c06d30e.jpg'
+            }
+          ]
+        }
+      ],
+      actions: [
+        { type: 'link', text: '查看物流', className: 'btn-sm primary', href: 'logistics.html?orderNo=JS202604180002' },
+        { type: 'button', text: '再次兑换', className: 'btn-sm', handler: "location.href='points_exchange.html'" }
+      ]
+    },
+    JS202604090003: {
+      orderNo: 'JS202604090003',
+      createdAt: '2026-04-09 19:42:05',
+      payMethod: '积分兑换',
+      pointsDeduction: '-220豆',
+      cashPay: '¥0.00',
+      freight: '¥0.00',
+      totalPay: '¥0.00',
+      address: {
+        name: '张三',
+        phone: '138****8888',
+        detail: '北京市海淀区中关村南大街27号 中关村国际广场B座1608室'
+      },
+      packages: [
+        {
+          company: '圆通速递',
+          logisticsNo: 'YT202604090003',
+          statusClass: 'shipping',
+          statusText: '运输中',
+          desc: '【北京市】 包裹离开分拨中心，正在发往目的地',
+          products: [
+            {
+              name: '时尚运动鞋 透气网面跑步鞋轻便缓震',
+              spec: '黑色 42码',
+              price: '¥199.00',
+              qty: 'x1',
+              img: '../images/unsplash/1542291026-7eec264c27ff.jpg'
+            },
+            {
+              name: '运动速干短袜',
+              spec: '黑灰组合 2双装',
+              price: '¥21.00',
+              qty: 'x1',
+              img: '../images/unsplash/1558618666-fcd25c85cd64.jpg'
+            }
+          ]
+        }
+      ],
+      actions: [
+        { type: 'button', text: '取消订单', className: 'btn-sm', handler: "location.href='order_cancel.html'" },
+        { type: 'link', text: '查看物流', className: 'btn-sm primary', href: 'logistics.html?orderNo=JS202604090003' },
+        { type: 'button', text: '确认收货', className: 'btn-sm danger', handler: "alert('已确认收货')" }
+      ]
+    }
+  };
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  function renderAddress(address) {
+    detailAddress.innerHTML = '' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+      '<div class="addr-text">' +
+        '<span class="addr-name">' + escapeHtml(address.name) + ' ' + escapeHtml(address.phone) + '</span><br>' +
+        escapeHtml(address.detail) +
+      '</div>';
+  }
+
+  function renderPackages(packages, currentOrderNo) {
+    packageList.innerHTML = packages.map(function(pkg) {
+      var productsHtml = pkg.products.map(function(product) {
+        return '' +
+          '<div class="detail-prod-row">' +
+            '<div class="dp-img"><img src="' + escapeHtml(product.img) + '" alt="' + escapeHtml(product.name) + '"></div>' +
+            '<div class="dp-info">' +
+              '<div class="dp-name">' + escapeHtml(product.name) + '</div>' +
+              '<div class="dp-spec">' + escapeHtml(product.spec) + '</div>' +
+              '<div class="dp-bottom">' +
+                '<span class="dp-price">' + escapeHtml(product.price) + '</span>' +
+                '<span class="dp-qty">' + escapeHtml(product.qty) + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+      }).join('');
+
+      return '' +
+        '<div class="package-card">' +
+          '<a href="logistics.html?orderNo=' + encodeURIComponent(currentOrderNo) + '" class="logistics-quick">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
+            '<div class="lg-info">' +
+              '<div class="lg-status">' + escapeHtml(pkg.company) + ' ' + escapeHtml(pkg.logisticsNo) + ' <span class="lg-status-tag ' + escapeHtml(pkg.statusClass) + '">' + escapeHtml(pkg.statusText) + '</span></div>' +
+              '<div class="lg-desc">' + escapeHtml(pkg.desc) + '</div>' +
+            '</div>' +
+            '<div class="lg-arrow">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>' +
+            '</div>' +
+          '</a>' +
+          '<div class="detail-products">' + productsHtml + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderOrderInfo(order) {
+    orderInfo.innerHTML = '' +
+      '<div class="info-item">' +
+        '<span class="lbl">订单编号</span>' +
+        '<span class="val">' + escapeHtml(order.orderNo) + '</span>' +
+      '</div>' +
+      '<div class="info-item">' +
+        '<span class="lbl">下单时间</span>' +
+        '<span class="val">' + escapeHtml(order.createdAt) + '</span>' +
+      '</div>' +
+      '<div class="info-item">' +
+        '<span class="lbl">支付方式</span>' +
+        '<span class="val">' + escapeHtml(order.payMethod) + '</span>' +
+      '</div>' +
+      '<div class="info-item">' +
+        '<span class="lbl">积分抵扣</span>' +
+        '<span class="val red">' + escapeHtml(order.pointsDeduction) + '</span>' +
+      '</div>' +
+      '<div class="info-item">' +
+        '<span class="lbl">现金支付</span>' +
+        '<span class="val">' + escapeHtml(order.cashPay) + '</span>' +
+      '</div>' +
+      '<div class="info-item">' +
+        '<span class="lbl">运费</span>' +
+        '<span class="val">' + escapeHtml(order.freight) + '</span>' +
+      '</div>' +
+      '<div class="info-item total-row">' +
+        '<span class="lbl">实付金额</span>' +
+        '<span class="val">' + escapeHtml(order.totalPay) + '</span>' +
+      '</div>';
+  }
+
+  function renderActions(actions) {
+    orderActions.innerHTML = actions.map(function(action) {
+      if (action.type === 'link') {
+        return '<a href="' + escapeHtml(action.href) + '" class="' + escapeHtml(action.className) + '">' + escapeHtml(action.text) + '</a>';
+      }
+      return '<button class="' + escapeHtml(action.className) + '" onclick="' + action.handler + '">' + escapeHtml(action.text) + '</button>';
+    }).join('');
+  }
+
+  var currentOrder = orders[orderNo] || orders.JS202604210001;
+  renderAddress(currentOrder.address);
+  renderPackages(currentOrder.packages, currentOrder.orderNo);
+  renderOrderInfo(currentOrder);
+  renderActions(currentOrder.actions);
+})();
+</script>
 </body>
 </html>
