@@ -54,10 +54,10 @@
 - [申请退款](pages/apply_refund.html)
 - [退款详情](pages/refund_detail.html)
 - [申请换货](pages/apply_exchange.html)
-- [评价中心](pages/review.html) `V0.3`
-- [发表评价](pages/write_review.html) `V0.3`
-- [商品评价](pages/product_reviews.html) `V0.3`
-- [我的评价](pages/my_reviews.html) `V0.3`
+- [评价中心](pages/review.html) `V1.1`
+- [发表评价](pages/write_review.html) `V1.1`
+- [商品评价](pages/product_reviews.html) `V1.1`
+- [我的评价](pages/my_reviews.html) `V1.1`
 - [账号注销](pages/account_cancel.html)
 
 ### 辅助页面
