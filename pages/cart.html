@@ -201,6 +201,72 @@
     color: #999;
   }
 
+  /* Sold-out item (已售罄) — reuse offshelf layout */
+  .cart-item.soldout .item-img {
+    position: relative;
+    opacity: 0.6;
+  }
+  .cart-item.soldout .item-img::after {
+    content: '已售罄';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  .cart-item.soldout .item-name,
+  .cart-item.soldout .item-spec,
+  .cart-item.soldout .item-price { color: #999; }
+  .cart-item.soldout .checkbox { display: none; }
+  .cart-item.soldout .qty-control { display: none; }
+  .cart-item.soldout .soldout-text {
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* No-stock in this area (该地区无库存) */
+  .cart-item.noship .item-img {
+    position: relative;
+    opacity: 0.6;
+  }
+  .cart-item.noship .item-img::after {
+    content: '无库存';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  .cart-item.noship .item-name,
+  .cart-item.noship .item-spec,
+  .cart-item.noship .item-price { color: #999; }
+  .cart-item.noship .checkbox { display: none; }
+  .cart-item.noship .qty-control { display: none; }
+  .cart-item.noship .noship-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cart-item.noship .noship-text {
+    font-size: 11px;
+    color: #999;
+  }
+  .cart-item.noship .noship-link {
+    font-size: 11px;
+    color: #ff6034;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cart-item.noship .noship-link:active { opacity: 0.7; }
+
   /* Bottom checkout bar */
   .checkout-bar {
     position: absolute;
@@ -370,7 +436,9 @@
     { id: 1, name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: 68, qty: 1, checked: true, img: '../images/unsplash/1602143407151-7111542de6e8.jpg' },
     { id: 2, name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: 89, qty: 1, checked: true, img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' },
     { id: 3, name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: 39.9, qty: 1, checked: true, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' },
-    { id: 4, name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: 59, qty: 1, checked: false, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', offshelf: true }
+    { id: 4, name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: 59, qty: 1, checked: false, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', offshelf: true },
+    { id: 5, name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: 128, qty: 1, checked: false, img: '../images/unsplash/1572635196237-14b3f281503f.jpg', soldout: true },
+    { id: 6, name: '智能运动手环 心率血氧监测防水', spec: '黑色 标准版', price: 199, qty: 1, checked: false, img: '../images/unsplash/1575312770304-99a17ewolf.jpg', noship: true }
   ];
 
   function renderCart() {
@@ -388,6 +456,39 @@
               '<div class="item-bottom">' +
                 '<span class="item-price"><span class="symbol">&yen;</span>' + item.price.toFixed(2) + '</span>' +
                 '<span class="offshelf-text">已下架</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      } else if (item.soldout) {
+        html += '<div class="cart-item-wrapper" data-id="' + item.id + '">' +
+          '<div class="delete-btn" data-id="' + item.id + '">删除</div>' +
+          '<div class="cart-item soldout">' +
+            '<div class="item-img"><img src="' + item.img + '" alt=""></div>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+              '<div class="item-bottom">' +
+                '<span class="item-price"><span class="symbol">&yen;</span>' + item.price.toFixed(2) + '</span>' +
+                '<span class="soldout-text">已售罄</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      } else if (item.noship) {
+        html += '<div class="cart-item-wrapper" data-id="' + item.id + '">' +
+          '<div class="delete-btn" data-id="' + item.id + '">删除</div>' +
+          '<div class="cart-item noship">' +
+            '<div class="item-img"><img src="' + item.img + '" alt=""></div>' +
+            '<div class="item-info">' +
+              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-spec">' + item.spec + '</div>' +
+              '<div class="item-bottom">' +
+                '<span class="item-price"><span class="symbol">&yen;</span>' + item.price.toFixed(2) + '</span>' +
+                '<div class="noship-info">' +
+                  '<span class="noship-text">该地区无库存</span>' +
+                  '<span class="noship-link" onclick="showAddressPopup()">切换地址</span>' +
+                '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -416,7 +517,7 @@
     });
     document.getElementById('cartList').innerHTML = html;
     // Count only non-offshelf items
-    var activeCount = cartItems.filter(function(i) { return !i.offshelf; }).length;
+    var activeCount = cartItems.filter(function(i) { return !i.offshelf && !i.soldout && !i.noship; }).length;
     document.getElementById('cartCount').textContent = activeCount;
     updateTotal();
     bindEvents();
@@ -426,15 +527,15 @@
   function updateTotal() {
     var total = 0, count = 0;
     cartItems.forEach(function(item) {
-      if (item.checked && !item.offshelf) {
+      if (item.checked && !item.offshelf && !item.soldout && !item.noship) {
         total += item.price * item.qty;
         count += item.qty;
       }
     });
     document.getElementById('totalAmount').textContent = total.toFixed(2);
     document.getElementById('checkoutCount').textContent = count;
-    var allChecked = cartItems.filter(function(i) { return !i.offshelf; }).length > 0 &&
-      cartItems.filter(function(i) { return !i.offshelf; }).every(function(i) { return i.checked; });
+    var allChecked = cartItems.filter(function(i) { return !i.offshelf && !i.soldout && !i.noship; }).length > 0 &&
+      cartItems.filter(function(i) { return !i.offshelf && !i.soldout && !i.noship; }).every(function(i) { return i.checked; });
     document.getElementById('selectAllBox').classList.toggle('checked', allChecked);
   }
 
@@ -572,11 +673,42 @@
 
   // Select all
   document.getElementById('selectAll').addEventListener('click', function() {
-    var activeItems = cartItems.filter(function(i) { return !i.offshelf; });
+    var activeItems = cartItems.filter(function(i) { return !i.offshelf && !i.soldout && !i.noship; });
     var allChecked = activeItems.every(function(i) { return i.checked; });
     activeItems.forEach(function(item) { item.checked = !allChecked; });
     renderCart();
   });
+
+  // Address switch popup for noship items
+  window.showAddressPopup = function() {
+    // Prototype: just show a simple address list overlay
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:flex;align-items:flex-end;justify-content:center;';
+    var popup = document.createElement('div');
+    popup.style.cssText = 'width:100%;background:#fff;border-radius:16px 16px 0 0;padding:16px;max-height:60%;overflow-y:auto;';
+    popup.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+        '<span style="font-size:16px;font-weight:600;color:#333;">选择收货地址</span>' +
+        '<span style="color:#999;cursor:pointer;font-size:14px;" id="closeAddrPopup">关闭</span>' +
+      '</div>' +
+      '<div style="padding:12px;border-radius:10px;background:#fff9f5;border:2px solid #ff6034;margin-bottom:8px;">' +
+        '<div style="font-size:14px;font-weight:500;color:#333;">张三  138****8888</div>' +
+        '<div style="font-size:12px;color:#666;margin-top:4px;">北京市朝阳区建国路88号 悦享大厦A座12层</div>' +
+        '<div style="font-size:11px;color:#ff6034;margin-top:4px;">当前默认</div>' +
+      '</div>' +
+      '<div style="padding:12px;border-radius:10px;background:#f8f8f8;margin-bottom:8px;cursor:pointer;" onclick="alert(\'已切换默认地址（原型演示）\')">' +
+        '<div style="font-size:14px;font-weight:500;color:#333;">李四  139****9999</div>' +
+        '<div style="font-size:12px;color:#666;margin-top:4px;">上海市浦东新区陆家嘴环路1000号 恒生大厦8层</div>' +
+        '<div style="font-size:11px;color:#4caf50;margin-top:4px;">设为默认可购买</div>' +
+      '</div>' +
+      '<div style="padding:12px;border-radius:10px;background:#f8f8f8;cursor:pointer;" onclick="location.href=\'address.html\'">' +
+        '<div style="font-size:13px;color:#ff6034;text-align:center;">管理收货地址</div>' +
+      '</div>';
+    overlay.appendChild(popup);
+    document.querySelector('.phone-frame').appendChild(overlay);
+    document.getElementById('closeAddrPopup').onclick = function() { overlay.remove(); };
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  };
 
   renderCart();
 })();

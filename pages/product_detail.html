@@ -143,6 +143,130 @@
   }
   .coupon-entry .right svg { width: 14px; height: 14px; }
 
+  /* Address section */
+  .address-section {
+    background: #fff;
+    margin-top: 8px;
+    padding: 12px;
+    cursor: pointer;
+  }
+  .address-section:active { background: #fafafa; }
+  .address-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .address-row svg { width: 16px; height: 16px; color: #ff6034; flex-shrink: 0; margin-top: 2px; }
+  .address-info { flex: 1; }
+  .address-info .addr-text {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .address-info .addr-hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
+  }
+  .address-arrow svg { width: 14px; height: 14px; color: #ccc; margin-top: 2px; }
+
+  /* Out of stock */
+  .out-of-stock-bar {
+    display: none;
+    background: #fff3f0;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #ee0a24;
+    font-weight: 500;
+  }
+  .out-of-stock-bar.show { display: flex; align-items: center; gap: 6px; }
+  .out-of-stock-bar svg { width: 16px; height: 16px; color: #ee0a24; flex-shrink: 0; }
+
+  /* Address popup */
+  .addr-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+  }
+  .addr-overlay.show { display: block; }
+  .addr-popup {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    z-index: 301;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+  }
+  .addr-popup.show { display: block; }
+  .addr-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 12px 8px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .addr-popup-header .title { font-size: 15px; font-weight: 600; color: #333; }
+  .addr-popup-header .close-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .addr-popup-header .close-btn svg { width: 18px; height: 18px; color: #999; }
+  .addr-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+  .addr-list-item:active { background: #fafafa; }
+  .addr-list-item .addr-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .addr-list-item .addr-radio.checked {
+    background: #ff6034;
+    border-color: #ff6034;
+  }
+  .addr-list-item .addr-radio.checked::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+  .addr-list-item .addr-detail { flex: 1; }
+  .addr-list-item .addr-name-phone { font-size: 14px; color: #333; font-weight: 500; margin-bottom: 2px; }
+  .addr-list-item .addr-full { font-size: 12px; color: #999; line-height: 1.4; }
+  .addr-list-item .addr-tag {
+    font-size: 10px;
+    color: #ff6034;
+    background: #fff5f0;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+
   /* Specs section */
   .specs-section {
     background: #fff;
@@ -472,12 +596,8 @@
 
     <!-- Image Swiper -->
     <div class="detail-swiper" id="detailSwiper">
-      <div class="detail-swiper-wrapper" id="detailSwiperWrapper">
-        <div class="detail-swiper-slide"><img src="../images/unsplash/product_watch_800x1200.jpg" alt="商品图1"></div>
-        <div class="detail-swiper-slide"><img src="../images/unsplash/product_headphone_800x1200.jpg" alt="商品图2"></div>
-        <div class="detail-swiper-slide"><img src="../images/unsplash/product_sneaker_800x1200.jpg" alt="商品图3"></div>
-      </div>
-      <div class="detail-swiper-indicator"><span id="currentSlide">1</span>/3</div>
+      <div class="detail-swiper-wrapper" id="detailSwiperWrapper"></div>
+      <div class="detail-swiper-indicator"><span id="currentSlide">1</span>/<span id="totalSlide">3</span></div>
     </div>
 
     <!-- Price Area -->
@@ -492,7 +612,7 @@
 
     <!-- Title Area -->
     <div class="product-title-area">
-      <div class="title">日本进口保温杯 不锈钢真空便携水杯500ml 大容量男女通用 304不锈钢内胆 12小时保温保冷</div>
+      <div class="title" id="productTitle">日本进口保温杯 不锈钢真空便携水杯500ml 大容量男女通用 304不锈钢内胆 12小时保温保冷</div>
       <div class="sub-info">
         <span class="tag-small">正品保障</span>
         <span class="tag-small">7天无理由</span>
@@ -510,6 +630,26 @@
         <span>领取</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
+    </div>
+
+    <!-- Delivery Address -->
+    <div class="address-section" id="addressEntry" onclick="openAddrPopup()">
+      <div class="address-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="address-info">
+          <div class="addr-text" id="addrText">张三  138****8888  北京市朝阳区建国路88号</div>
+          <div class="addr-hint">配送至该地址，预计3-5天送达</div>
+        </div>
+        <div class="address-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Out of stock notice -->
+    <div class="out-of-stock-bar" id="outOfStockBar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      <span>该商品不支持配送至所选地址</span>
     </div>
 
     <!-- Specs -->
@@ -622,49 +762,120 @@
     </div>
   </div>
 
+  <!-- Address Popup -->
+  <div class="addr-overlay" id="addrOverlay"></div>
+  <div class="addr-popup" id="addrPopup">
+    <div class="addr-popup-header">
+      <span class="title">选择收货地址</span>
+      <div class="close-btn" id="addrCloseBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div id="addrList"></div>
+  </div>
+
 </div>
 <script src="../js/common.js"></script>
 <script>
 (function() {
+  var IMG = '../images/unsplash/';
+
+  // SPU-level product name (shared across all SKUs)
+  var SPU_NAME = '日本进口保温杯 不锈钢真空便携水杯';
+
+  // SKU data keyed by color, each has own images, price, stock
+  var SKU_MAP = {
+    '白色': {
+      images: ['product_watch_800x1200.jpg', 'product_headphone_800x1200.jpg', 'product_sneaker_800x1200.jpg'],
+      price: 68, originalPrice: 168, stock: 569
+    },
+    '黑色': {
+      images: ['product_headphone_800x1200.jpg', 'product_sneaker_800x1200.jpg', 'product_watch_800x1200.jpg'],
+      price: 72, originalPrice: 178, stock: 323
+    },
+    '粉色': {
+      images: ['product_cake_800x1200.jpg', 'product_tshirt_800x1200.jpg', 'product_watch_800x1200.jpg'],
+      price: 75, originalPrice: 188, stock: 156
+    }
+  };
+
+  // Current selected specs
+  var selectedSpecs = { color: '白色', size: '500ml' };
+
   // Control visibility of review and coupon sections
   var hasCoupon = true;
   var hasReview = true;
 
-  if (!hasCoupon) {
-    document.getElementById('couponEntry').style.display = 'none';
-  }
-  if (!hasReview) {
-    document.getElementById('reviewSection').style.display = 'none';
-  }
+  if (!hasCoupon) document.getElementById('couponEntry').style.display = 'none';
+  if (!hasReview) document.getElementById('reviewSection').style.display = 'none';
 
-  // Image swiper
+  // ===== Swiper =====
   var wrapper = document.getElementById('detailSwiperWrapper');
-  var currentSlide = document.getElementById('currentSlide');
+  var currentSlideEl = document.getElementById('currentSlide');
+  var totalSlideEl = document.getElementById('totalSlide');
   var swiperEl = document.getElementById('detailSwiper');
   var idx = 0;
-  var total = 3;
   var startX = 0, moving = false;
 
+  function renderSwiper(images) {
+    wrapper.innerHTML = '';
+    images.forEach(function(src) {
+      var slide = document.createElement('div');
+      slide.className = 'detail-swiper-slide';
+      slide.innerHTML = '<img src="' + IMG + src + '" alt="">';
+      wrapper.appendChild(slide);
+    });
+    idx = 0;
+    totalSlideEl.textContent = images.length;
+    goTo(0);
+  }
+
   function goTo(index) {
+    var total = wrapper.children.length;
+    if (total === 0) return;
     idx = ((index % total) + total) % total;
     wrapper.style.transform = 'translateX(-' + (idx * 100) + '%)';
-    currentSlide.textContent = idx + 1;
+    currentSlideEl.textContent = idx + 1;
   }
 
   swiperEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; moving = true; });
   swiperEl.addEventListener('touchend', function(e) {
-    if (!moving) return;
-    moving = false;
+    if (!moving) return; moving = false;
     var diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(idx + (diff > 0 ? 1 : -1));
   });
   swiperEl.addEventListener('mousedown', function(e) { startX = e.clientX; moving = true; e.preventDefault(); });
   document.addEventListener('mouseup', function(e) {
-    if (!moving) return;
-    moving = false;
+    if (!moving) return; moving = false;
     var diff = startX - e.clientX;
     if (Math.abs(diff) > 40) goTo(idx + (diff > 0 ? 1 : -1));
   });
+
+  // ===== Update page based on selected SKU =====
+  function updatePage() {
+    var sku = SKU_MAP[selectedSpecs.color];
+    var specText = selectedSpecs.color + ' ' + selectedSpecs.size;
+
+    // Update swiper images
+    renderSwiper(sku.images);
+
+    // Update product title: SPU name + spec
+    document.getElementById('productTitle').textContent = SPU_NAME + ' ' + specText;
+
+    // Update price
+    var discount = Math.round(sku.price / sku.originalPrice * 10 * 10) / 10;
+    document.querySelector('.price-row .current-price').innerHTML = '<span class="symbol">&yen;</span>' + sku.price;
+    document.querySelector('.price-row .original-price').textContent = '\xA5' + sku.originalPrice;
+    document.querySelector('.price-row .discount-tag').textContent = discount + '\u6298';
+
+    // Update popup thumb & info
+    popup.querySelector('.thumb img').src = IMG + sku.images[0];
+    popup.querySelector('.popup-price').innerHTML = '<span class="symbol">&yen;</span>' + sku.price.toFixed(2);
+    popup.querySelector('.popup-stock').textContent = '\u5E93\u5B58 ' + sku.stock + '\u4EF6';
+
+    // Update selected text (popup + specs section)
+    updateSelectedText();
+  }
 
   // ===== Spec Popup =====
   var overlay = document.getElementById('specOverlay');
@@ -672,16 +883,13 @@
   var specClose = document.getElementById('specClose');
   var confirmBtn = document.getElementById('specConfirmBtn');
   var specQty = 1;
-  var currentAction = 'cart'; // 'cart' | 'buy' | 'fav'
+  var currentAction = 'cart';
   var isFavorited = false;
 
-  var selectedSpecs = { color: '白色', size: '500ml' };
-
   function updateSelectedText() {
-    var text = selectedSpecs.color + '，' + selectedSpecs.size;
+    var text = selectedSpecs.color + '\uFF0C' + selectedSpecs.size;
     var selectedEl = popup.querySelector('.popup-selected');
-    if (selectedEl) selectedEl.textContent = '已选：' + text;
-    // Update specs section text
+    if (selectedEl) selectedEl.textContent = '\u5DF2\u9009\uFF1A' + text;
     var specsValue = document.querySelector('.specs-row .value span');
     if (specsValue) specsValue.textContent = text;
   }
@@ -690,15 +898,14 @@
     currentAction = action;
     overlay.classList.add('show');
     popup.classList.add('show');
-
     if (action === 'cart') {
-      confirmBtn.textContent = '加入购物车';
+      confirmBtn.textContent = '\u52A0\u5165\u8D2D\u7269\u8F66';
       confirmBtn.className = 'spec-confirm-btn cart';
     } else if (action === 'buy') {
-      confirmBtn.textContent = '立即购买';
+      confirmBtn.textContent = '\u7ACB\u5373\u8D2D\u4E70';
       confirmBtn.className = 'spec-confirm-btn buy';
     } else if (action === 'fav') {
-      confirmBtn.textContent = '收藏';
+      confirmBtn.textContent = '\u6536\u85CF';
       confirmBtn.className = 'spec-confirm-btn fav';
     }
   }
@@ -711,31 +918,22 @@
   overlay.addEventListener('click', closePopup);
   specClose.addEventListener('click', closePopup);
 
-  // Open popup triggers
-  document.querySelector('.specs-section').addEventListener('click', function() {
-    openPopup('cart');
-  });
-
-  document.getElementById('addCartBtn').addEventListener('click', function() {
-    openPopup('cart');
-  });
-
-  document.getElementById('buyNowBtn').addEventListener('click', function() {
-    openPopup('buy');
-  });
+  document.querySelector('.specs-section').addEventListener('click', function() { openPopup('cart'); });
+  document.getElementById('addCartBtn').addEventListener('click', function() { openPopup('cart'); });
+  document.getElementById('buyNowBtn').addEventListener('click', function() { openPopup('buy'); });
 
   document.getElementById('favIcon').addEventListener('click', function() {
     if (isFavorited) {
       isFavorited = false;
       this.classList.remove('fav-active');
       this.querySelector('svg').setAttribute('fill', 'none');
-      showToast('已取消收藏');
+      showToast('\u5DF2\u53D6\u6D88\u6536\u85CF');
     } else {
       openPopup('fav');
     }
   });
 
-  // Spec option selection
+  // Spec option selection — triggers image & title update
   popup.addEventListener('click', function(e) {
     var option = e.target.closest('.spec-option');
     if (option) {
@@ -745,27 +943,23 @@
       });
       option.classList.add('selected');
       selectedSpecs[group] = option.dataset.value;
-      updateSelectedText();
+      updatePage();
       return;
     }
 
     var qtyBtn = e.target.closest('.spec-qty-btn');
     if (qtyBtn) {
-      if (qtyBtn.dataset.action === 'plus') {
-        specQty++;
-      } else if (qtyBtn.dataset.action === 'minus' && specQty > 1) {
-        specQty--;
-      }
+      if (qtyBtn.dataset.action === 'plus') specQty++;
+      else if (qtyBtn.dataset.action === 'minus' && specQty > 1) specQty--;
       document.getElementById('specQty').textContent = specQty;
       qtyBtn.parentElement.querySelector('[data-action="minus"]').classList.toggle('disabled', specQty <= 1);
       return;
     }
   });
 
-  // Confirm button
   confirmBtn.addEventListener('click', function() {
     if (currentAction === 'cart') {
-      showToast('已加入购物车');
+      showToast('\u5DF2\u52A0\u5165\u8D2D\u7269\u8F66');
     } else if (currentAction === 'buy') {
       location.href = 'order.html';
       return;
@@ -774,7 +968,7 @@
       var favIcon = document.getElementById('favIcon');
       favIcon.classList.add('fav-active');
       favIcon.querySelector('svg').setAttribute('fill', '#ee0a24');
-      showToast('已收藏');
+      showToast('\u5DF2\u6536\u85CF');
     }
     closePopup();
   });
@@ -786,6 +980,95 @@
     document.querySelector('.phone-frame').appendChild(toast);
     setTimeout(function() { toast.remove(); }, 1500);
   }
+
+  // Initial render
+  updatePage();
+
+  // --- Address selection ---
+  var addresses = [
+    { id: 1, name: '张三', phone: '138****8888', region: '北京市朝阳区建国路88号 悦享大厦A座12层', tag: '默认', isDefault: true },
+    { id: 2, name: '李四', phone: '139****6666', region: '上海市浦东新区陆家嘴环路1000号', tag: '' },
+    { id: 3, name: '王五', phone: '137****5555', region: '新疆乌鲁木齐市天山区解放南路128号', tag: '' },
+    { id: 4, name: '赵六', phone: '136****4444', region: '广东省深圳市南山区科技园南路8号', tag: '' },
+    { id: 5, name: '孙七', phone: '135****3333', region: '新疆伊犁州伊宁市斯大林街60号', tag: '' }
+  ];
+  var selectedAddrId = 1;
+
+  function isXinjiang(addr) {
+    return addr.region.indexOf('新疆') >= 0;
+  }
+
+  function updateStockStatus() {
+    var addr = addresses.find(function(a) { return a.id === selectedAddrId; });
+    var noStock = addr && isXinjiang(addr);
+    document.getElementById('outOfStockBar').classList.toggle('show', noStock);
+    document.getElementById('addCartBtn').disabled = noStock;
+    document.getElementById('buyNowBtn').disabled = noStock;
+    document.getElementById('addCartBtn').style.opacity = noStock ? '0.4' : '1';
+    document.getElementById('buyNowBtn').style.opacity = noStock ? '0.4' : '1';
+    document.getElementById('addCartBtn').style.pointerEvents = noStock ? 'none' : 'auto';
+    document.getElementById('buyNowBtn').style.pointerEvents = noStock ? 'none' : 'auto';
+  }
+
+  function renderAddrList() {
+    var html = '';
+    addresses.forEach(function(addr) {
+      var checked = addr.id === selectedAddrId ? ' checked' : '';
+      var tagHtml = addr.tag ? '<span class="addr-tag">' + addr.tag + '</span>' : '';
+      html += '<div class="addr-list-item" data-id="' + addr.id + '" onclick="selectAddr(' + addr.id + ')">' +
+        '<div class="addr-radio' + checked + '"></div>' +
+        '<div class="addr-detail">' +
+          '<div class="addr-name-phone">' + addr.name + '  ' + addr.phone + tagHtml + '</div>' +
+          '<div class="addr-full">' + addr.region + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+    document.getElementById('addrList').innerHTML = html;
+  }
+
+  window.selectAddr = function(id) {
+    selectedAddrId = id;
+    var addr = addresses.find(function(a) { return a.id === id; });
+    document.getElementById('addrText').textContent = addr.name + '  ' + addr.phone + '  ' + addr.region;
+    var hintEl = document.querySelector('.address-info .addr-hint');
+    if (isXinjiang(addr)) {
+      hintEl.textContent = '该地区暂不支持配送';
+      hintEl.style.color = '#ee0a24';
+    } else {
+      hintEl.textContent = '配送至该地址，预计3-5天送达';
+      hintEl.style.color = '#999';
+    }
+    renderAddrList();
+    updateStockStatus();
+    closeAddrPopup();
+  };
+
+  window.openAddrPopup = function() {
+    renderAddrList();
+    document.getElementById('addrOverlay').classList.add('show');
+    document.getElementById('addrPopup').classList.add('show');
+  };
+
+  function closeAddrPopup() {
+    document.getElementById('addrOverlay').classList.remove('show');
+    document.getElementById('addrPopup').classList.remove('show');
+  }
+
+  document.getElementById('addrOverlay').addEventListener('click', closeAddrPopup);
+  document.getElementById('addrCloseBtn').addEventListener('click', closeAddrPopup);
+
+  // Wrap openPopup to block when out of stock (Xinjiang address)
+  var _origOpenPopup = openPopup;
+  openPopup = function(action) {
+    var addr = addresses.find(function(a) { return a.id === selectedAddrId; });
+    if (addr && isXinjiang(addr)) {
+      showToast('该商品不支持配送至所选地址');
+      return;
+    }
+    _origOpenPopup(action);
+  };
+
+  updateStockStatus();
 })();
 </script>
 </body>

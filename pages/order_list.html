@@ -83,8 +83,32 @@
   .order-card-header .order-status.pending { color: #ff9800; }
   .order-card-header .order-status.shipped { color: #2196f3; }
   .order-card-header .order-status.delivered { color: #4caf50; }
+  .order-card-header .order-status.partial-ship { color: #2196f3; }
+  .order-card-header .order-status.partial-received { color: #4caf50; }
   .order-card-header .order-status.completed { color: #999; }
+  .order-card-header .order-status.reviewed { color: #999; }
   .order-card-header .order-status.cancelled { color: #999; }
+
+  /* Package summary */
+  .package-summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px 0;
+    font-size: 11px;
+    color: #999;
+  }
+  .package-summary .pkg-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+  .package-summary .pkg-tag.shipping { background: #fff3e0; color: #ff9800; }
+  .package-summary .pkg-tag.pending { background: #e3f2fd; color: #2196f3; }
+  .package-summary .pkg-tag.delivered { background: #e8f5e9; color: #4caf50; }
 
   .order-card-body {
     padding: 10px 12px;
@@ -130,19 +154,23 @@
 
   .order-card-footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px 12px;
     border-top: 1px solid #f5f5f5;
+    gap: 6px 0;
   }
   .order-card-footer .total-text {
     font-size: 13px;
     color: #666;
+    flex: 1 1 100%;
   }
   .order-card-footer .total-text b { color: #333; font-size: 15px; }
   .order-card-footer .action-btns {
     display: flex;
     gap: 8px;
+    margin-left: auto;
   }
   .btn-sm {
     padding: 5px 14px;
@@ -208,7 +236,7 @@
     <div class="order-tab active" data-tab="all">全部</div>
     <div class="order-tab" data-tab="pending">待付款<span class="tab-badge">1</span></div>
     <div class="order-tab" data-tab="shipped">待发货</div>
-    <div class="order-tab" data-tab="delivered">待收货<span class="tab-badge">2</span></div>
+    <div class="order-tab" data-tab="delivered">待收货<span class="tab-badge">4</span></div>
     <div class="order-tab" data-tab="completed">已完成</div>
   </div>
 
@@ -285,13 +313,94 @@
         { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', price: '128.00', qty: 1, img: '../images/unsplash/1578985545062-69928b1d9587.jpg' }
       ],
       actions: ['再次购买', '评价']
+    },
+    {
+      id: 'JS2026031508007',
+      status: 'reviewed',
+      statusText: '已评价',
+      total: '68.00',
+      products: [
+        { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, img: '../images/unsplash/1602143407151-7111542de6e8.jpg' }
+      ],
+      actions: ['再次购买']
+    },
+    {
+      id: 'JS2026031012008',
+      status: 'cancelled',
+      statusText: '已取消',
+      total: '39.90',
+      products: [
+        { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', qty: 1, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' }
+      ],
+      actions: ['再次购买']
+    },
+    {
+      id: 'JS2026040799009',
+      status: 'partial-ship',
+      statusText: '部分发货',
+      total: '257.90',
+      products: [
+        { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, img: '../images/unsplash/1602143407151-7111542de6e8.jpg' },
+        { name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '59.00', qty: 1, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg' },
+        { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', qty: 1, img: '../images/unsplash/1542291026-7eec264c27ff.jpg' }
+      ],
+      packages: [
+        { no: '包裹1', status: 'shipping', statusText: '运输中', products: [0, 1] },
+        { no: '包裹2', status: 'pending', statusText: '待发货', products: [2] }
+      ],
+      actions: ['查看详情']
+    },
+    {
+      id: 'JS2026040188010',
+      status: 'partial-received',
+      statusText: '部分签收',
+      total: '227.00',
+      products: [
+        { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', qty: 1, img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' },
+        { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', qty: 1, img: '../images/unsplash/1523275335684-37898b6baf30.jpg' }
+      ],
+      packages: [
+        { no: '包裹1', status: 'delivered', statusText: '已签收', products: [0] },
+        { no: '包裹2', status: 'shipping', statusText: '运输中', products: [1] }
+      ],
+      actions: ['查看物流']
+    },
+    {
+      id: 'JS2026041505011',
+      status: 'delivered',
+      statusText: '待收货',
+      total: '68.00',
+      payMode: 'beans',
+      beansUsed: 68,
+      products: [
+        { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, img: '../images/unsplash/1602143407151-7111542de6e8.jpg' }
+      ],
+      actions: ['查看物流', '确认收货']
+    },
+    {
+      id: 'JS2026041806012',
+      status: 'completed',
+      statusText: '已完成',
+      total: '247.00',
+      payMode: 'combo',
+      beansUsed: 150,
+      cashPaid: '97.00',
+      products: [
+        { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', qty: 1, img: '../images/unsplash/1523275335684-37898b6baf30.jpg' },
+        { name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '48.00', qty: 1, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg' }
+      ],
+      actions: ['再次购买', '评价']
     }
   ];
 
   var currentTab = 'all';
 
   function renderOrders() {
-    var filtered = currentTab === 'all' ? orders : orders.filter(function(o) { return o.status === currentTab; });
+    var filtered = currentTab === 'all' ? orders : orders.filter(function(o) {
+      if (currentTab === 'completed') return o.status === 'completed' || o.status === 'reviewed';
+      if (currentTab === 'delivered') return o.status === 'delivered' || o.status === 'partial-ship' || o.status === 'partial-received';
+      return o.status === currentTab;
+    });
     if (filtered.length === 0) {
       document.getElementById('orderList').innerHTML =
         '<div class="order-empty" style="display:flex;">' +
@@ -318,6 +427,16 @@
         '</div>';
       });
 
+      var pkgHtml = '';
+      if (order.packages) {
+        pkgHtml = '<div class="package-summary">';
+        order.packages.forEach(function(pkg) {
+          var prodNames = pkg.products.map(function(idx) { return order.products[idx].name.substring(0, 6) + '…'; }).join('、');
+          pkgHtml += '<span class="pkg-tag ' + pkg.status + '">' + pkg.no + '：' + pkg.statusText + '</span>';
+        });
+        pkgHtml += '</div>';
+      }
+
       var actionsHtml = '';
       order.actions.forEach(function(a, i) {
         var cls = i === order.actions.length - 1 ? ' primary' : '';
@@ -325,12 +444,21 @@
         var href = '#';
         if (a === '查看详情') href = 'order_detail.html';
         if (a === '查看物流') href = 'logistics.html';
-        if (a === '去支付') href = 'payment.html';
+        if (a === '去支付') href = 'order_pay.html';
         if (a === '取消订单') href = 'order_cancel.html';
         if (a === '评价') href = 'write_review.html';
         if (a === '再次购买') href = 'product_detail.html';
         actionsHtml += '<a href="' + href + '" class="btn-sm' + cls + '">' + a + '</a>';
       });
+
+      var totalHtml = '共' + order.products.reduce(function(s, p) { return s + p.qty; }, 0) + '件 合计 ';
+      if (order.payMode === 'beans') {
+        totalHtml += '<b>' + order.beansUsed + '苏银豆</b>';
+      } else if (order.payMode === 'combo') {
+        totalHtml += '<b>' + order.beansUsed + '苏银豆+&yen;' + order.cashPaid + '</b>';
+      } else {
+        totalHtml += '<b>&yen;' + order.total + '</b>';
+      }
 
       html += '<div class="order-card">' +
         '<div class="order-card-header">' +
@@ -338,8 +466,9 @@
           '<span class="order-status ' + order.status + '">' + order.statusText + '</span>' +
         '</div>' +
         '<div class="order-card-body" onclick="location.href=\'order_detail.html\'">' + prodsHtml + '</div>' +
+        pkgHtml +
         '<div class="order-card-footer">' +
-          '<span class="total-text">共' + order.products.length + '件 合计 <b>&yen;' + order.total + '</b></span>' +
+          '<span class="total-text">' + totalHtml + '</span>' +
           '<div class="action-btns">' + actionsHtml + '</div>' +
         '</div>' +
       '</div>';

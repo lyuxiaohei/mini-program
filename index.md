@@ -43,7 +43,7 @@
 - [兑换电影票](pages/points_movie.html) `V0.2`
 - [卡券绑定](pages/coupon_bind.html)
 - [确认订单](pages/order.html)
-- [订单支付](pages/payment.html)
+- [订单支付](pages/order_pay.html)
 - [支付成功](pages/pay_success.html)
 - [订单详情](pages/order_detail.html)
 - [取消订单](pages/order_cancel.html)
