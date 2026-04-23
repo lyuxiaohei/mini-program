@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>电影/影院 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .movie-browser-page {
+    background: #f4f6fb;
+    min-height: calc(100vh - 88px);
+  }
+  .movie-browser-header {
+    background: #fff;
+  }
+  .search-panel {
+    background: #fff;
+    padding: 10px 12px 0;
+  }
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .city-select {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+  }
+  .city-select svg {
+    width: 14px;
+    height: 14px;
+    color: #667085;
+  }
+  .search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    border-radius: 19px;
+    background: #f1f4f8;
+    padding: 0 12px;
+  }
+  .search-box svg {
+    width: 16px;
+    height: 16px;
+    color: #b2b8c2;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+  }
+  .search-box input::placeholder {
+    color: #c0c5ce;
+  }
+  .movie-tabs {
+    background: #fff;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 12px 12px 0;
+    border-bottom: 1px solid #eef0f4;
+  }
+  .movie-tab {
+    position: relative;
+    text-align: center;
+    padding-bottom: 12px;
+    font-size: 16px;
+    color: #777f8e;
+    cursor: pointer;
+  }
+  .movie-tab.active {
+    color: #222;
+    font-weight: 600;
+  }
+  .movie-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 20px;
+    height: 3px;
+    border-radius: 999px;
+    background: #2f6fff;
+    transform: translateX(-50%);
+  }
+  .movie-list-wrap {
+    padding: 14px 12px 20px;
+  }
+  .movie-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .movie-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .movie-poster {
+    width: 70px;
+    height: 96px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #edf0f4;
+    flex-shrink: 0;
+  }
+  .movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .movie-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .movie-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .movie-score {
+    font-size: 13px;
+    color: #8a8f99;
+    margin-bottom: 4px;
+  }
+  .movie-score strong {
+    color: #ff9f1c;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+  .movie-meta {
+    font-size: 12px;
+    color: #667085;
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .movie-action {
+    flex-shrink: 0;
+  }
+  .movie-action-btn {
+    min-width: 66px;
+    height: 34px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 17px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+  .movie-action-btn.buy {
+    background: linear-gradient(135deg, #2f87ff, #2073ff);
+  }
+  .movie-action-btn.presale {
+    background: linear-gradient(135deg, #ffbe45, #ff9f1c);
+  }
+  .movie-action-btn:active {
+    opacity: 0.88;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <div class="sub-nav movie-browser-header">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">电影/影院</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="page-scroll movie-browser-page">
+    <div class="search-panel">
+      <div class="search-row">
+        <div class="city-select">
+          <span>深圳</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="请输入要搜索的影院">
+        </div>
+      </div>
+    </div>
+
+    <div class="movie-tabs">
+      <div class="movie-tab active" data-tab="hot">热映</div>
+      <div class="movie-tab" data-tab="cinema">影院</div>
+      <div class="movie-tab" data-tab="coming">即将上映</div>
+    </div>
+
+    <div class="movie-list-wrap">
+      <div id="movieList" class="movie-list">
+        <div class="movie-item" data-group="hot">
+          <div class="movie-poster"><img src="../images/unsplash/1611186871348-b1ce696e52c9.jpg" alt="我，许可"></div>
+          <div class="movie-info">
+            <div class="movie-name">我，许可</div>
+            <div class="movie-score">电影评分<strong>9.4</strong></div>
+            <div class="movie-meta">导演：杨荔钧</div>
+            <div class="movie-meta">主演：安洪亮 海强</div>
+            <div class="movie-meta">类型：剧情 / 喜剧</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn buy" type="button">购票</button></div>
+        </div>
+
+        <div class="movie-item" data-group="hot">
+          <div class="movie-poster"><img src="../images/unsplash/1624378439575-d8705ad7ae80.jpg" alt="挽救计划"></div>
+          <div class="movie-info">
+            <div class="movie-name">挽救计划</div>
+            <div class="movie-score">电影评分<strong>9.1</strong></div>
+            <div class="movie-meta">导演：菲尔·罗德 克里斯托弗·米勒</div>
+            <div class="movie-meta">主演：瑞恩·高斯林 桑德拉·惠勒</div>
+            <div class="movie-meta">类型：科幻 / 冒险 / 动作</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn buy" type="button">购票</button></div>
+        </div>
+
+        <div class="movie-item" data-group="coming">
+          <div class="movie-poster"><img src="../images/unsplash/1518002171953-a080ee817e1f.jpg" alt="迈克尔·杰克逊：巨星之路"></div>
+          <div class="movie-info">
+            <div class="movie-name">迈克尔·杰克逊：巨星之路</div>
+            <div class="movie-score">电影评分<strong>8.8</strong></div>
+            <div class="movie-meta">导演：安东尼·福奎阿</div>
+            <div class="movie-meta">主演：贾法尔·杰克逊 尼娅·朗</div>
+            <div class="movie-meta">类型：剧情 / 音乐 / 传记</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn presale" type="button">预售</button></div>
+        </div>
+
+        <div class="movie-item" data-group="hot">
+          <div class="movie-poster"><img src="../images/unsplash/1494790108377-be9c29b29330.jpg" alt="不能错过的只有你2"></div>
+          <div class="movie-info">
+            <div class="movie-name">不能错过的只有你2</div>
+            <div class="movie-score">电影评分<strong>9.0</strong></div>
+            <div class="movie-meta">导演：陈晨</div>
+            <div class="movie-meta">主演：吴磊 李萌萌</div>
+            <div class="movie-meta">类型：爱情 / 剧情</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn buy" type="button">购票</button></div>
+        </div>
+
+        <div class="movie-item" data-group="cinema" style="display:none;">
+          <div class="movie-poster"><img src="../images/unsplash/1550583724-b2692b85b150.jpg" alt="中航城影城"></div>
+          <div class="movie-info">
+            <div class="movie-name">中航城影城（福田店）</div>
+            <div class="movie-score">影院评分<strong>4.8</strong></div>
+            <div class="movie-meta">深圳市福田区深南大道 138 号 4 楼</div>
+            <div class="movie-meta">支持次卡 / 可选 IMAX / 停车 3 小时免费</div>
+            <div class="movie-meta">最近场次：13:40 / 15:20 / 19:10</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn buy" type="button">选座</button></div>
+        </div>
+
+        <div class="movie-item" data-group="cinema" style="display:none;">
+          <div class="movie-poster"><img src="../images/unsplash/1544145945-f90425340c7e.jpg" alt="万象影城"></div>
+          <div class="movie-info">
+            <div class="movie-name">万象影城（南山店）</div>
+            <div class="movie-score">影院评分<strong>4.7</strong></div>
+            <div class="movie-meta">深圳市南山区海德一道 88 号 5 楼</div>
+            <div class="movie-meta">支持次卡 / 杜比全景声 / 周末热门</div>
+            <div class="movie-meta">最近场次：12:55 / 16:30 / 20:05</div>
+          </div>
+          <div class="movie-action"><button class="movie-action-btn buy" type="button">选座</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var tabs = document.querySelectorAll('.movie-tab');
+  var items = document.querySelectorAll('.movie-item');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var current = tab.dataset.tab;
+      tabs.forEach(function(item) {
+        item.classList.toggle('active', item === tab);
+      });
+      items.forEach(function(item) {
+        item.style.display = item.dataset.group === current ? 'flex' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

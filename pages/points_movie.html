@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>积分兑换电影票 - 苏银豆商城</title>
+<title>积分兑换电影票次卡 - 苏银豆商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
   .movie-sub-nav {
@@ -108,15 +108,6 @@
   .exchange-input::placeholder {
     color: #c7ccd6;
   }
-  .helper-row {
-    margin-top: 12px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: #fff7f2;
-    font-size: 12px;
-    color: #7a4b36;
-    line-height: 1.7;
-  }
   .exchange-btn {
     width: 100%;
     height: 46px;
@@ -156,11 +147,6 @@
     font-weight: 600;
     color: #333;
   }
-  .tips-link {
-    color: #2f6fff;
-    font-size: 14px;
-    text-decoration: none;
-  }
   .tips-list {
     list-style: none;
   }
@@ -184,6 +170,80 @@
     border-radius: 50%;
     background: #ff8d53;
   }
+  .success-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 18, 28, 0.48);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 400;
+  }
+  .success-overlay.show {
+    display: flex;
+  }
+  .success-dialog {
+    width: 100%;
+    max-width: 320px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px 20px 18px;
+    box-shadow: 0 18px 48px rgba(18, 32, 56, 0.2);
+    text-align: center;
+  }
+  .success-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff8d53, #ee0a24);
+    color: #fff;
+  }
+  .success-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+  .success-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+  }
+  .success-desc {
+    font-size: 13px;
+    color: #667085;
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .success-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .success-btn {
+    flex: 1;
+    height: 42px;
+    border-radius: 21px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .success-btn.ghost {
+    background: #fff;
+    color: #667085;
+    border-color: #e5e7eb;
+  }
+  .success-btn.primary {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+  }
+  .success-btn:active {
+    opacity: 0.88;
+  }
 </style>
 </head>
 <body>
@@ -201,7 +261,7 @@
       <div class="back-btn" onclick="history.back()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
       </div>
-      <span class="nav-title">兑换电影票</span>
+      <span class="nav-title">兑换电影票次卡</span>
       <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
     </div>
   </div>
@@ -211,28 +271,40 @@
       <div class="movie-card">
         <div class="card-head">
           <span class="card-badge">影院专区</span>
-          <div class="card-title">电影票卡密兑换</div>
+          <div class="card-title">电影票次卡兑换</div>
         </div>
       </div>
     </div>
 
     <div class="form-card">
-      <div class="form-title">请输入电影票兑换码</div>
-      <input id="movieExchangeInput" class="exchange-input" type="text" placeholder="请输入电影票兑换码">
-      <div class="helper-row">兑换成功后，电影票将自动发放至票券包；如遇场次限制，请在票券包内查看具体使用规则。</div>
-      <button id="movieExchangeBtn" class="exchange-btn" type="button" disabled>立即兑换电影票</button>
+      <div class="form-title">请输入电影票次卡兑换码</div>
+      <input id="movieExchangeInput" class="exchange-input" type="text" placeholder="请输入电影票次卡兑换码">
+      <button id="movieExchangeBtn" class="exchange-btn" type="button" disabled>立即兑换电影票次卡</button>
     </div>
 
     <div class="tips-card">
       <div class="tips-head">
         <div class="tips-title">温馨提示</div>
-        <a class="tips-link" href="customer_service.html">联系客服</a>
       </div>
       <ul class="tips-list">
-        <li>电影票兑换码仅限使用一次，不挂失、不找零、不支持提现或转赠，请尽快完成兑换。</li>
-        <li>兑换成功后票券将自动发放到账户票券包，具体可用影院、场次和有效期以票券展示信息为准。</li>
-        <li>如影片下线、场次取消或影院规则调整，平台将按票券规则进行变更或退回，请留意票券包通知。</li>
+        <li>电影票次卡兑换码仅限使用一次，不挂失、不找零、不支持提现或转赠，请尽快完成兑换。</li>
+        <li>兑换成功后电影票次卡将自动发放到账户卡卷，具体可用影院、场次和有效期以卡卷展示信息为准。</li>
+        <li>如影片下线、场次取消或影院规则调整，平台将按卡卷规则进行变更或退回，请留意卡卷通知。</li>
       </ul>
+    </div>
+  </div>
+
+  <div id="successOverlay" class="success-overlay">
+    <div class="success-dialog">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-title">兑换成功</div>
+      <div class="success-desc">电影票次卡已发放至卡券。现在可以去挑选影片和影院，直接使用次卡进行购票。</div>
+      <div class="success-actions">
+        <button id="closeSuccessBtn" class="success-btn ghost" type="button">稍后再看</button>
+        <button id="buyMovieBtn" class="success-btn primary" type="button">去购买电影票</button>
+      </div>
     </div>
   </div>
 
@@ -244,6 +316,9 @@
 (function() {
   var input = document.getElementById('movieExchangeInput');
   var button = document.getElementById('movieExchangeBtn');
+  var successOverlay = document.getElementById('successOverlay');
+  var closeSuccessBtn = document.getElementById('closeSuccessBtn');
+  var buyMovieBtn = document.getElementById('buyMovieBtn');
 
   function updateButtonState() {
     var hasValue = input.value.trim().length > 0;
@@ -255,9 +330,23 @@
 
   button.addEventListener('click', function() {
     if (button.disabled) return;
-    alert('兑换成功，电影票已发放到票券包');
     input.value = '';
     updateButtonState();
+    successOverlay.classList.add('show');
+  });
+
+  closeSuccessBtn.addEventListener('click', function() {
+    successOverlay.classList.remove('show');
+  });
+
+  buyMovieBtn.addEventListener('click', function() {
+    location.href = 'movie_cinema.html';
+  });
+
+  successOverlay.addEventListener('click', function(e) {
+    if (e.target === successOverlay) {
+      successOverlay.classList.remove('show');
+    }
   });
 })();
 </script>

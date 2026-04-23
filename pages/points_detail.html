@@ -49,6 +49,21 @@
     justify-content: space-between;
     gap: 12px;
   }
+  .summary-filter {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+  .year-select {
+    height: 32px;
+    border: 1px solid #eceef2;
+    border-radius: 999px;
+    padding: 0 12px;
+    font-size: 12px;
+    color: #444;
+    background: #fafafb;
+    outline: none;
+  }
   .summary-title {
     font-size: 15px;
     font-weight: 700;
@@ -88,57 +103,64 @@
   .main {
     padding: 0 12px 16px;
   }
-  .table-card {
+  .record-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .record-card {
     background: #fff;
     border-radius: 16px;
-    overflow: hidden;
+    padding: 14px;
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
-  .table-head,
-  .table-row {
-    display: grid;
-    grid-template-columns: 42px 42px 54px minmax(128px, 1fr) 46px;
-    gap: 6px;
-    align-items: center;
+  .record-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
   }
-  .table-head {
-    padding: 12px 14px;
-    font-size: 11px;
-    color: #8a8f99;
-    background: #fafafb;
-    border-bottom: 1px solid #eceef2;
-  }
-  .table-group {
-    display: none;
-  }
-  .table-group.active {
-    display: block;
-  }
-  .table-row {
-    padding: 14px;
-    font-size: 11px;
-    color: #333;
-    border-top: 1px solid #f3f4f6;
-  }
-  .table-head div,
-  .table-row div {
-    min-width: 0;
-    word-break: keep-all;
-  }
-  .content-cell {
+  .record-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
     line-height: 1.5;
-    word-break: break-all;
   }
-  .table-row:first-child {
-    border-top: none;
+  .record-points {
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 700;
   }
-  .amount-plus {
+  .record-points.plus {
     color: #12a150;
-    font-weight: 600;
   }
-  .amount-minus {
-    color: #f04d4f;
-    font-weight: 600;
+  .record-points.minus,
+  .record-points.expire {
+    color: #ee0a24;
+  }
+  .record-meta {
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    color: #667085;
+    line-height: 1.6;
+  }
+  .record-meta-row {
+    word-break: break-word;
+  }
+  .empty-state {
+    display: none;
+    padding: 28px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: #8a8f99;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .empty-state.active {
+    display: block;
   }
 </style>
 </head>
@@ -173,6 +195,13 @@
           </div>
           <div class="summary-number">2,860</div>
         </div>
+        <div class="summary-filter">
+          <select id="yearSelect" class="year-select" aria-label="选择积分明细年份">
+            <option value="all">全部时间</option>
+            <option value="2026">2026年</option>
+            <option value="2025">2025年</option>
+          </select>
+        </div>
         <div class="tabs">
           <span class="tab active" data-filter="all">全部</span>
           <span class="tab" data-filter="increase">增加</span>
@@ -183,112 +212,8 @@
     </div>
 
     <div class="main">
-      <div class="table-card">
-        <div class="table-head">
-          <div>月日</div>
-          <div>积分</div>
-          <div>方式</div>
-          <div>交易内容</div>
-          <div>余额</div>
-        </div>
-
-        <div class="table-group active" data-group="all">
-          <div class="table-row">
-            <div>04-08</div>
-            <div>120</div>
-            <div class="amount-minus">扣除</div>
-            <div class="content-cell">订单号：JS24040801，消费积分120</div>
-            <div>2,860</div>
-          </div>
-          <div class="table-row">
-            <div>04-08</div>
-            <div>120</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">订单号：JS24040801，退回积分120</div>
-            <div>2,980</div>
-          </div>
-          <div class="table-row">
-            <div>04-07</div>
-            <div>200</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">新增积分200（活动补发）</div>
-            <div>2,860</div>
-          </div>
-          <div class="table-row">
-            <div>04-06</div>
-            <div>60</div>
-            <div class="amount-minus">扣除</div>
-            <div class="content-cell">扣除积分60（异常修正）</div>
-            <div>2,660</div>
-          </div>
-          <div class="table-row">
-            <div>04-05</div>
-            <div>100</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">新增积分100，批次号Q24040501</div>
-            <div>2,720</div>
-          </div>
-          <div class="table-row">
-            <div>03-28</div>
-            <div>80</div>
-            <div class="amount-minus">失效</div>
-            <div class="content-cell">积分失效（2025年度到期）</div>
-            <div>2,620</div>
-          </div>
-        </div>
-
-        <div class="table-group" data-group="increase">
-          <div class="table-row">
-            <div>04-08</div>
-            <div>120</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">订单号：JS24040801，退回积分120</div>
-            <div>2,980</div>
-          </div>
-          <div class="table-row">
-            <div>04-07</div>
-            <div>200</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">新增积分200（活动补发）</div>
-            <div>2,860</div>
-          </div>
-          <div class="table-row">
-            <div>04-05</div>
-            <div>100</div>
-            <div class="amount-plus">增加</div>
-            <div class="content-cell">新增积分100，批次号Q24040501</div>
-            <div>2,720</div>
-          </div>
-        </div>
-
-        <div class="table-group" data-group="deduct">
-          <div class="table-row">
-            <div>04-08</div>
-            <div>120</div>
-            <div class="amount-minus">扣除</div>
-            <div class="content-cell">订单号：JS24040801，消费积分120</div>
-            <div>2,860</div>
-          </div>
-          <div class="table-row">
-            <div>04-06</div>
-            <div>60</div>
-            <div class="amount-minus">扣除</div>
-            <div class="content-cell">扣除积分60（异常修正）</div>
-            <div>2,660</div>
-          </div>
-        </div>
-
-        <div class="table-group" data-group="expire">
-          <div class="table-row">
-            <div>03-28</div>
-            <div>80</div>
-            <div class="amount-minus">失效</div>
-            <div class="content-cell">积分失效（2025年度到期）</div>
-            <div>2,620</div>
-          </div>
-        </div>
-      </div>
-
+      <div id="recordList" class="record-list"></div>
+      <div id="emptyState" class="empty-state">当前年份下暂无对应积分明细</div>
     </div>
   </div>
 
@@ -298,17 +223,131 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
+  var yearSelect = document.getElementById('yearSelect');
+  var recordList = document.getElementById('recordList');
+  var emptyState = document.getElementById('emptyState');
+  var currentFilter = 'all';
+
+  var records = [
+    {
+      year: '2026',
+      type: 'deduct',
+      title: '订单消费扣减',
+      points: 120,
+      method: '扣除',
+      time: '2026-04-08 09:15',
+      content: '订单号：JS24040801，消费积分120',
+      balance: '2,860',
+      expireTime: ''
+    },
+    {
+      year: '2026',
+      type: 'increase',
+      title: '订单退回积分',
+      points: 120,
+      method: '增加',
+      time: '2026-04-08 09:03',
+      content: '订单号：JS24040801，退回积分120',
+      balance: '2,980',
+      expireTime: '2026-06-30 23:59'
+    },
+    {
+      year: '2026',
+      type: 'increase',
+      title: '春季会员活动补发',
+      points: 200,
+      method: '增加',
+      time: '2026-04-07 14:22',
+      content: '新增积分200（活动补发）',
+      balance: '2,860',
+      expireTime: '2026-05-18 23:59'
+    },
+    {
+      year: '2026',
+      type: 'deduct',
+      title: '异常修正扣减',
+      points: 60,
+      method: '扣除',
+      time: '2026-04-06 11:40',
+      content: '扣除积分60（异常修正）',
+      balance: '2,660',
+      expireTime: ''
+    },
+    {
+      year: '2025',
+      type: 'increase',
+      title: '年度补发积分',
+      points: 100,
+      method: '增加',
+      time: '2025-12-18 16:25',
+      content: '新增积分100，批次号Q25121801',
+      balance: '2,720',
+      expireTime: '2026-12-31 23:59'
+    },
+    {
+      year: '2025',
+      type: 'expire',
+      title: '签到奖励积分失效',
+      points: 80,
+      method: '失效',
+      time: '2025-11-30 23:59',
+      content: '积分失效（2025年度到期）',
+      balance: '2,620',
+      expireTime: '2025-11-30 23:59'
+    }
+  ];
+
+  function getPointsClass(type) {
+    if (type === 'increase') return 'plus';
+    if (type === 'expire') return 'expire';
+    return 'minus';
+  }
+
+  function renderList() {
+    var selectedYear = yearSelect.value;
+    var filtered = records.filter(function(record) {
+      var matchYear = selectedYear === 'all' || record.year === selectedYear;
+      var matchFilter = currentFilter === 'all' || record.type === currentFilter;
+      return matchYear && matchFilter;
+    });
+
+    recordList.innerHTML = filtered.map(function(record) {
+      var pointsClass = getPointsClass(record.type);
+      var pointPrefix = record.type === 'increase' ? '+' : '-';
+      var expireTimeRow = record.expireTime
+        ? '<div class="record-meta-row">失效时间：' + record.expireTime + '</div>'
+        : '';
+      return '' +
+        '<div class="record-card">' +
+          '<div class="record-head">' +
+            '<div class="record-title">' + record.title + '</div>' +
+            '<div class="record-points ' + pointsClass + '">' + pointPrefix + record.points + '</div>' +
+          '</div>' +
+          '<div class="record-meta">' +
+            '<div class="record-meta-row">时间：' + record.time + '</div>' +
+            '<div class="record-meta-row">方式：' + record.method + '</div>' +
+            '<div class="record-meta-row">交易内容：' + record.content + '</div>' +
+            expireTimeRow +
+            '<div class="record-meta-row">余额：' + record.balance + '</div>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+
+    emptyState.classList.toggle('active', filtered.length === 0);
+  }
+
   document.querySelectorAll('.tab[data-filter]').forEach(function(tab) {
     tab.addEventListener('click', function() {
-      var filter = tab.dataset.filter;
       document.querySelectorAll('.tab[data-filter]').forEach(function(item) {
         item.classList.toggle('active', item === tab);
       });
-      document.querySelectorAll('.table-group').forEach(function(group) {
-        group.classList.toggle('active', group.dataset.group === filter);
-      });
+      currentFilter = tab.dataset.filter;
+      renderList();
     });
   });
+
+  yearSelect.addEventListener('change', renderList);
+  renderList();
 })();
 </script>
 </body>
