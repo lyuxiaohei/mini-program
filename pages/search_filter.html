@@ -354,6 +354,15 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
+  // Get keyword from URL
+  var urlParams = new URLSearchParams(window.location.search);
+  var keyword = urlParams.get('keyword') || '';
+
+  var searchInput = document.getElementById('searchInput');
+  if (keyword) {
+    searchInput.value = keyword;
+  }
+
   var products = [
     { id: 1, name: '日本进口保温杯 不锈钢真空便携水杯500ml', price: 68, sales: 2863, tags: ['新品', '热销'], img: '../images/unsplash/1602143407151-7111542de6e8.jpg' },
     { id: 2, name: '膳魔师保温杯 大容量户外运动水壶1000ml', price: 158, sales: 1524, tags: ['旗舰店'], img: '../images/unsplash/1570831739435-6601aa3fa4fb.jpg' },
@@ -366,6 +375,19 @@
   var filterPanel = document.getElementById('filterPanel');
   var filterTab = document.getElementById('filterTab');
   var activeFilters = document.getElementById('activeFilters');
+
+  // Search input event
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var kw = this.value.trim();
+      if (kw) {
+        // Update URL and search
+        var newUrl = 'search_filter.html?keyword=' + encodeURIComponent(kw);
+        history.replaceState(null, '', newUrl);
+        renderProducts(products);
+      }
+    }
+  });
 
   function renderProducts(data) {
     var html = '';
