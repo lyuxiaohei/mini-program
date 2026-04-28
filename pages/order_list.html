@@ -445,7 +445,7 @@
         if (a === '查看详情') href = 'order_detail.html';
         if (a === '查看物流') href = 'logistics.html';
         if (a === '去支付') href = 'order_pay.html';
-        if (a === '取消订单') href = 'order_cancel.html';
+        if (a === '取消订单') href = 'order_cancel.html?status=' + (order.status === 'pending' ? 'pending' : 'paid');
         if (a === '评价') href = 'write_review.html';
         if (a === '再次购买') href = 'product_detail.html';
         actionsHtml += '<a href="' + href + '" class="btn-sm' + cls + '">' + a + '</a>';

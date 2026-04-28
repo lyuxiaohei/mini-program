@@ -194,30 +194,6 @@
     line-height: 1.8;
   }
 
-  /* Confirm checkbox */
-  .confirm-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
-  }
-  .confirm-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .confirm-checkbox input {
-    margin-top: 3px;
-    width: 16px;
-    height: 16px;
-    accent-color: #ff6034;
-  }
-  .confirm-checkbox label {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.5;
-  }
-
   /* Bottom bar */
   .bottom-bar {
     position: absolute;
@@ -454,17 +430,7 @@
       </div>
     </div>
 
-    <!-- Confirm -->
-    <div class="confirm-section">
-      <div class="confirm-checkbox">
-        <input type="checkbox" id="confirmCheck">
-        <label for="confirmCheck">我已阅读并同意《订单取消说明》，确认取消此订单</label>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Bottom Bar -->
+    <!-- Bottom Bar -->
   <div class="bottom-bar">
     <button class="btn-cancel" onclick="history.back()">暂不取消</button>
     <button class="btn-confirm" id="confirmBtn" disabled>确认取消</button>
@@ -489,13 +455,27 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
+  // 获取订单状态参数
+  var urlParams = new URLSearchParams(window.location.search);
+  var orderStatus = urlParams.get('status') || 'paid'; // paid=已支付, pending=待付款
+  var isPending = orderStatus === 'pending';
+
   var reasonOptions = document.getElementById('reasonOptions');
   var otherReasonInput = document.getElementById('otherReasonInput');
-  var confirmCheck = document.getElementById('confirmCheck');
   var confirmBtn = document.getElementById('confirmBtn');
   var modalOverlay = document.getElementById('modalOverlay');
+  var refundSection = document.querySelector('.refund-info-section');
+  var tipsBox = document.querySelector('.tips-box');
+  var modalDesc = document.querySelector('.modal-desc');
 
   var selectedReason = '';
+
+  // 待付款订单隐藏退款信息
+  if (isPending) {
+    refundSection.style.display = 'none';
+    tipsBox.querySelector('.tips-list').innerHTML = '• 订单取消后不可恢复<br>• 如有疑问可联系客服咨询';
+    modalDesc.textContent = '订单取消后将无法恢复。';
+  }
 
   // Reason selection
   reasonOptions.querySelectorAll('.reason-item').forEach(function(item) {
@@ -517,11 +497,8 @@
     });
   });
 
-  // Checkbox
-  confirmCheck.addEventListener('change', updateSubmitBtn);
-
   function updateSubmitBtn() {
-    confirmBtn.disabled = !(selectedReason && confirmCheck.checked);
+    confirmBtn.disabled = !selectedReason;
   }
 
   // Submit
