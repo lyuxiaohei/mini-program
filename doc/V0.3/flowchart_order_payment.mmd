@@ -1,0 +1,135 @@
+flowchart TB
+    subgraph 商品详情页配送校验
+        PDEnter([进入商品详情页]) --> PDAddr[选择/切换收货地址]
+        PDAddr --> PDCheck{根据所选地址\n校验配送区域}
+        PDCheck -->|不支持| PDBlock[显示 该地区无库存\n加入购物车和立即购买按钮置灰]
+        PDCheck -->|支持| PDNormal[正常展示\n可加入购物车/立即购买]
+        PDNormal --> PDAddr
+        PDBlock --> PDAddr
+    end
+
+    subgraph 购物车配送校验
+        CartEnter([进入购物车]) --> CartCheck[根据默认地址\n批量校验配送区域]
+        CartCheck --> CartSupport[支持的商品\n正常展示]
+        CartCheck --> CartNoship[不支持的商品\n显示该地区无库存+切换地址]
+        CartNoship --> SwitchAddr{点击切换地址}
+        SwitchAddr -->|弹出地址列表| PickAddr[选择新地址]
+        PickAddr --> CartCheck
+        CartSupport --> Checkout[点击结算]
+    end
+
+    Checkout --> InitOrder[确认订单页 order.html]
+
+    subgraph 确认下单与支付
+        InitOrder --> SelectAddr[选择/切换收货地址]
+        SelectAddr --> CheckArea{配送区域校验}
+        CheckArea -->|不支持| BlockArea[提示不支持配送\n禁止下单]
+        CheckArea -->|支持| ShowProducts[显示商品列表\n调整数量/选择支付方式]
+
+        ShowProducts --> PayMode{选择支付方式}
+        PayMode -->|纯苏银豆| BeansValidate[积分适用校验]
+        PayMode -->|现金支付| CashMode[选择微信/支付宝\n隐藏积分抵扣]
+        PayMode -->|组合支付| ComboValidate[积分适用校验]
+
+        BeansValidate --> BeansExpire{积分有效期校验}
+        BeansExpire -->|过期| ErrExpire[提示积分已过期\n引导现金支付]
+        BeansExpire -->|有效| BeansTypeMatch{按优先级匹配\n单品→标签→品牌\n→分类→通兑}
+        BeansTypeMatch -->|匹配成功| BeansAvailable[可抵扣\n计算所需积分]
+        BeansTypeMatch -->|无匹配| ErrBeansNotSupport[该商品不支持\n积分抵扣\n引导现金支付]
+        BeansAvailable -->|单个商品| BeansMode[苏银豆全额抵扣\n显示需消耗积分]
+        BeansAvailable -->|多个商品| BeansMultiResult[汇总可抵扣商品\n计算积分上限]
+        BeansMultiResult -->|全部可抵扣| BeansMode
+        BeansMultiResult -->|部分可抵扣| BeansPartial[显示部分可抵扣\n提示不可抵扣商品]
+        BeansMultiResult -->|全部不可抵扣| ErrBeansAll[所选商品均不支持\n积分抵扣\n引导现金支付]
+
+        ComboValidate --> ComboExpire{积分有效期校验}
+        ComboExpire -->|过期| ErrExpireCombo[提示积分已过期\n引导现金支付]
+        ComboExpire -->|有效| ComboTypeMatch{按优先级匹配\n单品→标签→品牌\n→分类→通兑}
+        ComboTypeMatch -->|匹配成功| ComboAvailable[可抵扣\n输入积分数量]
+        ComboTypeMatch -->|无匹配| ErrComboNotSupport[该商品不支持\n积分抵扣\n引导现金支付]
+        ComboAvailable -->|单个商品| ComboMode[输入苏银豆数量\n+选择微信/支付宝]
+        ComboAvailable -->|多个商品| ComboMultiResult[汇总可抵扣商品\n计算积分上限]
+        ComboMultiResult --> ComboPartialMode[输入积分数量\n仅抵扣可用商品]
+
+        ErrExpire --> CashMode
+        ErrBeansNotSupport --> CashMode
+        ErrBeansAll --> CashMode
+        ErrExpireCombo --> CashMode
+        ErrComboNotSupport --> CashMode
+        BeansPartial --> ComboMode
+        BeansMode --> ClickSubmit
+        ComboMode --> ClickSubmit
+        ComboPartialMode --> ClickSubmit
+        CashMode --> ClickSubmit
+
+        ClickSubmit[点击 立即支付] --> FrontValidate{前端校验}
+        FrontValidate -->|积分不足| ErrBeans[提示积分不足]
+        FrontValidate -->|通过| APIOrder[调用下单接口]
+
+        APIOrder --> BackValidate{后端校验}
+        BackValidate -->|积分规则不适用| ErrPointsRule[提示部分商品\n不支持积分抵扣]
+        BackValidate -->|商品已下架| ErrOff[提示商品已下架]
+        BackValidate -->|库存不足| ErrStock[提示库存不足]
+        BackValidate -->|配送区域不支持| ErrDelivery[提示不支持配送]
+        BackValidate -->|校验通过| LockStock[锁定库存\n预扣减]
+        LockStock --> CalcPrice[后端重新计算价格\n防篡改]
+        CalcPrice --> AllocPoints{含积分?}
+        AllocPoints -->|是| SplitPoints[积分按比例分摊到子订单\n最后一个用差值]
+        AllocPoints -->|否| CreateOrder
+        SplitPoints --> CreateOrder[创建订单\n生成订单号]
+        CreateOrder --> PayBranch{支付方式}
+
+        PayBranch -->|纯苏银豆| DirectPay[扣减积分余额\n直接扣减库存\n订单状态=待发货]
+        DirectPay --> PayOK[支付成功]
+        PayBranch -->|现金/组合| WaitPay[订单状态=待付款\n启动15分钟超时倒计时]
+        WaitPay --> ShowPopup[弹出收银台弹窗]
+        ShowPopup --> ConfirmStep[确认支付信息]
+        ConfirmStep --> PwdStep[输入6位支付密码]
+        PwdStep --> CallPay[调用支付接口]
+        CallPay --> PayResult{支付结果}
+
+        PayResult -->|成功| PayOK
+        PayResult -->|失败| PayFail[提示支付失败\n留在支付页]
+        PayResult -->|超时无回调| ActiveQuery[后端主动查单\n定时任务补偿]
+
+        PayOK --> PaySuccess[支付成功页\npay_success.html]
+        PaySuccess --> OrderDetail[查看订单详情]
+        PaySuccess --> Home[返回首页]
+
+        WaitPay --> Timeout{15分钟倒计时归零?}
+        Timeout -->|是| BufferPeriod[进入3分钟缓冲期\n前端提示即将关闭\n按钮仍可点击]
+        Timeout -->|否 继续等待| Timeout
+        BufferPeriod --> BufferAction{用户操作}
+        BufferAction -->|缓冲期内完成付款| PayOK
+        BufferAction -->|缓冲期结束无人付款| ReleaseStock[关闭订单并释放库存\n两步在同一事务中完成]
+        ReleaseStock --> CancelOrder[订单状态→已关闭]
+    end
+
+    subgraph 待支付订单重新支付
+        OrderList[我的订单 - 待支付列表] --> ClickPay[点击 去支付]
+        ClickPay --> OrderPay[订单支付页 order_pay.html]
+        OrderPay --> ReValidate{后端校验}
+        ReValidate -->|订单已关闭| ErrCancelled[提示订单已关闭\n返回订单列表]
+        ReValidate -->|订单正常| ShowPayInfo[显示锁定价格/积分\n不可修改]
+        ShowPayInfo --> SelectChannel2[选择微信/支付宝]
+        SelectChannel2 --> Popup2[弹出收银台弹窗]
+        Popup2 --> PwdStep
+    end
+
+    style PayOK fill:#e8f5e9,stroke:#4caf50,color:#333
+    style PaySuccess fill:#e8f5e9,stroke:#4caf50,color:#333
+    style CancelOrder fill:#fce4ec,stroke:#e91e63,color:#333
+    style PDBlock fill:#fff3e0,stroke:#ff9800,color:#333
+    style CartNoship fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrPointsRule fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrOff fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrStock fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrDelivery fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrExpire fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrBeansNotSupport fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrBeansAll fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrExpireCombo fill:#fff3e0,stroke:#ff9800,color:#333
+    style ErrComboNotSupport fill:#fff3e0,stroke:#ff9800,color:#333
+    style BeansPartial fill:#fff9f5,stroke:#ff6034,color:#333
+    style ErrCancelled fill:#fff3e0,stroke:#ff9800,color:#333
+    style PayFail fill:#fce4ec,stroke:#e91e63,color:#333
