@@ -272,7 +272,7 @@ flowchart TD
 
 ### 4.0 订单状态流转
 
-![订单状态流转](flowchart_order_status.svg)
+![订单状态流转](flowcharts/flowchart_order_status.svg)
 
 <details>
 <summary>Mermaid 源码</summary>
@@ -321,7 +321,7 @@ flowchart LR
 
 下单与支付涉及多个页面的联动：商品详情页和购物车页进行配送校验，确认订单页完成支付方式和积分校验，支付成功后进入订单管理。完整流程如下：
 
-![下单与支付流程](flowchart_order_payment.svg)
+![下单与支付流程](flowcharts/flowchart_order_payment.svg)
 
 <details>
 <summary>流程要点</summary>
@@ -673,7 +673,7 @@ flowchart TD
 
 一单订单可拆为多个包裹，订单整体状态由**所有包裹的物流状态取最滞后值**推导而来。
 
-![订单状态与包裹状态映射](flowchart_package_status.svg)
+![订单状态与包裹状态映射](flowcharts/flowchart_package_status.svg)
 
 <details>
 <summary>Mermaid 源码</summary>
