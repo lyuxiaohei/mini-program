@@ -1,0 +1,20 @@
+flowchart LR
+    START([用户下单]) --> PayMode{支付方式}
+    PayMode -->|纯积分支付| C[待发货]
+    PayMode -->|现金/组合支付| A[待付款]
+    A -->|取消订单| B[已取消]
+    A -->|确认订单页立即支付| C
+    A -->|订单列表去支付| AP[订单支付页]
+    AP -->|支付成功| C
+    AP -->|15+3分钟未支付| BC[已关闭]
+    C -->|取消订单 纯积分| BX[已取消]
+    C -->|部分包裹发货| PS([部分发货])
+    PS -.->|所有包裹均已发出| D[待收货]
+    C -->|所有包裹均已发出| D
+    D -->|部分包裹签收| PR([部分签收])
+    PR -.->|所有包裹均已签收| E[已完成]
+    D -->|所有包裹均已签收| E
+    E -.->|再次购买| G[跳转商品详情]
+
+    style PS stroke-dasharray: 5 5,fill:#f5f5f5,stroke:#999
+    style PR stroke-dasharray: 5 5,fill:#f5f5f5,stroke:#999

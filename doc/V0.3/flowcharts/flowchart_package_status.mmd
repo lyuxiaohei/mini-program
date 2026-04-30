@@ -1,0 +1,24 @@
+flowchart TB
+    subgraph 订单状态
+        O1[待发货]
+        O2[部分发货]
+        O3[待收货]
+        O4[已完成]
+    end
+
+    subgraph 包裹状态
+        P1[包裹A：待发货]
+        P2[包裹B：运输中]
+        P3[包裹C：已签收]
+    end
+
+    O1 -->|"商家发出第一个包裹"| O2
+    O2 -->|"所有包裹均已发出"| O3
+    O3 -->|"所有包裹均已签收"| O4
+
+    P1 -.->|"包裹状态为最滞后"| O1
+    P2 -.->|"至少一个在途"| O2
+    P3 -.->|"全部签收"| O4
+
+    style O2 fill:#fff3e0,stroke:#ff9800,color:#333
+    style P2 fill:#fff3e0,stroke:#ff9800,color:#333
