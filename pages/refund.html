@@ -552,21 +552,6 @@
     var html = '<div class="refund-list">';
     recordRefunds.forEach(function(item) {
       var detailUrl = getRefundDetailUrl(item);
-      var stepsHtml = '<div class="timeline-mini">' +
-        '<div class="timeline-mini-title">处理进度</div>' +
-        '<div class="timeline-mini-steps">';
-
-      item.steps.forEach(function(step, idx) {
-        var stepClass = '';
-        if (idx < item.currentStep) stepClass = 'done';
-        else if (idx === item.currentStep) stepClass = 'active';
-
-        stepsHtml += '<div class="timeline-step ' + stepClass + '">' +
-          '<div class="step-dot">' + (stepClass ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div>' +
-          '<span class="step-text">' + stepLabels[step] + '</span>' +
-        '</div>';
-      });
-      stepsHtml += '</div></div>';
 
       var amountText = (item.status === 'rejected' || item.status === 'cancelled') ? '' : ('退款 &yen;' + item.amount);
 
@@ -586,7 +571,6 @@
             '</div>' +
           '</div>' +
         '</div>' +
-        stepsHtml +
         '<div class="refund-card-footer">' +
           (item.status === 'rejected' ? '<button class="btn-sm" onclick="event.stopPropagation();location.href=\'apply_refund.html\'">重新申请</button>' : '') +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'' + detailUrl + '\'">查看详情</button>' +
