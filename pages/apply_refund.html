@@ -61,7 +61,6 @@
   .refund-types {
     display: flex;
     gap: 10px;
-    margin-bottom: 16px;
   }
   .refund-type-item {
     flex: 1;
@@ -89,6 +88,115 @@
     color: #999;
   }
 
+  /* Product selection */
+  .products-section {
+    background: #fff;
+    margin-top: 8px;
+    padding: 12px;
+  }
+  .products-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .select-all-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #666;
+    cursor: pointer;
+  }
+  .product-select-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .product-select-item {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .product-top {
+    display: flex;
+    gap: 8px;
+  }
+  .product-check {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .product-check input {
+    width: 16px;
+    height: 16px;
+  }
+  .product-select-item .prod-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .product-select-item .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+  .product-select-item .prod-info { flex: 1; min-width: 0; }
+  .product-select-item .prod-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .product-select-item .prod-spec {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .product-select-item .prod-price {
+    font-size: 13px;
+    color: #ee0a24;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .qty-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  .qty-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 28px;
+  }
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #fafafa;
+    color: #666;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .qty-value {
+    min-width: 28px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+  }
+  .products-tip {
+    font-size: 11px;
+    color: #999;
+    margin-top: 8px;
+  }
+
   /* Form row */
   .form-row {
     display: flex;
@@ -112,6 +220,19 @@
     background: transparent;
   }
   .form-row input::placeholder { color: #bbb; }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .contact-reset {
+    font-size: 12px;
+    color: #ff6034;
+    cursor: pointer;
+    white-space: nowrap;
+    display: none;
+  }
   .form-row select {
     flex: 1;
     border: none;
@@ -226,6 +347,54 @@
     cursor: pointer;
   }
   .btn-submit:active { opacity: 0.85; }
+  .notice-modal-mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .notice-modal {
+    width: 100%;
+    max-width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+  .notice-modal-title {
+    padding: 14px 16px 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+  }
+  .notice-modal-content {
+    padding: 0 16px 14px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+  }
+  .notice-modal-footer {
+    border-top: 1px solid #f2f2f2;
+    padding: 10px 16px 14px;
+  }
+  .notice-modal-confirm {
+    width: 100%;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+  }
 
   /* Rules */
   .rules-section {
@@ -280,35 +449,38 @@
   <!-- Scrollable Content -->
   <div class="page-scroll" style="padding-bottom: 80px;">
 
-    <!-- Product Card -->
-    <div class="product-card">
-      <div class="prod-img"><img src="../images/unsplash/1602143407151-7111542de6e8.jpg" alt=""></div>
-      <div class="prod-info">
-        <div class="prod-name">日本进口保温杯 不锈钢真空便携水杯500ml 大容量男女通用</div>
-        <div class="prod-spec">白色 500ml</div>
-        <div class="prod-price">&yen;68.00</div>
-      </div>
-    </div>
-
-    <!-- Refund Type -->
-    <div class="form-section">
-      <div class="form-section-title">退款类型</div>
+    <!-- After-sale Type -->
+    <div class="form-section" id="afterSaleTypeSection">
+      <div class="form-section-title">售后类型</div>
       <div class="refund-types">
-        <div class="refund-type-item selected" data-type="refund-only">
-          <div class="type-name">仅退款</div>
-          <div class="type-desc">未收到货或协商一致</div>
+        <div class="refund-type-item selected" data-type="exchange">
+          <div class="type-name">换货</div>
+          <div class="type-desc">仅支持同款商品换货</div>
         </div>
         <div class="refund-type-item" data-type="refund-return">
           <div class="type-name">退货退款</div>
-          <div class="type-desc">已收到货需退回</div>
+          <div class="type-desc">支持全选、多选和数量</div>
         </div>
       </div>
+    </div>
+
+    <!-- Products -->
+    <div class="products-section" id="productsSection">
+      <div class="products-header">
+        <div class="form-section-title" style="margin-bottom:0;">选择商品</div>
+        <label class="select-all-label" id="selectAllWrap">
+          <input type="checkbox" id="selectAllProducts">
+          <span>全选</span>
+        </label>
+      </div>
+      <div class="product-select-list" id="productSelectList"></div>
+      <div class="products-tip" id="productsTip">换货仅支持选择 1 件商品，且仅支持同款换货。</div>
     </div>
 
     <!-- Refund Info -->
     <div class="form-section">
       <div class="form-row">
-        <label>退款原因</label>
+        <label id="reasonLabel">退款原因</label>
         <select id="reasonSelect">
           <option value="">请选择退款原因</option>
           <option value="1">不想要了</option>
@@ -321,17 +493,28 @@
         <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="form-row">
+        <label>联系方式</label>
+        <div class="contact-row">
+          <input id="contactInput" type="text" placeholder="请输入手机号">
+          <span id="resetContactBtn" class="contact-reset">重新输入</span>
+        </div>
+      </div>
+      <div class="form-row" id="refundAmountRow">
         <label>退款金额</label>
         <div class="amount-row">
           <span class="symbol">&yen;</span>
           <input type="number" id="refundAmount" value="68.00" step="0.01">
         </div>
       </div>
-      <div class="max-amount">最多可退 <b>&yen;68.00</b></div>
+      <div class="form-row" id="refundPointsRow">
+        <label>可退积分</label>
+        <input id="refundPoints" type="text" value="0积分" readonly>
+      </div>
+      <div class="max-amount" id="maxAmountTip">最多可退 <b>&yen;68.00</b></div>
     </div>
 
     <!-- Description -->
-    <div class="form-section">
+    <div class="form-section" id="descriptionSection">
       <div class="form-section-title">问题描述</div>
       <div class="form-row" style="flex-direction: column; align-items: flex-start;">
         <textarea id="description" placeholder="请描述您遇到的问题（选填）" maxlength="200"></textarea>
@@ -347,7 +530,7 @@
     </div>
 
     <!-- Rules -->
-    <div class="rules-section">
+    <div class="rules-section" id="rulesSection">
       <div class="rules-section-title">退款说明</div>
       <ul class="rules-list">
         <li>退款金额将原路返回至您的支付账户</li>
@@ -363,12 +546,225 @@
     <button class="btn-submit" id="submitBtn">提交申请</button>
   </div>
 
+  <div class="notice-modal-mask" id="submitNoticeModal">
+    <div class="notice-modal">
+      <div class="notice-modal-title">温馨提醒</div>
+      <div class="notice-modal-content">订单使用的优惠券以及已过期积分，售后完成后将不再退回。</div>
+      <div class="notice-modal-footer">
+        <button class="notice-modal-confirm" id="submitNoticeConfirmBtn">确认</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  var refundType = 'refund-only';
+  var pageMode = new URLSearchParams(window.location.search).get('type');
+  var isRefundOnlyMode = pageMode === 'refund-only';
+  var refundType = 'exchange';
   var uploadedImages = [];
+  var navTitle = document.querySelector('.nav-title');
+  var reasonLabel = document.getElementById('reasonLabel');
+  var reasonSelect = document.getElementById('reasonSelect');
+  var contactInput = document.getElementById('contactInput');
+  var resetContactBtn = document.getElementById('resetContactBtn');
+  var refundAmountRow = document.getElementById('refundAmountRow');
+  var refundPointsRow = document.getElementById('refundPointsRow');
+  var refundPointsInput = document.getElementById('refundPoints');
+  var maxAmountTip = document.getElementById('maxAmountTip');
+  var afterSaleTypeSection = document.getElementById('afterSaleTypeSection');
+  var productsSection = document.getElementById('productsSection');
+  var descriptionSection = document.getElementById('descriptionSection');
+  var rulesSection = document.getElementById('rulesSection');
+  var submitBtn = document.getElementById('submitBtn');
+  var submitNoticeModal = document.getElementById('submitNoticeModal');
+  var submitNoticeConfirmBtn = document.getElementById('submitNoticeConfirmBtn');
+  var defaultContactPhone = '13812345678';
+  var refundReasons = [
+    { value: '1', text: '不想要了' },
+    { value: '2', text: '拍错/多拍/不想要' },
+    { value: '3', text: '商品信息描述不符' },
+    { value: '4', text: '商品质量问题' },
+    { value: '5', text: '收到商品损坏' },
+    { value: '6', text: '其他' }
+  ];
+  var exchangeReasons = [
+    { value: 'e1', text: '7天无理由' },
+    { value: 'e2', text: '商品与页面描述不符' },
+    { value: 'e3', text: '少发/发错/未收到货' },
+    { value: 'e4', text: '质量问题/故障' },
+    { value: 'e5', text: '商品破损/包装问题' },
+    { value: 'e6', text: '其他' }
+  ];
+  var orderProducts = [
+    { id: 'sku1', name: '日本进口保温杯 不锈钢真空便携水杯500ml 大容量男女通用', spec: '白色 500ml', price: 68.00, refundCash: 0.00, refundPoints: 68, maxQty: 2, img: '../images/unsplash/1602143407151-7111542de6e8.jpg', selected: true, qty: 1 },
+    { id: 'sku2', name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: 79.00, refundCash: 79.00, refundPoints: 0, maxQty: 1, img: '../images/unsplash/1572635196237-14b3f281503f.jpg', selected: false, qty: 1 },
+    { id: 'sku3', name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: 39.90, refundCash: 39.90, refundPoints: 0, maxQty: 3, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', selected: false, qty: 1 }
+  ];
+
+  /**
+   * 渲染商品选择区域，按售后类型切换交互能力。
+   */
+  function renderProducts() {
+    var listEl = document.getElementById('productSelectList');
+    var selectAllWrap = document.getElementById('selectAllWrap');
+    var selectAllInput = document.getElementById('selectAllProducts');
+    var productsTip = document.getElementById('productsTip');
+    var isExchange = refundType === 'exchange';
+
+    if (isExchange) {
+      selectAllWrap.style.display = 'none';
+      productsTip.textContent = '换货仅支持选择 1 件商品，且仅支持同款换货。';
+    } else {
+      selectAllWrap.style.display = 'flex';
+      productsTip.textContent = '退货退款支持全选、多选，并可调整每件商品退款数量。';
+    }
+
+    var html = '';
+    orderProducts.forEach(function(prod) {
+      html += '<div class="product-select-item">' +
+        '<div class="product-top">' +
+          '<div class="product-check">' +
+            '<input type="checkbox" class="product-checkbox" data-id="' + prod.id + '"' + (prod.selected ? ' checked' : '') + '>' +
+          '</div>' +
+          '<div class="prod-img"><img src="' + prod.img + '" alt=""></div>' +
+          '<div class="prod-info">' +
+            '<div class="prod-name">' + prod.name + '</div>' +
+            '<div class="prod-spec">' + prod.spec + '</div>' +
+            '<div class="prod-price">&yen;' + prod.price.toFixed(2) + '</div>' +
+          '</div>' +
+        '</div>';
+      if (!isExchange && prod.selected) {
+        html += '<div class="qty-row">' +
+          '<div class="qty-control">' +
+            '<button class="qty-btn" data-op="minus" data-id="' + prod.id + '">-</button>' +
+            '<span class="qty-value">' + prod.qty + '</span>' +
+            '<button class="qty-btn" data-op="plus" data-id="' + prod.id + '">+</button>' +
+          '</div>' +
+        '</div>';
+      }
+      html += '</div>';
+    });
+    listEl.innerHTML = html;
+
+    if (!isExchange) {
+      var allSelected = orderProducts.length > 0 && orderProducts.every(function(item) { return item.selected; });
+      selectAllInput.checked = allSelected;
+    } else {
+      selectAllInput.checked = false;
+    }
+
+    bindProductEvents();
+    updateRefundAmount();
+  }
+
+  /**
+   * 绑定商品选择和数量变更事件。
+   */
+  function bindProductEvents() {
+    document.querySelectorAll('.product-checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        var id = this.dataset.id;
+        if (refundType === 'exchange') {
+          orderProducts.forEach(function(item) { item.selected = item.id === id; });
+        } else {
+          orderProducts.forEach(function(item) {
+            if (item.id === id) {
+              item.selected = !!checkbox.checked;
+              if (!item.selected) item.qty = 1;
+            }
+          });
+        }
+        renderProducts();
+      });
+    });
+
+    document.querySelectorAll('.qty-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.dataset.id;
+        var op = this.dataset.op;
+        orderProducts.forEach(function(item) {
+          if (item.id !== id) return;
+          if (op === 'minus') item.qty = Math.max(1, item.qty - 1);
+          if (op === 'plus') item.qty = Math.min(item.maxQty, item.qty + 1);
+        });
+        renderProducts();
+      });
+    });
+  }
+
+  /**
+   * 计算并更新退款金额展示。
+   */
+  function updateRefundAmount() {
+    var total = 0;
+    var totalPoints = 0;
+    if (refundType === 'refund-return') {
+      orderProducts.forEach(function(item) {
+        if (item.selected) {
+          total += (item.refundCash || 0) * item.qty;
+          totalPoints += (item.refundPoints || 0) * item.qty;
+        }
+      });
+    }
+    document.getElementById('refundAmount').value = total.toFixed(2);
+    refundPointsInput.value = totalPoints + '积分';
+    var maxAmountEl = document.querySelector('.max-amount b');
+    if (maxAmountEl) {
+      maxAmountEl.textContent = '¥' + total.toFixed(2);
+    }
+  }
+
+  /**
+   * 根据售后类型刷新原因选项和金额区展示。
+   */
+  function renderTypeDependentFields() {
+    var options = refundType === 'exchange' ? exchangeReasons : refundReasons;
+    var placeholder = refundType === 'exchange' ? '请选择换货原因' : '请选择退款原因';
+    var label = refundType === 'exchange' ? '换货原因' : '退款原因';
+
+    reasonLabel.textContent = label;
+    reasonSelect.innerHTML = '<option value="">' + placeholder + '</option>';
+    options.forEach(function(item) {
+      reasonSelect.innerHTML += '<option value="' + item.value + '">' + item.text + '</option>';
+    });
+
+    if (refundType === 'exchange') {
+      refundAmountRow.style.display = 'none';
+      refundPointsRow.style.display = 'none';
+      maxAmountTip.style.display = 'none';
+    } else {
+      refundAmountRow.style.display = 'flex';
+      refundPointsRow.style.display = 'flex';
+      maxAmountTip.style.display = 'block';
+      updateRefundAmount();
+    }
+  }
+
+  /**
+   * 渲染仅退款模式页面，仅保留退款原因和联系人。
+   */
+  function setupRefundOnlyMode() {
+    if (!isRefundOnlyMode) return;
+    refundType = 'refund-return';
+    navTitle.textContent = '申请退款';
+    submitBtn.textContent = '申请退款';
+    afterSaleTypeSection.style.display = 'none';
+    productsSection.style.display = 'none';
+    descriptionSection.style.display = 'none';
+    rulesSection.style.display = 'none';
+    reasonLabel.textContent = '退款原因';
+    reasonSelect.innerHTML = '<option value="">请选择退款原因</option>';
+    refundReasons.forEach(function(item) {
+      reasonSelect.innerHTML += '<option value="' + item.value + '">' + item.text + '</option>';
+    });
+    refundAmountRow.style.display = 'none';
+    refundPointsRow.style.display = 'none';
+    maxAmountTip.style.display = 'none';
+    contactInput.value = defaultContactPhone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+    resetContactBtn.style.display = 'inline';
+  }
 
   // Refund type selection
   var typeItems = document.querySelectorAll('.refund-type-item');
@@ -377,7 +773,27 @@
       typeItems.forEach(function(t) { t.classList.remove('selected'); });
       this.classList.add('selected');
       refundType = this.dataset.type;
+      if (refundType === 'exchange') {
+        var firstSelectedId = '';
+        orderProducts.forEach(function(prod) {
+          if (prod.selected && !firstSelectedId) firstSelectedId = prod.id;
+        });
+        if (!firstSelectedId && orderProducts[0]) firstSelectedId = orderProducts[0].id;
+        orderProducts.forEach(function(prod) { prod.selected = prod.id === firstSelectedId; prod.qty = 1; });
+      }
+      renderProducts();
+      renderTypeDependentFields();
     });
+  });
+
+  document.getElementById('selectAllProducts').addEventListener('change', function() {
+    if (refundType !== 'refund-return') return;
+    var checked = !!this.checked;
+    orderProducts.forEach(function(item) {
+      item.selected = checked;
+      if (!checked) item.qty = 1;
+    });
+    renderProducts();
   });
 
   // Image upload simulation
@@ -431,16 +847,53 @@
     });
   }
 
-  // Submit
-  document.getElementById('submitBtn').addEventListener('click', function() {
+  function submitAfterNotice() {
     var reason = document.getElementById('reasonSelect').value;
     if (!reason) {
-      alert('请选择退款原因');
+      alert(refundType === 'exchange' ? '请选择换货原因' : '请选择退款原因');
       return;
     }
-    alert('退款申请已提交，请等待审核');
+    if (!contactInput.value.trim()) {
+      alert('请输入联系人方式');
+      return;
+    }
+    if (isRefundOnlyMode) {
+      alert('退款申请已提交，请等待审核');
+      location.href = 'refund.html';
+      return;
+    }
+    var selectedProducts = orderProducts.filter(function(item) { return item.selected; });
+    if (selectedProducts.length === 0) {
+      alert('请先选择售后商品');
+      return;
+    }
+    if (refundType === 'exchange') {
+      alert('换货申请已提交，请等待审核');
+    } else {
+      alert('售后申请已提交，请等待审核');
+    }
     location.href = 'refund.html';
+  }
+
+  // Submit
+  submitBtn.addEventListener('click', function() {
+    submitNoticeModal.style.display = 'flex';
   });
+
+  submitNoticeConfirmBtn.addEventListener('click', function() {
+    submitNoticeModal.style.display = 'none';
+    submitAfterNotice();
+  });
+
+  resetContactBtn.addEventListener('click', function() {
+    contactInput.value = '';
+    contactInput.focus();
+  });
+
+  setupRefundOnlyMode();
+  if (isRefundOnlyMode) return;
+  renderProducts();
+  renderTypeDependentFields();
 })();
 </script>
 </body>

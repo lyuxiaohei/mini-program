@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>退款详情 - 苏银豆商城</title>
+<title>售后详情 - 苏银豆商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
   /* Status header */
@@ -68,6 +68,18 @@
     background: #f5f5f5;
     padding: 2px 8px;
     border-radius: 4px;
+  }
+  .points-row {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .points-row b {
+    color: #ff6034;
+    font-size: 16px;
   }
 
   /* Timeline */
@@ -164,14 +176,20 @@
     font-size: 12px;
     color: #999;
   }
-  .product-card {
+  .product-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .product-item {
     display: flex;
     padding: 12px;
     gap: 10px;
+    border-bottom: 1px solid #f5f5f5;
   }
+  .product-item:last-child { border-bottom: none; }
   .product-img {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
@@ -201,6 +219,40 @@
     font-size: 14px;
     color: #333;
     font-weight: 600;
+  }
+  .product-extra {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+  }
+  .product-merchant-box {
+    margin-top: 8px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.6;
+  }
+  .product-merchant-box b {
+    color: #333;
+    font-weight: 600;
+  }
+  .product-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .product-logistics-box {
+    margin-top: 8px;
+    background: #fff7f2;
+    border: 1px solid #ffd9c8;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #874d35;
+    line-height: 1.6;
   }
 
   /* Info section */
@@ -314,6 +366,81 @@
     border-radius: 14px;
     cursor: pointer;
   }
+  .modal-mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .modal-card {
+    width: 100%;
+    max-width: 320px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+  .modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .modal-body {
+    padding: 0 16px 12px;
+  }
+  .modal-body .form-row {
+    padding: 14px 0;
+  }
+  .modal-body .form-row label {
+    width: 72px;
+    color: #666;
+  }
+  .modal-body .form-row input {
+    height: 34px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 0 12px;
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .modal-body .form-row input:focus {
+    border-color: #ff8a65;
+    background: #fff;
+  }
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 12px;
+  }
+  .modal-actions .btn-sm {
+    height: 36px;
+    border-radius: 6px;
+    padding: 0;
+    font-size: 13px;
+  }
+  .modal-actions #cancelLogisticsBtn {
+    border-color: #e5e5e5;
+    color: #666;
+    background: #f7f7f7;
+  }
+  .modal-actions #confirmLogisticsBtn {
+    border-color: #ff6034;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+  }
 </style>
 </head>
 <body>
@@ -332,7 +459,7 @@
       <div class="back-btn" onclick="history.back()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
       </div>
-      <span class="nav-title">退款详情</span>
+      <span class="nav-title">售后详情</span>
       <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
     </div>
   </div>
@@ -351,12 +478,16 @@
 
     <!-- Amount Card -->
     <div class="amount-card">
-      <div class="amount-row">
-        <span class="amount-label">退款金额</span>
-        <span class="amount-value"><small>&yen;</small>68.00</span>
+      <div class="amount-type" id="amountTypeWrap">
+        售后类型：<span id="refundTypeTag">退货退款</span>
       </div>
-      <div class="amount-type">
-        退款类型：<span>退货退款</span>
+      <div class="amount-row">
+        <span class="amount-label" id="amountLabel">退款金额</span>
+        <span class="amount-value" id="amountValue"><small>&yen;</small>68.00</span>
+      </div>
+      <div class="points-row" id="pointsRow">
+        <span>可退积分</span>
+        <b id="pointsValue">0积分</b>
       </div>
     </div>
 
@@ -366,70 +497,43 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         处理进度
       </div>
-      <div class="timeline-list" id="timelineList">
-        <div class="timeline-item done">
-          <div class="timeline-title">提交申请</div>
-          <div class="timeline-desc">已提交退货退款申请，等待商家审核</div>
-          <div class="timeline-time">2026-04-08 15:30:22</div>
-        </div>
-        <div class="timeline-item active">
-          <div class="timeline-title">商家审核</div>
-          <div class="timeline-desc">商家正在审核您的申请，预计24小时内完成</div>
-          <div class="timeline-time">2026-04-08 15:30:22</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-title">退货发货</div>
-          <div class="timeline-desc">审核通过后，请将商品寄回指定地址</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-title">退款成功</div>
-          <div class="timeline-desc">退款将原路返回到您的支付账户</div>
-        </div>
-      </div>
+      <div class="timeline-list" id="timelineList"></div>
     </div>
 
     <!-- Product -->
     <div class="product-section">
       <div class="product-header">
-        <span class="order-no">订单编号：JS2026040888001</span>
+        <span class="order-no" id="orderNoText">订单编号：JS2026040888001</span>
       </div>
-      <div class="product-card">
-        <div class="product-img">
-          <img src="../images/unsplash/1602143407151-7111542de6e8.jpg" alt="">
-        </div>
-        <div class="product-info">
-          <div class="product-name">日本进口保温杯 不锈钢真空便携水杯500ml</div>
-          <div class="product-spec">白色 500ml</div>
-          <div class="product-price">&yen;68.00 x1</div>
-        </div>
-      </div>
+      <div class="product-list" id="productList"></div>
     </div>
 
     <!-- Refund Info -->
     <div class="info-section">
       <div class="info-item">
         <span class="info-label">退款单号</span>
-        <span class="info-value">RF202604080001</span>
+        <span class="info-value" id="refundNoText">RF202604080001</span>
       </div>
       <div class="info-item">
         <span class="info-label">申请时间</span>
-        <span class="info-value">2026-04-08 15:30:22</span>
+        <span class="info-value" id="applyTimeText">2026-04-08 15:30:22</span>
       </div>
       <div class="info-item">
         <span class="info-label">退款原因</span>
-        <span class="info-value">不喜欢/不想要</span>
+        <span class="info-value" id="reasonText">不喜欢/不想要</span>
       </div>
       <div class="info-item">
         <span class="info-label">问题描述</span>
-        <span class="info-value reason">商品收到后感觉不太合适，想申请退货退款，商品完好未使用，包装齐全。</span>
+        <span class="info-value reason" id="descText">商品收到后感觉不太合适，想申请退货退款，商品完好未使用，包装齐全。</span>
+      </div>
+      <div class="info-item" id="rejectRemarkItem" style="display:none;">
+        <span class="info-label">拒绝备注</span>
+        <span class="info-value reason" id="rejectRemarkText">--</span>
       </div>
       <div class="info-item">
         <span class="info-label">凭证图片</span>
         <div class="info-value">
-          <div class="evidence-images">
-            <div class="evidence-img"><img src="../images/unsplash/1602143407151-7111542de6e8.jpg" alt=""></div>
-            <div class="evidence-img"><img src="../images/unsplash/1572635196237-14b3f281503f.jpg" alt=""></div>
-          </div>
+          <div class="evidence-images" id="evidenceImages"></div>
         </div>
       </div>
     </div>
@@ -450,58 +554,363 @@
 
   <!-- Bottom Actions -->
   <div class="bottom-bar" id="bottomBar">
-    <button class="btn-sm danger" onclick="if(confirm('确定要撤销退款申请吗？')){alert('已撤销');history.back();}">撤销申请</button>
-    <button class="btn-sm primary" onclick="alert('已复制：SF1234567890')">填写物流单号</button>
+    <button class="btn-sm danger" id="cancelBtn" style="display:none;">撤销申请</button>
+  </div>
+
+  <div class="modal-mask" id="logisticsModal">
+    <div class="modal-card">
+      <div class="modal-title">填写退回物流</div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>物流公司</label>
+          <input id="expressCompanyInput" type="text" list="expressCompanyOptions" placeholder="请选择或搜索物流公司">
+          <datalist id="expressCompanyOptions">
+            <option value="顺丰速运"></option>
+            <option value="中通快递"></option>
+            <option value="圆通速递"></option>
+            <option value="申通快递"></option>
+            <option value="韵达快递"></option>
+            <option value="邮政EMS"></option>
+            <option value="京东物流"></option>
+            <option value="极兔速递"></option>
+            <option value="德邦快递"></option>
+            <option value="菜鸟速递"></option>
+          </datalist>
+        </div>
+        <div class="form-row">
+          <label>物流单号</label>
+          <input id="expressNoInput" type="text" placeholder="请输入物流单号">
+        </div>
+        <div class="modal-actions">
+          <button class="btn-sm" id="cancelLogisticsBtn">取消</button>
+          <button class="btn-sm primary" id="confirmLogisticsBtn">确认提交</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  // Demo: different status scenarios
-  var scenarios = {
-    processing: {
-      headerClass: '',
+  var cases = {
+    'refund_only_reviewing': {
+      type: '仅退款',
+      status: 'processing',
       statusText: '商家审核中',
-      statusDesc: '您的退款申请正在审核中，请耐心等待'
+      statusDesc: '仅退款申请审核中，请耐心等待',
+      amountLabel: '退款金额',
+      amountValue: '¥0.00',
+      refundPoints: 68,
+      orderNo: 'JS202604110002',
+      refundNo: 'RF202604110002',
+      applyTime: '2026-04-11 10:18:36',
+      reason: '不想要了',
+      description: '未发货阶段申请仅退款。',
+      canCancel: true,
+      showLogisticsButton: false,
+      showMerchantInfo: false,
+      showLogisticsForm: false,
+      products: [
+        { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', qty: 1, returnQty: 1, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' }
+      ],
+      evidence: ['../images/unsplash/1521572163474-6864f9cf17ab.jpg'],
+      timeline: [
+        { title: '提交申请', desc: '用户已提交仅退款申请', time: '2026-04-11 10:18:36', state: 'done' },
+        { title: '待商家审核/商家已审核', desc: '当前状态：待商家审核', time: '2026-04-11 10:20:12', state: 'active' },
+        { title: '待退款/已退款', desc: '审核通过后进入待退款，完成后显示已退款', time: '', state: 'pending' },
+        { title: '完成', desc: '仅退款流程已完成', time: '', state: 'pending' }
+      ]
     },
-    returning: {
-      headerClass: '',
-      statusText: '待退货',
-      statusDesc: '请将商品寄回商家指定地址'
+    'refund_return_approved': {
+      type: '退货退款',
+      status: 'processing',
+      statusText: '审核通过，待填写物流',
+      statusDesc: '请尽快填写退回物流单号并寄回商品',
+      amountLabel: '退款金额',
+      amountValue: '¥68.00',
+      orderNo: 'JS2026040888001',
+      refundNo: 'RF202604080001',
+      applyTime: '2026-04-08 15:30:22',
+      reason: '商品信息描述不符',
+      description: '商品完好未使用，申请退货退款。',
+      canCancel: false,
+      showLogisticsButton: true,
+      showMerchantInfo: true,
+      showLogisticsForm: false,
+      merchant: {
+        name: '李仓管',
+        phone: '139****2277',
+        address: '江苏省南京市江宁区苏银路18号 苏银豆电商园A3仓 2楼售后中心'
+      },
+      products: [
+        { id: 'rr1', name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', price: '68.00', qty: 1, returnQty: 1, img: '../images/unsplash/1602143407151-7111542de6e8.jpg', merchant: { name: '李仓管', phone: '139****2277', address: '江苏省南京市江宁区苏银路18号 苏银豆电商园A3仓 2楼售后中心' } },
+        { id: 'rr2', name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '59.00', qty: 2, returnQty: 2, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', merchant: { name: '周仓管', phone: '136****4632', address: '江苏省无锡市滨湖区蠡湖大道98号 B2仓售后组' } }
+      ],
+      evidence: ['../images/unsplash/1602143407151-7111542de6e8.jpg', '../images/unsplash/1572635196237-14b3f281503f.jpg'],
+      timeline: [
+        { title: '提交申请', desc: '退货退款申请已提交', time: '2026-04-08 15:30:22', state: 'done' },
+        { title: '待商家审核/商家已审核', desc: '当前状态：商家已审核', time: '2026-04-08 17:10:01', state: 'done' },
+        { title: '待寄回商品/已寄回商品', desc: '请尽快寄回商品并填写物流信息', time: '', state: 'active' },
+        { title: '待商家收货/商家已收货', desc: '商家签收后进入退款处理', time: '', state: 'pending' },
+        { title: '待退款/已退款', desc: '商家确认收货后进入待退款，完成后显示已退款', time: '', state: 'pending' },
+        { title: '完成', desc: '退货退款流程已完成', time: '', state: 'pending' }
+      ]
     },
-    completed: {
-      headerClass: 'completed',
-      statusText: '退款成功',
-      statusDesc: '退款金额已原路返回您的支付账户'
+    'exchange_approved': {
+      type: '换货',
+      status: 'processing',
+      statusText: '审核通过，待填写物流',
+      statusDesc: '请填写物流并寄回原商品，商家验货后安排换新',
+      amountLabel: '换货金额',
+      amountValue: '¥0.00',
+      orderNo: 'JS202604130003',
+      refundNo: 'RF202604130003',
+      applyTime: '2026-04-13 12:08:31',
+      reason: '质量问题/故障',
+      description: '耳机左耳无声音，申请换货。',
+      canCancel: false,
+      showLogisticsButton: true,
+      showMerchantInfo: true,
+      showLogisticsForm: false,
+      merchant: {
+        name: '张售后',
+        phone: '137****1102',
+        address: '江苏省南京市秦淮区中山南路66号 苏银豆运营中心 售后换货组'
+      },
+      products: [
+        { id: 'ex1', name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', qty: 1, returnQty: 1, img: '../images/unsplash/1505740420928-5e560c06d30e.jpg', merchant: { name: '张售后', phone: '137****1102', address: '江苏省南京市秦淮区中山南路66号 苏银豆运营中心 售后换货组' } }
+      ],
+      evidence: ['../images/unsplash/1505740420928-5e560c06d30e.jpg'],
+      timeline: [
+        { title: '提交申请', desc: '换货申请已提交', time: '2026-04-13 12:08:31', state: 'done' },
+        { title: '待商家审核/商家已审核', desc: '当前状态：商家已审核', time: '2026-04-13 13:26:10', state: 'done' },
+        { title: '待寄回商品/已寄回商品', desc: '请寄回原商品并填写物流信息', time: '', state: 'active' },
+        { title: '待商家收货/商家已收货', desc: '商家收货验货通过后进入重发流程', time: '', state: 'pending' },
+        { title: '待商家重新发货/商家已发货', desc: '商家将重新发出换货商品', time: '', state: 'pending' },
+        { title: '完成', desc: '换货流程已完成', time: '', state: 'pending' }
+      ]
     },
-    rejected: {
-      headerClass: 'rejected',
+    'refund_return_rejected': {
+      type: '退货退款',
+      status: 'rejected',
       statusText: '申请已拒绝',
-      statusDesc: '商家拒绝了您的退款申请，如有疑问请联系客服'
+      statusDesc: '商家拒绝申请，请查看拒绝原因或联系客服',
+      amountLabel: '退款金额',
+      amountValue: '¥128.00',
+      orderNo: 'JS2026031011006',
+      refundNo: 'RF202603150003',
+      applyTime: '2026-03-15 09:25:16',
+      reason: '商品质量问题',
+      description: '商家反馈凭证不足，申请被拒绝。',
+      rejectRemark: '凭证图片无法清晰体现质量问题，请补充开箱视频或更清晰的故障照片后重新提交。',
+      canCancel: false,
+      showLogisticsButton: false,
+      showMerchantInfo: false,
+      showLogisticsForm: false,
+      products: [
+        { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', price: '128.00', qty: 1, returnQty: 1, img: '../images/unsplash/1578985545062-69928b1d9587.jpg' }
+      ],
+      evidence: ['../images/unsplash/1578985545062-69928b1d9587.jpg'],
+      timeline: [
+        { title: '提交申请', desc: '退货退款申请已提交', time: '2026-03-15 09:25:16', state: 'done' },
+        { title: '商家审核', desc: '商家已拒绝该申请', time: '2026-03-15 14:40:09', state: 'rejected' }
+      ]
     }
   };
 
-  // Current scenario (can be changed for demo)
-  var current = 'processing';
+  var params = new URLSearchParams(window.location.search);
+  var caseKey = params.get('case') || 'refund_return_approved';
+  var currentCase = cases[caseKey] || cases.refund_return_approved;
+  var activeProductId = '';
 
-  // Update UI based on scenario
   var header = document.getElementById('statusHeader');
   var statusText = document.getElementById('statusText');
   var statusDesc = document.getElementById('statusDesc');
+  header.className = 'refund-status-header';
+  if (currentCase.status === 'completed') header.classList.add('completed');
+  if (currentCase.status === 'rejected' || currentCase.status === 'cancelled') header.classList.add('rejected');
+  statusText.textContent = currentCase.statusText;
+  statusDesc.textContent = currentCase.statusDesc;
 
-  header.className = 'refund-status-header ' + scenarios[current].headerClass;
-  statusText.textContent = scenarios[current].statusText;
-  statusDesc.textContent = scenarios[current].statusDesc;
+  document.getElementById('amountLabel').textContent = currentCase.amountLabel;
+  document.getElementById('amountValue').innerHTML = '<small>&yen;</small>' + String(currentCase.amountValue).replace('¥', '');
+  document.getElementById('refundTypeTag').textContent = currentCase.type;
+  var pointsRow = document.getElementById('pointsRow');
+  var pointsValue = document.getElementById('pointsValue');
+  if (currentCase.refundPoints && Number(currentCase.refundPoints) > 0) {
+    pointsRow.style.display = 'flex';
+    pointsValue.textContent = currentCase.refundPoints + '积分';
+  } else {
+    pointsRow.style.display = 'none';
+  }
+  document.getElementById('orderNoText').textContent = '订单编号：' + currentCase.orderNo;
+  document.getElementById('refundNoText').textContent = currentCase.refundNo;
+  document.getElementById('applyTimeText').textContent = currentCase.applyTime;
+  document.getElementById('reasonText').textContent = currentCase.reason;
+  document.getElementById('descText').textContent = currentCase.description;
+  var rejectRemarkItem = document.getElementById('rejectRemarkItem');
+  var rejectRemarkText = document.getElementById('rejectRemarkText');
+  if (currentCase.status === 'rejected' && currentCase.rejectRemark) {
+    rejectRemarkItem.style.display = 'flex';
+    rejectRemarkText.textContent = currentCase.rejectRemark;
+  } else {
+    rejectRemarkItem.style.display = 'none';
+  }
 
-  // Update timeline based on status
-  var timelineItems = document.querySelectorAll('.timeline-item');
-  if (current === 'completed') {
-    timelineItems.forEach(function(item) {
-      item.classList.add('done');
-      item.classList.remove('active');
+  var productList = document.getElementById('productList');
+  function renderProductList() {
+    var logisticsMap = currentCase.logisticsByProduct || {};
+    var productHtml = '';
+    currentCase.products.forEach(function(p, idx) {
+      var productId = p.id || ('p' + idx);
+      var isReturnRelated = currentCase.type === '退货退款' || currentCase.type === '换货';
+      var extraInfo = '';
+      var merchantInfo = '';
+      var actionHtml = '';
+      var logisticsInfo = '';
+      if (isReturnRelated) {
+        extraInfo = '<div class="product-extra">退货数量：' + (p.returnQty || p.qty || 1) + '</div>';
+      }
+      if (p.merchant && currentCase.showMerchantInfo) {
+        merchantInfo = '<div class="product-merchant-box">' +
+          '<div><b>商家收货信息</b></div>' +
+          '<div>联系人：' + p.merchant.name + '（' + p.merchant.phone + '）</div>' +
+          '<div>地址：' + p.merchant.address + '</div>' +
+        '</div>';
+      }
+      if (currentCase.showLogisticsButton) {
+        actionHtml = '<div class="product-actions">' +
+          '<button class="btn-sm primary fill-logistics-per-product" data-product-id="' + productId + '">' + (logisticsMap[productId] ? '修改物流单号' : '填写物流单号') + '</button>' +
+        '</div>';
+      }
+      if (logisticsMap[productId]) {
+        logisticsInfo = '<div class="product-logistics-box">' +
+          '<div><b>退回物流信息</b></div>' +
+          '<div>物流公司：' + logisticsMap[productId].company + '</div>' +
+          '<div>物流单号：' + logisticsMap[productId].no + '</div>' +
+          '<div>提交时间：' + logisticsMap[productId].time + '</div>' +
+        '</div>';
+      }
+
+      productHtml += '<div class="product-item">' +
+        '<div class="product-img"><img src="' + p.img + '" alt=""></div>' +
+        '<div class="product-info">' +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-spec">' + p.spec + '</div>' +
+          '<div class="product-price">&yen;' + p.price + ' x' + p.qty + '</div>' +
+          extraInfo +
+          merchantInfo +
+          actionHtml +
+          logisticsInfo +
+        '</div>' +
+      '</div>';
+    });
+    productList.innerHTML = productHtml;
+    bindProductLogisticsActions();
+  }
+
+  function bindProductLogisticsActions() {
+    document.querySelectorAll('.fill-logistics-per-product').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activeProductId = this.dataset.productId || '';
+        var logisticsMap = currentCase.logisticsByProduct || {};
+        var existing = logisticsMap[activeProductId];
+        expressCompanyInput.value = existing ? existing.company : '';
+        expressNoInput.value = existing ? existing.no : '';
+        logisticsModal.style.display = 'flex';
+      });
     });
   }
+  renderProductList();
+
+  var evidenceImages = document.getElementById('evidenceImages');
+  evidenceImages.innerHTML = '';
+  currentCase.evidence.forEach(function(src) {
+    evidenceImages.innerHTML += '<div class="evidence-img"><img src="' + src + '" alt=""></div>';
+  });
+
+  var timelineList = document.getElementById('timelineList');
+  function getTimelineDisplayTitle(rawTitle, state) {
+    if (!rawTitle || rawTitle.indexOf('/') === -1) return rawTitle;
+    var parts = rawTitle.split('/');
+    var beforeText = (parts[0] || '').trim();
+    var afterText = (parts[1] || '').trim();
+    return state === 'done' ? (afterText || beforeText) : beforeText;
+  }
+  function renderTimeline() {
+    var timelineHtml = '';
+    currentCase.timeline.forEach(function(item) {
+      var cls = item.state === 'done' ? 'done' : (item.state === 'active' ? 'active' : (item.state === 'rejected' ? 'rejected' : ''));
+      var displayTitle = getTimelineDisplayTitle(item.title, item.state);
+      timelineHtml += '<div class="timeline-item ' + cls + '">' +
+        '<div class="timeline-title">' + displayTitle + '</div>' +
+        '<div class="timeline-desc">' + item.desc + '</div>' +
+        (item.time ? '<div class="timeline-time">' + item.time + '</div>' : '') +
+      '</div>';
+    });
+    timelineList.innerHTML = timelineHtml;
+  }
+  renderTimeline();
+
+  var cancelBtn = document.getElementById('cancelBtn');
+  var logisticsModal = document.getElementById('logisticsModal');
+  var cancelLogisticsBtn = document.getElementById('cancelLogisticsBtn');
+  var confirmLogisticsBtn = document.getElementById('confirmLogisticsBtn');
+  var expressCompanyInput = document.getElementById('expressCompanyInput');
+  var expressNoInput = document.getElementById('expressNoInput');
+  cancelBtn.style.display = currentCase.canCancel ? 'inline-block' : 'none';
+
+  cancelBtn.addEventListener('click', function() {
+    if (confirm('确定要撤销该售后申请吗？')) {
+      alert('已撤销申请');
+      history.back();
+    }
+  });
+
+  cancelLogisticsBtn.addEventListener('click', function() {
+    logisticsModal.style.display = 'none';
+  });
+
+  confirmLogisticsBtn.addEventListener('click', function() {
+    var company = expressCompanyInput.value.trim();
+    var no = expressNoInput.value.trim();
+    if (!company) {
+      alert('请输入物流公司');
+      return;
+    }
+    if (!no) {
+      alert('请输入物流单号');
+      return;
+    }
+    if (!activeProductId) {
+      alert('请选择要填写物流的商品');
+      return;
+    }
+
+    currentCase.statusText = '等待商家收货';
+    currentCase.statusDesc = '物流已提交，等待商家收货并验货';
+    statusText.textContent = currentCase.statusText;
+    statusDesc.textContent = currentCase.statusDesc;
+
+    currentCase.timeline.forEach(function(item) {
+      if (item.title.indexOf('待寄回商品/已寄回商品') > -1) item.state = 'done';
+      if (item.title.indexOf('待商家收货/商家已收货') > -1) {
+        item.state = 'active';
+        item.time = new Date().toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-');
+      }
+    });
+    renderTimeline();
+    if (!currentCase.logisticsByProduct) currentCase.logisticsByProduct = {};
+    currentCase.logisticsByProduct[activeProductId] = {
+      company: company,
+      no: no,
+      time: new Date().toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-')
+    };
+    renderProductList();
+    logisticsModal.style.display = 'none';
+    alert('物流信息提交成功，等待商家收货');
+  });
 })();
 </script>
 </body>

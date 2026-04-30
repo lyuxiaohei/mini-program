@@ -395,6 +395,10 @@
 
   var currentTab = 'all';
 
+  function canApplyRefundOnly(order) {
+    return order.status === 'shipped';
+  }
+
   function renderOrders() {
     var filtered = currentTab === 'all' ? orders : orders.filter(function(o) {
       if (currentTab === 'completed') return o.status === 'completed' || o.status === 'reviewed';
@@ -438,14 +442,19 @@
       }
 
       var actionsHtml = '';
-      order.actions.forEach(function(a, i) {
-        var cls = i === order.actions.length - 1 ? ' primary' : '';
+      var actionList = order.actions.slice();
+      if (canApplyRefundOnly(order) && actionList.indexOf('仅退款') === -1) {
+        actionList.unshift('仅退款');
+      }
+      actionList.forEach(function(a, i) {
+        var cls = i === actionList.length - 1 ? ' primary' : '';
         if (a === '去支付') cls = ' danger';
         var href = '#';
         if (a === '查看详情') href = 'order_detail.html';
         if (a === '查看物流') href = 'logistics.html';
         if (a === '去支付') href = 'order_pay.html';
         if (a === '取消订单') href = 'order_cancel.html';
+        if (a === '仅退款') href = 'apply_refund.html?type=refund-only';
         if (a === '评价') href = 'write_review.html';
         if (a === '再次购买') href = 'product_detail.html';
         actionsHtml += '<a href="' + href + '" class="btn-sm' + cls + '">' + a + '</a>';
