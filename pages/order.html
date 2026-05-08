@@ -331,11 +331,11 @@
   }
   .combo-input-row input {
     flex: 1;
-    height: 32px;
+    height: 28px;
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 0 8px;
-    font-size: 14px;
+    font-size: 13px;
     color: #333;
     text-align: center;
     outline: none;
@@ -370,6 +370,211 @@
     display: none;
   }
   .combo-input-error.show { display: block; }
+
+  /* Points type selector */
+  .points-type-section {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 0;
+    display: none;
+  }
+  .points-type-section.show { display: block; }
+  .points-type-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .points-type-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .points-type-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 10px 10px 10px 6px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .points-type-card:active { transform: scale(.97); }
+  .points-type-card.active {
+    border-color: #ff6034;
+    background: #fff8f5;
+  }
+  .points-type-card .ptc-radio {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 2px 8px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+  }
+  .points-type-card.active .ptc-radio {
+    border-color: #ff6034;
+  }
+  .points-type-card .ptc-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all .15s;
+  }
+  .points-type-card.active .ptc-radio::after {
+    background: #ff6034;
+  }
+  .points-type-card .ptc-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .points-type-card .ptc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .points-type-card .ptc-name {
+    flex: 1;
+  }
+  .points-type-card .ptc-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+  }
+  .points-type-card.active .ptc-name { color: #ff6034; }
+  .points-type-card .ptc-balance {
+    font-size: 11px;
+    color: #999;
+  }
+  .points-type-card .ptc-balance b { color: #333; }
+  .points-type-card.active .ptc-balance b { color: #ff6034; }
+  .points-type-card .ptc-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: #eee;
+    color: #999;
+  }
+  .points-type-card.active .ptc-badge {
+    background: #ff6034;
+    color: #fff;
+  }
+  .points-type-card .ptc-match {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .points-type-card .ptc-match .match-yes { color: #4caf50; }
+  .points-type-card .ptc-match .match-no { color: #ccc; }
+  .points-type-card .ptc-expire-date {
+    margin-top: 4px;
+    font-size: 10px;
+    color: #bbb;
+  }
+  .points-type-card .ptc-expire-date.expiring-soon {
+    color: #e65100;
+  }
+  .points-type-card .ptc-sublabel {
+    font-size: 11px;
+    color: #999;
+    margin-top: 1px;
+  }
+  .points-type-card .ptc-help {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #eee;
+    color: #999;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .batch-fold-btn {
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    color: #ff6034;
+    cursor: pointer;
+  }
+  .batch-popup-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .batch-popup-overlay.show { display: flex; }
+  .batch-popup {
+    width: calc(100% - 48px);
+    max-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    max-height: 60%;
+    overflow-y: auto;
+  }
+  .batch-popup-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .batch-popup-match {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .batch-popup-item {
+    font-size: 12px;
+    color: #333;
+    padding: 6px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .batch-popup-item:last-child { border-bottom: none; }
+  .batch-popup-close {
+    text-align: center;
+    padding-top: 12px;
+    font-size: 13px;
+    color: #ff6034;
+    cursor: pointer;
+  }
+
+  /* Product allocation inline */
+  .prod-alloc {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed #f0f0f0;
+  }
+  .prod-alloc.show { display: flex; }
+  .prod-alloc .alloc-tag {
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .alloc-tag.matched { background: #e8f5e9; color: #4caf50; }
+  .alloc-tag.unmatched { background: #f5f5f5; color: #bbb; }
+  .prod-alloc .alloc-detail {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .alloc-detail .alloc-points { color: #ff6034; font-weight: 500; }
+  .alloc-detail .alloc-cash { color: #333; }
 
   /* Price summary */
   .price-summary {
@@ -677,7 +882,7 @@
 
     <!-- Products -->
     <div class="order-products" id="orderProducts">
-      <div class="order-product-item" data-price="68" data-qty="1">
+      <div class="order-product-item" data-price="68" data-qty="1" data-sku="SKU001" data-category="cat-home" data-brand="brand-thermos" data-tags="热销">
         <div class="prod-img"><img src="../images/unsplash/1602143407151-7111542de6e8.jpg" alt=""></div>
         <div class="prod-info">
           <div class="prod-name">日本进口保温杯 不锈钢真空便携水杯500ml</div>
@@ -690,9 +895,10 @@
               <div class="qty-btn" data-action="plus">+</div>
             </div>
           </div>
+            <div class="prod-alloc"></div>
         </div>
       </div>
-      <div class="order-product-item" data-price="89" data-qty="1">
+      <div class="order-product-item" data-price="89" data-qty="1" data-sku="SKU002" data-category="cat-digital" data-brand="brand-earphone" data-tags="新品">
         <div class="prod-img"><img src="../images/unsplash/1505740420928-5e560c06d30e.jpg" alt=""></div>
         <div class="prod-info">
           <div class="prod-name">无线蓝牙降噪耳机 迷你入耳式超长续航</div>
@@ -705,9 +911,10 @@
               <div class="qty-btn" data-action="plus">+</div>
             </div>
           </div>
+            <div class="prod-alloc"></div>
         </div>
       </div>
-      <div class="order-product-item" data-price="39.9" data-qty="1">
+      <div class="order-product-item" data-price="39.9" data-qty="1" data-sku="SKU003" data-category="cat-clothing" data-brand="brand-tshirt" data-tags="热销,新品">
         <div class="prod-img"><img src="../images/unsplash/1521572163474-6864f9cf17ab.jpg" alt=""></div>
         <div class="prod-info">
           <div class="prod-name">纯棉短袖T恤男女款 夏季宽松百搭潮流</div>
@@ -720,6 +927,7 @@
               <div class="qty-btn" data-action="plus">+</div>
             </div>
           </div>
+            <div class="prod-alloc"></div>
         </div>
       </div>
     </div>
@@ -738,7 +946,7 @@
     <!-- Remark -->
     <div class="remark-section">
       <div style="font-size:14px;color:#333;margin-bottom:8px;font-weight:500;">备注</div>
-      <textarea id="remarkInput" maxlength="200" placeholder="选填，对本次交易的说明"></textarea>
+      <textarea id="remarkInput" maxlength="200" placeholder="选填"></textarea>
       <div class="remark-counter"><span class="current" id="remarkCount">0</span>/200</div>
     </div>
 
@@ -777,13 +985,21 @@
       </div>
     </div>
 
+
+    <!-- Points Type Selector -->
+    <div class="points-type-section show" id="pointsTypeSection">
+      <div class="points-type-title">选择积分批次</div>
+      <div class="points-type-grid" id="pointsTypeGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
     <!-- Combo Points Input -->
     <div class="combo-input-section show" id="comboInput">
       <div class="combo-input-row">
         <label>使用苏银豆</label>
         <input type="number" id="comboPointsInput" value="100" min="0" max="1280" step="1">
         <span class="unit">苏银豆</span>
-        <span class="max-btn" id="maxPointsBtn">全部</span>
       </div>
       <div class="combo-input-hint">可用苏银豆 <span class="hl" id="balanceHint">1,280</span>，最多可抵扣 <span class="hl" id="maxDeductHint">¥196.90</span></div>
       <div class="combo-input-error" id="comboError">苏银豆数量不能超过可用余额</div>
@@ -886,10 +1102,26 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  var POINTS_BALANCE = 1280;
+  var POINTS_BATCHES = [
+    { id: 'B001', type: 'sku',      label: '指定商品积分', name: '5月生活积分', subLabel: '蓝牙耳机', balance: 5000,  matchAttr: 'sku',      matchValue: 'SKU002', expireDate: '2026-06-30 23:59:59' },
+    { id: 'B002', type: 'special',  label: '特殊商品积分', name: '劳动节积分', subLabel: '热销商品', balance: 2000,  matchAttr: 'tags',     matchValue: '热销', expireDate: '2026-06-01 23:59:59' },
+    { id: 'B003', type: 'brand',    label: '品牌商品积分', name: '品牌福利积分', subLabel: 'T恤品牌', balance: 3000,  matchAttr: 'brand',    matchValue: 'brand-tshirt', expireDate: '2026-06-03 16:00:00', scopeList: ['T恤品牌', '运动品牌', '潮牌'] },
+    { id: 'B004', type: 'category', label: '分类商品积分', name: '家居焕新积分', subLabel: '家居生活', balance: 8000,  matchAttr: 'category', matchValue: 'cat-home', expireDate: '2026-12-31 23:59:59', scopeList: ['家居生活', '数码配件', '个人护理'] },
+    { id: 'B005', type: 'general',  label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null,       matchValue: null, expireDate: '2027-01-01 00:00:00' }
+  ];
+
+  var selectedBatch = 'B005';
   var currentMode = 'combo';
   var currentChannel = 'wechat';
-  var comboPoints = 100;
+  var comboPoints = 0;
+  var foldExpanded = false;
+
+  function getBatch(id) {
+    for (var i = 0; i < POINTS_BATCHES.length; i++) {
+      if (POINTS_BATCHES[i].id === id) return POINTS_BATCHES[i];
+    }
+    return null;
+  }
 
   function getGoodsTotal() {
     var total = 0;
@@ -899,74 +1131,257 @@
     return total;
   }
 
-  function clampComboPoints() {
-    var goods = getGoodsTotal();
-    var maxPoints = Math.min(POINTS_BALANCE, Math.ceil(goods));
-    comboPoints = Math.max(0, Math.min(comboPoints, maxPoints));
-    document.getElementById('comboPointsInput').value = comboPoints;
+  function getProducts() {
+    var items = [];
+    document.querySelectorAll('.order-product-item').forEach(function(el) {
+      items.push({
+        el: el, sku: el.dataset.sku, category: el.dataset.category,
+        brand: el.dataset.brand, tags: (el.dataset.tags || '').split(','),
+        price: parseFloat(el.dataset.price), qty: parseInt(el.dataset.qty)
+      });
+    });
+    return items;
+  }
+
+  function isMatched(batchId, product) {
+    var b = getBatch(batchId);
+    if (!b) return false;
+    if (b.matchAttr === null) return true;
+    if (b.matchAttr === 'tags') return product.tags.indexOf(b.matchValue) !== -1;
+    return product[b.matchAttr] === b.matchValue;
+  }
+
+  function getMatchedProducts(batchId) {
+    return getProducts().filter(function(p) { return isMatched(batchId, p); });
+  }
+
+  function getMatchedTotal(batchId) {
+    return getMatchedProducts(batchId).reduce(function(s, p) { return s + p.price * p.qty; }, 0);
+  }
+
+  function getMaxConsumable(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return 0;
+    var matchedTotal = Math.round(getMatchedTotal(batchId) * 100);
+    return Math.min(b.balance, matchedTotal);
+  }
+
+  function findBestBatch() {
+    var best = null, bestVal = 0;
+    POINTS_BATCHES.forEach(function(b) {
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b.id; }
+    });
+    return best;
+  }
+
+  function allocateByWeight(totalPoints, matchedProducts) {
+    if (!matchedProducts.length) return [];
+    var weightSum = matchedProducts.reduce(function(s, p) { return s + p.price * p.qty; }, 0);
+    if (weightSum === 0) return [];
+    var allocated = 0, result = [];
+    matchedProducts.forEach(function(p, i) {
+      var pts = (i === matchedProducts.length - 1) ? totalPoints - allocated : Math.floor(totalPoints * (p.price * p.qty) / weightSum);
+      result.push({ product: p, points: pts, cash: Math.round(p.price * p.qty * 100) - pts });
+      allocated += pts;
+    });
+    return result;
+  }
+
+  function renderBatchSelector() {
+    var html = '';
+    var best = findBestBatch();
+    var now = Date.now();
+    var sorted = POINTS_BATCHES.slice().sort(function(a, b) {
+      if (a.id === best && b.id !== best) return -1;
+      if (b.id === best && a.id !== best) return 1;
+      var aExp = new Date(a.expireDate).getTime();
+      var bExp = new Date(b.expireDate).getTime();
+      var a30 = aExp - now < 30 * 86400000;
+      var b30 = bExp - now < 30 * 86400000;
+      if (a30 && !b30) return -1;
+      if (b30 && !a30) return 1;
+      if (a30 && b30) return aExp - bExp;
+      var aCons = getMaxConsumable(a.id), bCons = getMaxConsumable(b.id);
+      if (aCons !== bCons) return bCons - aCons;
+      return getMatchedProducts(a.id).length - getMatchedProducts(b.id).length;
+    });
+    var visible = foldExpanded ? sorted : sorted.slice(0, 3);
+    visible.forEach(function(b) {
+      var matched = getMatchedProducts(b.id);
+      var maxCons = getMaxConsumable(b.id);
+      var isActive = b.id === selectedBatch;
+      var isBest = b.id === best;
+      html += '<div class="points-type-card' + (isActive ? ' active' : '') + '" data-batch="' + b.id + '" onclick="selectPointsBatch(this)">';
+      html += '<div class="ptc-radio"></div>';
+      html += '<div class="ptc-body">';
+      html += '<div class="ptc-header"><span class="ptc-name">' + b.name + '</span>';
+      html += '<span class="ptc-balance">余额 <b>' + b.balance.toLocaleString() + '</b></span>';
+      if (isBest) html += '<span class="ptc-badge">推荐</span>';
+      html += '</div>';
+      var showScope = b.type !== 'sku' && b.type !== 'special';
+      var scopeText = '';
+      if (b.scopeList) scopeText = b.scopeList[0] + '等';
+      else scopeText = b.subLabel;
+      html += '<div class="ptc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + ' <span class="ptc-help" onclick="event.stopPropagation();showBatchHelp(\'' + b.id + '\')">?</span></div>';
+      html += '<div class="ptc-match">';
+      if (matched.length > 0) {
+        html += '<span class="match-yes">匹配' + matched.length + '件商品</span>，可消耗' + maxCons + '积分';
+      } else {
+        html += '<span class="match-no">无匹配商品</span>';
+      }
+      var diffMs = new Date(b.expireDate).getTime() - Date.now();
+      var diffDays = Math.ceil(diffMs / 86400000);
+      if (diffDays <= 30) {
+        html += '<div class="ptc-expire-date expiring-soon">该批次积分' + diffDays + '天后过期</div>';
+      } else {
+        html += '<div class="ptc-expire-date">在' + b.expireDate + '前有效</div>';
+      }
+      html += '</div></div></div>';
+    });
+    if (sorted.length > 3) {
+      html += '<div class="batch-fold-btn" onclick="toggleBatchFold()">' + (foldExpanded ? '收起' : '展开更多（' + (sorted.length - 3) + '）') + '</div>';
+    }
+    document.getElementById('pointsTypeGrid').innerHTML = html;
+  }
+
+  function renderProductAlloc() {
+    var matched = getMatchedProducts(selectedBatch);
+    var all = getProducts();
+    var totalPoints;
+    if (currentMode === 'beans') totalPoints = getMaxConsumable(selectedBatch);
+    else if (currentMode === 'combo') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
+    else totalPoints = 0;
+
+    var alloc = allocateByWeight(totalPoints, matched);
+    var usePoints = currentMode !== 'cash';
+
+    all.forEach(function(prod) {
+      var item = alloc.find(function(a) { return a.product.el === prod.el; });
+      var isMatch = isMatched(selectedBatch, prod);
+      var allocEl = prod.el.querySelector('.prod-alloc');
+      if (!usePoints) { allocEl.className = 'prod-alloc'; allocEl.innerHTML = ''; return; }
+      allocEl.className = 'prod-alloc show';
+      var pts = item ? item.points : 0;
+      var cash = item ? item.cash : Math.round(prod.price * prod.qty * 100);
+      var tagClass = isMatch ? 'matched' : 'unmatched';
+      var tagText = isMatch ? '可用' : '不支持';
+      var h = '<span class="alloc-tag ' + tagClass + '">' + tagText + '</span>';
+      h += '<span class="alloc-detail">';
+      if (pts > 0) h += '<span class="alloc-points">' + pts + '积分</span> + ';
+      h += '<span class="alloc-cash">¥' + (cash / 100).toFixed(2) + '</span></span>';
+      allocEl.innerHTML = h;
+    });
   }
 
   function renderSummary() {
     var goods = getGoodsTotal();
+    var b = getBatch(selectedBatch);
+    var maxCons = getMaxConsumable(selectedBatch);
+
     var html = '<div class="summary-row"><span>商品金额</span><span>¥' + goods.toFixed(2) + '</span></div>';
     html += '<div class="summary-row"><span>运费</span><span>¥0.00</span></div>';
 
-    var cashAmount = 0;
-    var pointsAmount = 0;
-
+    var pointsAmount = 0, cashAmount = goods;
     if (currentMode === 'beans') {
-      pointsAmount = goods;
-      cashAmount = 0;
-    } else if (currentMode === 'cash') {
-      pointsAmount = 0;
-      cashAmount = goods;
-    } else {
-      clampComboPoints();
-      pointsAmount = comboPoints;
+      pointsAmount = maxCons / 100;
+      cashAmount = goods - pointsAmount;
+      if (cashAmount < 0) cashAmount = 0;
+    } else if (currentMode === 'combo') {
+      var maxInput = Math.min(comboPoints, maxCons);
+      pointsAmount = maxInput / 100;
       cashAmount = goods - pointsAmount;
       if (cashAmount < 0) { cashAmount = 0; pointsAmount = goods; }
     }
 
     if (pointsAmount > 0) {
-      html += '<div class="summary-row"><span>苏银豆抵扣</span><span style="color:#ff6034;">-¥' + pointsAmount.toFixed(2) + '（' + Math.ceil(pointsAmount) + '苏银豆）</span></div>';
+      html += '<div class="summary-row"><span>' + b.name + '抵扣</span><span style="color:#ff6034;">-' + Math.round(pointsAmount * 100) + '积分（¥' + pointsAmount.toFixed(2) + '）</span></div>';
     }
     if (cashAmount > 0) {
       html += '<div class="summary-row"><span>现金支付</span><span>¥' + cashAmount.toFixed(2) + '</span></div>';
     }
     html += '<div class="summary-row total"><span>实付金额</span><span class="total-price"><span class="symbol">¥</span>' + goods.toFixed(2) + '</span></div>';
-
     document.getElementById('priceSummary').innerHTML = html;
 
     var bottomTotal = document.getElementById('bottomTotal');
     var btnSubmit = document.getElementById('btnSubmit');
+    bottomTotal.innerHTML = '<span class="symbol">¥</span>' + cashAmount.toFixed(2);
+    if (currentMode === 'beans') btnSubmit.textContent = '立即支付（全部苏银豆）';
+    else btnSubmit.textContent = '立即支付 ¥' + cashAmount.toFixed(2);
 
-    if (currentMode === 'beans') {
-      bottomTotal.innerHTML = '<span class="symbol">¥</span>0.00';
-      btnSubmit.textContent = '立即支付（全部苏银豆）';
-    } else if (currentMode === 'cash') {
-      bottomTotal.innerHTML = '<span class="symbol">¥</span>' + cashAmount.toFixed(2);
-      btnSubmit.textContent = '立即支付 ¥' + cashAmount.toFixed(2);
-    } else {
-      bottomTotal.innerHTML = '<span class="symbol">¥</span>' + cashAmount.toFixed(2);
-      btnSubmit.textContent = '立即支付 ¥' + cashAmount.toFixed(2);
-    }
-
-    document.getElementById('beansDesc').innerHTML = '需消耗 <span class="hl">' + goods.toFixed(2) + '</span> 苏银豆，余额' + (POINTS_BALANCE >= goods ? '充足' : '不足');
+    document.getElementById('beansDesc').innerHTML = b.name + '消耗 <span class="hl">' + maxCons + '</span>积分，余额' + (b.balance >= maxCons ? '充足' : '不足');
     document.getElementById('cashDesc').innerHTML = '¥<span class="hl">' + goods.toFixed(2) + '</span>';
 
     if (currentMode === 'combo') {
-      document.getElementById('comboDesc').innerHTML = '苏银豆抵扣 <span class="hl">¥' + pointsAmount.toFixed(2) + '（' + Math.ceil(pointsAmount) + '苏银豆）</span>，现金 ¥' + cashAmount.toFixed(2);
-      document.getElementById('balanceHint').textContent = POINTS_BALANCE.toLocaleString();
-      document.getElementById('maxDeductHint').textContent = '¥' + goods.toFixed(2);
+      document.getElementById('comboDesc').innerHTML = b.name + '抵扣 <span class="hl">' + comboPoints + '积分（¥' + (comboPoints / 100).toFixed(2) + '）</span>，现金 ¥' + cashAmount.toFixed(2);
+      document.getElementById('balanceHint').textContent = b.balance.toLocaleString();
+      document.getElementById('maxDeductHint').textContent = '¥' + (maxCons / 100).toFixed(2);
     }
+
+    renderBatchSelector();
+    renderProductAlloc();
   }
+
+  window.toggleBatchFold = function() {
+    foldExpanded = !foldExpanded;
+    renderBatchSelector();
+  };
+
+  window.showBatchHelp = function(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return;
+    var products = getProducts();
+    var matched = products.filter(function(p) { return isMatched(batchId, p); });
+    var matchInfo = '';
+    if (b.matchAttr === null) matchInfo = '全场通用';
+    else if (b.matchAttr === 'sku') matchInfo = '适用商品：' + b.subLabel;
+    else if (b.matchAttr === 'tags') matchInfo = '适用标签：' + b.matchValue;
+    else if (b.matchAttr === 'brand') matchInfo = '适用品牌：' + (b.scopeList ? b.scopeList.join('、') : b.subLabel);
+    else if (b.matchAttr === 'category') matchInfo = '适用分类：' + (b.scopeList ? b.scopeList.join('、') : b.subLabel);
+    var items = '';
+    if (b.scopeList) {
+      b.scopeList.forEach(function(s) {
+        items += '<div class="batch-popup-item">' + s + '</div>';
+      });
+    } else if (b.matchAttr === null) {
+      items = '<div class="batch-popup-item">全部商品均可使用</div>';
+    } else {
+      matched.forEach(function(p) {
+        items += '<div class="batch-popup-item">' + p.el.querySelector('.prod-name').textContent + '</div>';
+      });
+      if (!matched.length) items = '<div class="batch-popup-item">当前订单无匹配商品</div>';
+    }
+    var popup = '<div class="batch-popup-overlay show" id="batchHelpPopup" onclick="closeBatchHelp(event)">';
+    popup += '<div class="batch-popup" onclick="event.stopPropagation()">';
+    popup += '<div class="batch-popup-title">' + b.name + '</div>';
+    popup += '<div class="batch-popup-match">' + matchInfo + '</div>';
+    popup += '<div style="font-size:12px;color:#999;margin:8px 0 4px;">匹配商品：</div>';
+    popup += items;
+    popup += '<div class="batch-popup-close" onclick="closeBatchHelp()">关闭</div>';
+    popup += '</div></div>';
+    document.querySelector('.phone-frame').insertAdjacentHTML('beforeend', popup);
+  };
+
+  window.closeBatchHelp = function(e) {
+    if (e && e.target !== e.currentTarget) return;
+    var popup = document.getElementById('batchHelpPopup');
+    if (popup) popup.remove();
+  };
+
+  window.selectPointsBatch = function(el) {
+    selectedBatch = el.dataset.batch;
+    comboPoints = Math.min(comboPoints, getBatch(selectedBatch).balance);
+    renderSummary();
+  };
 
   window.selectPayMode = function(el) {
     document.querySelectorAll('.pay-mode-item .pm-radio').forEach(function(r) { r.classList.remove('checked'); });
     el.querySelector('.pm-radio').classList.add('checked');
     currentMode = el.dataset.mode;
+    var usePoints = currentMode !== 'cash';
     document.getElementById('payChannel').classList.toggle('show', currentMode !== 'beans');
     document.getElementById('comboInput').classList.toggle('show', currentMode === 'combo');
+    document.getElementById('pointsTypeSection').classList.toggle('show', usePoints);
     renderSummary();
   };
 
@@ -977,38 +1392,25 @@
     renderSummary();
   };
 
-  // Combo points input
   document.getElementById('comboPointsInput').addEventListener('input', function() {
     var val = parseInt(this.value) || 0;
-    var goods = getGoodsTotal();
-    var maxPoints = Math.min(POINTS_BALANCE, Math.ceil(goods));
+    var b = getBatch(selectedBatch);
+    var maxCons = getMaxConsumable(selectedBatch);
     var errorEl = document.getElementById('comboError');
-
-    if (val > POINTS_BALANCE) {
-      errorEl.textContent = '苏银豆数量不能超过可用余额（' + POINTS_BALANCE + '）';
-      errorEl.classList.add('show');
-      comboPoints = maxPoints;
-    } else if (val > goods) {
-      errorEl.textContent = '苏银豆数量不能超过订单金额（' + Math.ceil(goods) + '）';
-      errorEl.classList.add('show');
-      comboPoints = maxPoints;
-    } else {
-      errorEl.classList.remove('show');
-      comboPoints = val;
-    }
+    if (val > b.balance) {
+      errorEl.textContent = '苏银豆数量不能超过可用余额（' + b.balance + '）';
+      errorEl.classList.add('show'); comboPoints = maxCons;
+    } else if (val > maxCons) {
+      errorEl.textContent = '苏银豆数量不能超过匹配商品金额（' + maxCons + '）';
+      errorEl.classList.add('show'); comboPoints = maxCons;
+    } else { errorEl.classList.remove('show'); comboPoints = val; }
     renderSummary();
   });
 
   document.getElementById('comboPointsInput').addEventListener('blur', function() {
-    clampComboPoints();
-    renderSummary();
-  });
-
-  document.getElementById('maxPointsBtn').addEventListener('click', function() {
-    var goods = getGoodsTotal();
-    comboPoints = Math.min(POINTS_BALANCE, Math.ceil(goods));
+    var maxCons = getMaxConsumable(selectedBatch);
+    comboPoints = Math.max(0, Math.min(comboPoints, maxCons));
     document.getElementById('comboPointsInput').value = comboPoints;
-    document.getElementById('comboError').classList.remove('show');
     renderSummary();
   });
 
@@ -1025,12 +1427,10 @@
     });
   });
 
-  // Remark counter
   document.getElementById('remarkInput').addEventListener('input', function() {
     document.getElementById('remarkCount').textContent = this.value.length;
   });
 
-  // Submit & payment popup
   var channelData = {
     wechat: { name: '微信支付', color: '#07c160' },
     alipay: { name: '支付宝', color: '#1677ff' }
@@ -1038,59 +1438,41 @@
 
   function getCashInfo() {
     var goods = getGoodsTotal();
-    var pointsAmount = 0;
-    var cashAmount = goods;
-    if (currentMode === 'combo') {
-      clampComboPoints();
-      pointsAmount = comboPoints;
-      cashAmount = goods - pointsAmount;
-      if (cashAmount < 0) cashAmount = 0;
-    }
-    return { goods: goods, pointsAmount: pointsAmount, cashAmount: cashAmount };
+    var maxCons = getMaxConsumable(selectedBatch);
+    var pointsAmount = 0, cashAmount = goods;
+    if (currentMode === 'beans') { pointsAmount = maxCons / 100; cashAmount = goods - pointsAmount; }
+    else if (currentMode === 'combo') { var used = Math.min(comboPoints, maxCons); pointsAmount = used / 100; cashAmount = goods - pointsAmount; }
+    if (cashAmount < 0) cashAmount = 0;
+    return { goods: goods, pointsAmount: pointsAmount, cashAmount: cashAmount, pointsRaw: Math.min(comboPoints, maxCons) };
   }
 
   window.handleSubmit = function() {
-    if (currentMode === 'beans') {
-      location.href = 'pay_success.html';
-      return;
-    }
+    if (currentMode === 'beans') { location.href = 'pay_success.html'; return; }
     var info = getCashInfo();
     var ch = channelData[currentChannel] || channelData.wechat;
-
-    // Step 1 content
     document.getElementById('popupAmount').innerHTML = '<span class="symbol">&yen;</span>' + info.cashAmount.toFixed(2);
     document.getElementById('popupChIcon').style.background = ch.color;
     document.getElementById('popupChName').textContent = ch.name;
     var beansEl = document.getElementById('popupBeans');
-    if (currentMode === 'combo' && info.pointsAmount > 0) {
+    if (info.pointsRaw > 0) {
       beansEl.style.display = 'flex';
-      document.getElementById('popupBeansVal').textContent = '-¥' + info.pointsAmount.toFixed(2) + '（' + Math.ceil(info.pointsAmount) + '苏银豆）';
-    } else {
-      beansEl.style.display = 'none';
-    }
-
-    // Reset to step 1
+      document.getElementById('popupBeansVal').textContent = '-' + info.pointsRaw + '积分（¥' + info.pointsAmount.toFixed(2) + '）';
+    } else { beansEl.style.display = 'none'; }
     document.getElementById('payStep1').classList.add('active');
     document.getElementById('payStep2').classList.remove('active');
     document.getElementById('pwdInput').value = '';
     updatePwdDots();
-
     document.getElementById('payPopupOverlay').classList.add('show');
-    document.getElementById('payPopupOverlay').onclick = function(e) {
-      if (e.target === this) closePayPopup();
-    };
+    document.getElementById('payPopupOverlay').onclick = function(e) { if (e.target === this) closePayPopup(); };
   };
 
-  window.closePayPopup = function() {
-    document.getElementById('payPopupOverlay').classList.remove('show');
-  };
+  window.closePayPopup = function() { document.getElementById('payPopupOverlay').classList.remove('show'); };
 
   window.showPwdStep = function() {
     var info = getCashInfo();
     var ch = channelData[currentChannel] || channelData.wechat;
     document.getElementById('pwdChannelName').textContent = ch.name;
     document.getElementById('pwdAmount').innerHTML = '<span class="symbol">&yen;</span>' + info.cashAmount.toFixed(2);
-
     document.getElementById('payStep1').classList.remove('active');
     document.getElementById('payStep2').classList.add('active');
     document.getElementById('pwdInput').value = '';
@@ -1105,22 +1487,23 @@
 
   function updatePwdDots() {
     var val = document.getElementById('pwdInput').value;
-    var dots = document.querySelectorAll('.pwd-dot');
-    dots.forEach(function(dot, i) {
-      dot.classList.toggle('filled', i < val.length);
-    });
+    document.querySelectorAll('.pwd-dot').forEach(function(dot, i) { dot.classList.toggle('filled', i < val.length); });
   }
 
   document.getElementById('pwdInput').addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '').slice(0, 6);
     updatePwdDots();
-    if (this.value.length === 6) {
-      setTimeout(function() { location.href = 'pay_success.html'; }, 300);
-    }
+    if (this.value.length === 6) { setTimeout(function() { location.href = 'pay_success.html'; }, 300); }
   });
 
+  selectedBatch = findBestBatch();
+  comboPoints = getMaxConsumable(selectedBatch);
+  document.getElementById('comboPointsInput').value = comboPoints;
   renderSummary();
 })();
+
 </script>
+
+
 </body>
 </html>

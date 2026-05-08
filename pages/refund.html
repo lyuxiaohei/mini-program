@@ -259,6 +259,53 @@
     color: #ff6034;
   }
 
+  /* Product & Customer info */
+  .card-detail-row {
+    padding: 0 12px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 11px;
+    color: #999;
+  }
+  .card-detail-row span {
+    white-space: nowrap;
+  }
+  .card-detail-row .label {
+    color: #bbb;
+  }
+  .card-customer-row {
+    padding: 8px 12px;
+    margin: 0 12px 10px;
+    background: #fafafa;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.7;
+  }
+  .card-customer-row svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    color: #bbb;
+  }
+  .card-customer-row .customer-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .customer-name-phone {
+    display: flex;
+    gap: 12px;
+  }
+  .customer-address {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* Apply section */
   .apply-section {
     background: #fff;
@@ -567,7 +614,7 @@
     }
     if (mode === 'beans-only') {
       var beans = item.beansRefund != null ? item.beansRefund : 0;
-      var beanLabel = rec ? ('已退 <b>' + beans + '</b> 苏银豆') : ('预计退 <b>' + beans + '</b> 苏银豆');
+      var beanLabel = rec ? ('已退 <b>' + beans + '</b> 苏银豆') : (' 苏银豆 <b>' + beans + '</b> ');
       return '<div class="refund-amount-stack">' +
         '<span class="refund-amount-line refund-beans">' + beanLabel + '</span>' +
         '</div>';
@@ -617,22 +664,36 @@
       var detailUrl = getRefundDetailUrl(item);
       var recordAmountHtml = formatRefundBreakdownHtml(item, 'records');
 
+      var p = item.product;
+      var c = item.customer || {};
       html += '<div class="refund-card">' +
         '<div class="refund-card-header">' +
           '<span class="order-no">' + item.id + '</span>' +
           '<span class="status ' + item.status + '">' + item.statusText + '</span>' +
         '</div>' +
         '<div class="refund-card-body">' +
-          '<div class="item-img"><img src="' + item.product.img + '" alt=""></div>' +
+          '<div class="item-img"><img src="' + p.img + '" alt=""></div>' +
           '<div class="item-info">' +
-            '<div class="item-name">' + item.product.name + '</div>' +
-            '<div class="item-spec">' + item.product.spec + '</div>' +
+            '<div class="item-name">' + p.name + '</div>' +
+            '<div class="item-spec">' + p.spec + '</div>' +
             '<div class="refund-info">' +
               '<span class="refund-type">' + item.type + '</span>' +
               recordAmountHtml +
             '</div>' +
           '</div>' +
         '</div>' +
+        '<div class="card-detail-row">' +
+          (p.category ? '<span><span class="label">分类：</span>' + p.category + '</span>' : '') +
+          (p.brand ? '<span><span class="label">品牌：</span>' + p.brand + '</span>' : '') +
+          (p.sku ? '<span><span class="label">SKU：</span>' + p.sku + '</span>' : '') +
+        '</div>' +
+        (c.name ? '<div class="card-customer-row">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '<div class="customer-info">' +
+            '<div class="customer-name-phone"><span>' + c.name + '</span><span>' + c.phone + '</span></div>' +
+            '<div class="customer-address">' + c.address + '</div>' +
+          '</div>' +
+        '</div>' : '') +
         '<div class="refund-card-footer">' +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'' + detailUrl + '\'">查看详情</button>' +
         '</div>' +
@@ -657,22 +718,36 @@
       var detailUrl = getRefundDetailUrl(item);
       var reviewStepIndex = item.steps.indexOf('review');
       var canRevoke = reviewStepIndex > -1 && item.currentStep < reviewStepIndex;
+      var p = item.product;
+      var c = item.customer || {};
       html += '<div class="refund-card">' +
         '<div class="refund-card-header">' +
           '<span class="order-no">' + item.id + '</span>' +
           '<span class="status ' + item.status + '">' + item.statusText + '</span>' +
         '</div>' +
         '<div class="refund-card-body" onclick="location.href=\'' + detailUrl + '\'">' +
-          '<div class="item-img"><img src="' + item.product.img + '" alt=""></div>' +
+          '<div class="item-img"><img src="' + p.img + '" alt=""></div>' +
           '<div class="item-info">' +
-            '<div class="item-name">' + item.product.name + '</div>' +
-            '<div class="item-spec">' + item.product.spec + '</div>' +
+            '<div class="item-name">' + p.name + '</div>' +
+            '<div class="item-spec">' + p.spec + '</div>' +
             '<div class="refund-info">' +
               '<span class="refund-type">' + item.type + '</span>' +
               formatRefundBreakdownHtml(item, 'processing') +
             '</div>' +
           '</div>' +
         '</div>' +
+        '<div class="card-detail-row">' +
+          (p.category ? '<span><span class="label">分类：</span>' + p.category + '</span>' : '') +
+          (p.brand ? '<span><span class="label">品牌：</span>' + p.brand + '</span>' : '') +
+          (p.sku ? '<span><span class="label">SKU：</span>' + p.sku + '</span>' : '') +
+        '</div>' +
+        (c.name ? '<div class="card-customer-row">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '<div class="customer-info">' +
+            '<div class="customer-name-phone"><span>' + c.name + '</span><span>' + c.phone + '</span></div>' +
+            '<div class="customer-address">' + c.address + '</div>' +
+          '</div>' +
+        '</div>' : '') +
         '<div class="refund-card-footer">' +
           (canRevoke ? '<button class="btn-sm" onclick="event.stopPropagation();alert(\'撤销申请成功\')">撤销申请</button>' : '') +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'' + detailUrl + '\'">查看详情</button>' +

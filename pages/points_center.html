@@ -48,12 +48,6 @@
       linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.12);
   }
-  .hero-value {
-    font-size: 40px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 14px;
-  }
   .hero-foot {
     display: flex;
     gap: 10px;
@@ -156,6 +150,32 @@
     color: #c4c8d0;
     flex-shrink: 0;
   }
+  .hero-value-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .hero-value {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .view-btn {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .view-btn:active {
+    background: rgba(255,255,255,0.35);
+  }
 </style>
 </head>
 <body>
@@ -183,7 +203,10 @@
   <div class="page-scroll points-page">
     <div class="hero-wrap">
       <div class="hero-card">
-        <div class="hero-value">2,860</div>
+        <div class="hero-value-row">
+          <div class="hero-value">2,860</div>
+          <span class="view-btn" onclick="location.href='points_types.html'">查看</span>
+        </div>
         <div class="hero-foot">
           <div class="hero-metric static">
             <span class="hero-metric-label">已消费积分</span>
