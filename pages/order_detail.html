@@ -116,6 +116,56 @@
   .detail-prod-row .dp-price { font-size: 14px; font-weight: 600; color: #333; }
   .detail-prod-row .dp-qty { font-size: 12px; color: #999; }
 
+  /* 有售后商品行置灰（与 order_list 一致），下方仍展示售后详情入口 */
+  .detail-prod-row.aftersale-line-muted {
+    opacity: 0.55;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .detail-prod-row.aftersale-line-muted .dp-img {
+    filter: grayscale(0.35);
+  }
+
+  .op-aftersale-detail-row {
+    padding: 8px 12px 10px 12px;
+    border-top: 1px solid #f5f5f5;
+    background: #fffbf7;
+  }
+  .op-aftersale-detail-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ff9800;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .op-aftersale-detail-link:active { opacity: 0.75; }
+
+  .op-aftersale-detail-row--unified {
+    padding: 8px 12px 10px 12px;
+    text-align: left;
+  }
+  .op-aftersale-detail-link--unified {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .op-aftersale-detail-chevron {
+    margin-left: 4px;
+    color: #bbb;
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+  .op-aftersale-detail-link--unified .op-aftersale-detail-chevron {
+    margin-left: 8px;
+  }
+  .detail-prod-row.aftersale-line-muted + .op-aftersale-detail-row {
+    border-bottom: 1px solid #f5f5f5;
+    margin-bottom: 8px;
+    padding-top: 10px;
+  }
+
   /* Info section */
   .detail-info {
     background: #fff;
@@ -233,7 +283,7 @@
             </div>
           </div>
         </div>
-        <div class="detail-prod-row">
+        <div class="detail-prod-row aftersale-line-muted">
           <div class="dp-img"><img src="../images/unsplash/1521572163474-6864f9cf17ab.jpg" alt=""></div>
           <div class="dp-info">
             <div class="dp-name">纯棉短袖T恤男女款 夏季宽松百搭潮流 白色 L码</div>
@@ -243,6 +293,11 @@
               <span class="dp-qty">x1</span>
             </div>
           </div>
+        </div>
+        <div class="op-aftersale-detail-row op-aftersale-detail-row--unified">
+          <a href="refund_detail.html?case=refund_return_approved&amp;orderId=JS2026040888001" class="op-aftersale-detail-link op-aftersale-detail-link--unified">
+            <span class="op-aftersale-detail-label">售后详情</span><span class="op-aftersale-detail-chevron">&gt;</span>
+          </a>
         </div>
       </div>
     </div>
@@ -260,7 +315,7 @@
         </div>
       </a>
       <div class="detail-products">
-        <div class="detail-prod-row">
+        <div class="detail-prod-row aftersale-line-muted">
           <div class="dp-img"><img src="../images/unsplash/1505740420928-5e560c06d30e.jpg" alt=""></div>
           <div class="dp-info">
             <div class="dp-name">无线蓝牙降噪耳机 迷你入耳式超长续航 黑色 标准版</div>
@@ -270,6 +325,11 @@
               <span class="dp-qty">x1</span>
             </div>
           </div>
+        </div>
+        <div class="op-aftersale-detail-row op-aftersale-detail-row--unified">
+          <a href="refund_detail.html?case=exchange_pending&amp;orderId=JS2026040888001" class="op-aftersale-detail-link op-aftersale-detail-link--unified">
+            <span class="op-aftersale-detail-label">售后详情</span><span class="op-aftersale-detail-chevron">&gt;</span>
+          </a>
         </div>
       </div>
     </div>
