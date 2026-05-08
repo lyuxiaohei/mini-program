@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>积分类型 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .types-sub-nav {
+    background: linear-gradient(180deg, rgba(65, 67, 72, 0.96) 0%, rgba(86, 83, 77, 0.92) 100%);
+  }
+  .types-sub-nav .status-bar,
+  .types-sub-nav .nav-title,
+  .types-sub-nav .back-btn svg {
+    color: #fff;
+  }
+  .types-sub-nav .status-bar .icons svg {
+    fill: #fff;
+  }
+  .title-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .title-wrap .bean {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.35);
+  }
+  .types-page {
+    background: #f5f6f8;
+    min-height: calc(100vh - 88px);
+  }
+  .hero-wrap {
+    padding: 0 12px 12px;
+    background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
+  }
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    padding: 18px 16px 16px;
+    border-radius: 16px;
+    color: #fff;
+    background:
+      radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 28%),
+      linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.12);
+  }
+  .hero-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 6px;
+  }
+  .hero-value {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .main {
+    padding: 12px 12px 16px;
+  }
+  .type-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .type-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .type-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .type-dot.tongdui { background: #faad14; }
+  .type-dot.pinpai { background: #1677ff; }
+  .type-dot.zhiding { background: #16a34a; }
+  .type-dot.teshu { background: #722ed1; }
+  .type-dot.leimu { background: #ea580c; }
+  .type-card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+  }
+  .type-card-balance {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1;
+  }
+  .type-card-balance small {
+    font-size: 13px;
+    font-weight: 400;
+    color: #999;
+    margin-left: 4px;
+  }
+  .type-detail-list {
+    margin-top: 14px;
+    border-top: 1px dashed #f2f3f5;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .type-detail-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  .type-detail-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .type-detail-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .type-detail-dot.shopping { background: #12a150; }
+  .type-detail-dot.activity { background: #1677ff; }
+  .type-detail-dot.checkin { background: #faad14; }
+  .type-detail-dot.other { background: #999; }
+  .type-detail-name {
+    font-size: 13px;
+    color: #333;
+  }
+  .type-detail-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .type-detail-points {
+    font-size: 14px;
+    font-weight: 600;
+    color: #12a150;
+  }
+  .type-detail-time {
+    font-size: 11px;
+    color: #999;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <div class="sub-nav types-sub-nav">
+    <div class="status-bar">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">
+        <span class="title-wrap"><span class="bean"></span><span>积分类型</span></span>
+      </span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="page-scroll types-page">
+    <div class="hero-wrap">
+      <div class="hero-card">
+        <div class="hero-label">当前可用积分</div>
+        <div class="hero-value">2,860</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="type-card">
+        <div class="type-card-head">
+          <span class="type-dot tongdui"></span>
+          <span class="type-card-name">通兑积分</span>
+        </div>
+        <div class="type-card-balance">1,000 <small>分</small></div>
+        <div class="type-detail-list">
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">购物返积分</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+600</span>
+              <span class="type-detail-time">04-08</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot checkin"></span>
+              <span class="type-detail-name">签到奖励</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+200</span>
+              <span class="type-detail-time">04-07</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot activity"></span>
+              <span class="type-detail-name">活动补发</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+200</span>
+              <span class="type-detail-time">04-05</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-head">
+          <span class="type-dot pinpai"></span>
+          <span class="type-card-name">品牌积分</span>
+        </div>
+        <div class="type-card-balance">800 <small>分</small></div>
+        <div class="type-detail-list">
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">Nike</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+300</span>
+              <span class="type-detail-time">04-03</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">Adidas</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+300</span>
+              <span class="type-detail-time">04-02</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">李宁</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+200</span>
+              <span class="type-detail-time">04-01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-head">
+          <span class="type-dot zhiding"></span>
+          <span class="type-card-name">指定积分</span>
+        </div>
+        <div class="type-card-balance">500 <small>分</small></div>
+        <div class="type-detail-list">
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">保温杯</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+200</span>
+              <span class="type-detail-time">03-28</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot shopping"></span>
+              <span class="type-detail-name">运动鞋</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+300</span>
+              <span class="type-detail-time">03-20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-head">
+          <span class="type-dot teshu"></span>
+          <span class="type-card-name">特殊积分</span>
+        </div>
+        <div class="type-card-balance">360 <small>分</small></div>
+        <div class="type-detail-list">
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot activity"></span>
+              <span class="type-detail-name">双十二活动</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+200</span>
+              <span class="type-detail-time">03-15</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot activity"></span>
+              <span class="type-detail-name">春季会员活动</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+160</span>
+              <span class="type-detail-time">03-10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-head">
+          <span class="type-dot leimu"></span>
+          <span class="type-card-name">类目积分</span>
+        </div>
+        <div class="type-card-balance">200 <small>分</small></div>
+        <div class="type-detail-list">
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot other"></span>
+              <span class="type-detail-name">数码</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+120</span>
+              <span class="type-detail-time">03-05</span>
+            </div>
+          </div>
+          <div class="type-detail-item">
+            <div class="type-detail-left">
+              <span class="type-detail-dot other"></span>
+              <span class="type-detail-name">服饰</span>
+            </div>
+            <div class="type-detail-right">
+              <span class="type-detail-points">+80</span>
+              <span class="type-detail-time">03-01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

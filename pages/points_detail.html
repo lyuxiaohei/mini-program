@@ -162,6 +162,10 @@
   .empty-state.active {
     display: block;
   }
+  .point-type-tag {
+    color: #222;
+    font-weight: 700;
+  }
 </style>
 </head>
 <body>
@@ -232,6 +236,7 @@
     {
       year: '2026',
       type: 'deduct',
+      pointType: '通兑',
       title: '订单消费扣减',
       points: 120,
       method: '扣除',
@@ -243,6 +248,7 @@
     {
       year: '2026',
       type: 'increase',
+      pointType: '通兑',
       title: '订单退回积分',
       points: 120,
       method: '增加',
@@ -254,6 +260,7 @@
     {
       year: '2026',
       type: 'increase',
+      pointType: '特殊',
       title: '春季会员活动补发',
       points: 200,
       method: '增加',
@@ -265,6 +272,7 @@
     {
       year: '2026',
       type: 'deduct',
+      pointType: '品牌',
       title: '异常修正扣减',
       points: 60,
       method: '扣除',
@@ -276,6 +284,7 @@
     {
       year: '2025',
       type: 'increase',
+      pointType: '指定',
       title: '年度补发积分',
       points: 100,
       method: '增加',
@@ -287,6 +296,7 @@
     {
       year: '2025',
       type: 'expire',
+      pointType: '通兑',
       title: '签到奖励积分失效',
       points: 80,
       method: '失效',
@@ -327,6 +337,7 @@
             '<div class="record-meta-row">时间：' + record.time + '</div>' +
             '<div class="record-meta-row">方式：' + record.method + '</div>' +
             '<div class="record-meta-row">交易内容：' + record.content + '</div>' +
+            '<div class="record-meta-row">积分类型：<span class="point-type-tag">' + record.pointType + '</span></div>' +
             expireTimeRow +
             '<div class="record-meta-row">余额：' + record.balance + '</div>' +
           '</div>' +

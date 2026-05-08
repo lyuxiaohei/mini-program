@@ -236,6 +236,53 @@
     color: #ff6034;
   }
 
+  /* Product & Customer info */
+  .card-detail-row {
+    padding: 0 12px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 11px;
+    color: #999;
+  }
+  .card-detail-row span {
+    white-space: nowrap;
+  }
+  .card-detail-row .label {
+    color: #bbb;
+  }
+  .card-customer-row {
+    padding: 8px 12px;
+    margin: 0 12px 10px;
+    background: #fafafa;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.7;
+  }
+  .card-customer-row svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    color: #bbb;
+  }
+  .card-customer-row .customer-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .customer-name-phone {
+    display: flex;
+    gap: 12px;
+  }
+  .customer-address {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* Apply section */
   .apply-section {
     background: #fff;
@@ -341,7 +388,8 @@
       statusText: '处理中',
       type: '退货退款',
       amount: '68.00',
-      product: { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', img: '../images/unsplash/1602143407151-7111542de6e8.jpg' },
+      product: { name: '日本进口保温杯 不锈钢真空便携水杯500ml', spec: '白色 500ml', img: '../images/unsplash/1602143407151-7111542de6e8.jpg', sku: 'BW-500-W', category: '生活用品', brand: '象印' },
+      customer: { name: '张蓉鑫', phone: '138****5678', address: '江苏省南京市江宁区苏银路18号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 1
     },
@@ -352,7 +400,8 @@
       statusText: '处理中',
       type: '仅退款',
       amount: '39.90',
-      product: { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' },
+      product: { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', sku: 'TS-WHT-L', category: '服饰鞋包', brand: '优衣库' },
+      customer: { name: '李明', phone: '139****1234', address: '江苏省南京市鼓楼区汉中路88号' },
       steps: ['submit', 'review', 'refund'],
       currentStep: 0
     },
@@ -363,7 +412,8 @@
       statusText: '处理中',
       type: '换货',
       amount: '0.00',
-      product: { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' },
+      product: { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg', sku: 'EP-BLK-S', category: '数码电器', brand: '索尼' },
+      customer: { name: '王芳', phone: '136****5566', address: '江苏省无锡市滨湖区蠡湖大道98号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 2
     },
@@ -374,7 +424,8 @@
       statusText: '处理中',
       type: '退货退款',
       amount: '199.00',
-      product: { name: '厨房不粘锅三件套 燃气电磁炉通用', spec: '麦饭石色 套装', img: '../images/unsplash/1585515656973-84f6e9d0e7f0.jpg' },
+      product: { name: '厨房不粘锅三件套 燃气电磁炉通用', spec: '麦饭石色 套装', img: '../images/unsplash/1585515656973-84f6e9d0e7f0.jpg', sku: 'PN-SET-M', category: '厨房用品', brand: '苏泊尔' },
+      customer: { name: '赵丽', phone: '137****8899', address: '江苏省苏州市姑苏区观前街12号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 0
     },
@@ -385,7 +436,8 @@
       statusText: '处理中',
       type: '换货',
       amount: '0.00',
-      product: { name: '智能台灯 护眼调光阅读学习灯', spec: '白色 触控款', img: '../images/unsplash/1507473885765-e6ed057f782c.jpg' },
+      product: { name: '智能台灯 护眼调光阅读学习灯', spec: '白色 触控款', img: '../images/unsplash/1507473885765-e6ed057f782c.jpg', sku: 'LAMP-WHT-T', category: '家居照明', brand: '飞利浦' },
+      customer: { name: '陈伟', phone: '135****2233', address: '江苏省常州市天宁区延陵中路66号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 1
     }
@@ -399,7 +451,8 @@
       statusText: '审核通过',
       type: '仅退款',
       amount: '79.00',
-      product: { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', img: '../images/unsplash/1572635196237-14b3f281503f.jpg' },
+      product: { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', img: '../images/unsplash/1572635196237-14b3f281503f.jpg', sku: 'SG-BLK-01', category: '时尚配饰', brand: '暴龙' },
+      customer: { name: '刘洋', phone: '158****4411', address: '江苏省南京市玄武区珠江路50号' },
       steps: ['submit', 'review', 'refund'],
       currentStep: 3
     },
@@ -410,7 +463,8 @@
       statusText: '已拒绝',
       type: '退货退款',
       amount: '128.00',
-      product: { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', img: '../images/unsplash/1578985545062-69928b1d9587.jpg' },
+      product: { name: '精致蛋糕礼盒 手工制作生日庆典甜品', spec: '草莓味 8寸', img: '../images/unsplash/1578985545062-69928b1d9587.jpg', sku: 'CK-STR-8', category: '食品生鲜', brand: '幸福西饼' },
+      customer: { name: '孙婷', phone: '139****7722', address: '江苏省南京市建邺区河西大街200号' },
       steps: ['submit', 'review'],
       currentStep: 1
     },
@@ -421,7 +475,8 @@
       statusText: '审核通过',
       type: '换货',
       amount: '0.00',
-      product: { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg' },
+      product: { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', sku: 'TS-WHT-L', category: '服饰鞋包', brand: '优衣库' },
+      customer: { name: '周杰', phone: '136****9900', address: '江苏省南京市秦淮区中山南路66号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 3
     },
@@ -432,7 +487,8 @@
       statusText: '已拒绝',
       type: '换货',
       amount: '0.00',
-      product: { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg' },
+      product: { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg', sku: 'EP-BLK-S', category: '数码电器', brand: '索尼' },
+      customer: { name: '吴强', phone: '137****3355', address: '江苏省南京市栖霞区仙林大道100号' },
       steps: ['submit', 'review'],
       currentStep: 1
     },
@@ -443,7 +499,8 @@
       statusText: '审核通过',
       type: '退货退款',
       amount: '159.00',
-      product: { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', img: '../images/unsplash/1542291026-7eec264c27ff.jpg' },
+      product: { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', img: '../images/unsplash/1542291026-7eec264c27ff.jpg', sku: 'SH-BLK-42', category: '服饰鞋包', brand: '耐克' },
+      customer: { name: '郑浩', phone: '150****6677', address: '江苏省南京市雨花台区软件大道188号' },
       steps: ['submit', 'review', 'return', 'refund'],
       currentStep: 3
     },
@@ -454,7 +511,8 @@
       statusText: '已拒绝',
       type: '仅退款',
       amount: '39.90',
-      product: { name: '北欧风陶瓷马克杯 办公家用简约咖啡杯', spec: '奶油白 450ml', img: '../images/unsplash/1495474472287-4d71bcdd2085.jpg' },
+      product: { name: '北欧风陶瓷马克杯 办公家用简约咖啡杯', spec: '奶油白 450ml', img: '../images/unsplash/1495474472287-4d71bcdd2085.jpg', sku: 'CUP-WHT-450', category: '生活用品', brand: '摩登主妇' },
+      customer: { name: '钱丽华', phone: '138****2288', address: '江苏省南京市江宁区天元路300号' },
       steps: ['submit', 'review'],
       currentStep: 1
     },
@@ -465,7 +523,8 @@
       statusText: '已取消',
       type: '用户主动取消',
       amount: '0.00',
-      product: { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg' },
+      product: { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg', sku: 'SPK-BLK-S', category: '数码电器', brand: 'JBL' },
+      customer: { name: '冯刚', phone: '151****1199', address: '江苏省南京市浦口区珍珠街100号' },
       steps: ['submit'],
       currentStep: 0
     },
@@ -476,7 +535,8 @@
       statusText: '审核通过',
       type: '仅退款',
       amount: '89.00',
-      product: { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg' },
+      product: { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg', sku: 'SPK-BLK-S', category: '数码电器', brand: 'JBL' },
+      customer: { name: '何敏', phone: '133****4455', address: '江苏省南京市鼓楼区中央路1号' },
       steps: ['submit', 'review', 'refund'],
       currentStep: 3
     },
@@ -487,7 +547,8 @@
       statusText: '已拒绝',
       type: '退货退款',
       amount: '199.00',
-      product: { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', img: '../images/unsplash/1523275335684-37898b6baf30.jpg' },
+      product: { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', img: '../images/unsplash/1523275335684-37898b6baf30.jpg', sku: 'WATCH-BLK-S', category: '数码电器', brand: '华为' },
+      customer: { name: '曹磊', phone: '156****7788', address: '江苏省南京市江宁区胜太路88号' },
       steps: ['submit', 'review'],
       currentStep: 1
     }
@@ -503,18 +564,18 @@
   var applyLoadingMore = false;
 
   var recentOrders = [
-    { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', orderNo: 'JS2026040888001' },
-    { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', img: '../images/unsplash/1542291026-7eec264c27ff.jpg', orderNo: 'JS2026040355003' },
-    { name: '北欧风陶瓷马克杯 办公家用简约咖啡杯', spec: '奶油白 450ml', price: '26.80', img: '../images/unsplash/1495474472287-4d71bcdd2085.jpg', orderNo: 'JS2026040112007' },
-    { name: '多功能双肩电脑包 防泼水通勤背包', spec: '深灰色 15.6英寸', price: '128.00', img: '../images/unsplash/1500530855697-b586d89ba3ee.jpg', orderNo: 'JS2026032988112' },
-    { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', price: '89.00', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg', orderNo: 'JS2026032666009' },
-    { name: '厨房不粘锅三件套 燃气电磁炉通用', spec: '麦饭石色 套装', price: '199.00', img: '../images/unsplash/1585515656973-84f6e9d0e7f0.jpg', orderNo: 'JS2026032155120' },
-    { name: '儿童积木拼装玩具 创意启蒙大颗粒', spec: '128粒 收纳桶装', price: '69.90', img: '../images/unsplash/1587654780291-39c9404d746b.jpg', orderNo: 'JS2026031900456' },
-    { name: '智能台灯 护眼调光阅读学习灯', spec: '白色 触控款', price: '119.00', img: '../images/unsplash/1507473885765-e6ed057f782c.jpg', orderNo: 'JS2026031700325' },
-    { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg', orderNo: 'JS2026031400223' },
-    { name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '59.00', img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', orderNo: 'JS2026031200441' },
-    { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', img: '../images/unsplash/1523275335684-37898b6baf30.jpg', orderNo: 'JS2026030908776' },
-    { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: '79.00', img: '../images/unsplash/1572635196237-14b3f281503f.jpg', orderNo: 'JS2026030506609' }
+    { name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: '39.90', img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', orderNo: 'JS2026040888001', category: '服饰鞋包', brand: '优衣库', sku: 'TS-WHT-L' },
+    { name: '时尚运动鞋 透气网面跑步鞋轻便缓震', spec: '黑色 42码', price: '159.00', img: '../images/unsplash/1542291026-7eec264c27ff.jpg', orderNo: 'JS2026040355003', category: '服饰鞋包', brand: '耐克', sku: 'SH-BLK-42' },
+    { name: '北欧风陶瓷马克杯 办公家用简约咖啡杯', spec: '奶油白 450ml', price: '26.80', img: '../images/unsplash/1495474472287-4d71bcdd2085.jpg', orderNo: 'JS2026040112007', category: '生活用品', brand: '摩登主妇', sku: 'CUP-WHT-450' },
+    { name: '多功能双肩电脑包 防泼水通勤背包', spec: '深灰色 15.6英寸', price: '128.00', img: '../images/unsplash/1500530855697-b586d89ba3ee.jpg', orderNo: 'JS2026032988112', category: '箱包', brand: '小米', sku: 'BAG-GRY-156' },
+    { name: '便携蓝牙音箱 立体声户外迷你小音响', spec: '曜石黑 标准版', price: '89.00', img: '../images/unsplash/1512446733611-9099a758e5f0.jpg', orderNo: 'JS2026032666009', category: '数码电器', brand: 'JBL', sku: 'SPK-BLK-S' },
+    { name: '厨房不粘锅三件套 燃气电磁炉通用', spec: '麦饭石色 套装', price: '199.00', img: '../images/unsplash/1585515656973-84f6e9d0e7f0.jpg', orderNo: 'JS2026032155120', category: '厨房用品', brand: '苏泊尔', sku: 'PN-SET-M' },
+    { name: '儿童积木拼装玩具 创意启蒙大颗粒', spec: '128粒 收纳桶装', price: '69.90', img: '../images/unsplash/1587654780291-39c9404d746b.jpg', orderNo: 'JS2026031900456', category: '母婴玩具', brand: '乐高', sku: 'BLK-128-B' },
+    { name: '智能台灯 护眼调光阅读学习灯', spec: '白色 触控款', price: '119.00', img: '../images/unsplash/1507473885765-e6ed057f782c.jpg', orderNo: 'JS2026031700325', category: '家居照明', brand: '飞利浦', sku: 'LAMP-WHT-T' },
+    { name: '无线蓝牙降噪耳机 迷你入耳式超长续航', spec: '黑色 标准版', price: '89.00', img: '../images/unsplash/1505740420928-5e560c06d30e.jpg', orderNo: 'JS2026031400223', category: '数码电器', brand: '索尼', sku: 'EP-BLK-S' },
+    { name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '59.00', img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', orderNo: 'JS2026031200441', category: '数码电器', brand: '罗马仕', sku: 'PB-WHT-20K' },
+    { name: '智能手表 多功能运动健康监测手环', spec: '黑色 标准版', price: '199.00', img: '../images/unsplash/1523275335684-37898b6baf30.jpg', orderNo: 'JS2026030908776', category: '数码电器', brand: '华为', sku: 'WATCH-BLK-S' },
+    { name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: '79.00', img: '../images/unsplash/1572635196237-14b3f281503f.jpg', orderNo: 'JS2026030506609', category: '时尚配饰', brand: '暴龙', sku: 'SG-BLK-01' }
   ];
 
   var stepLabels = {
@@ -555,22 +616,36 @@
 
       var amountText = (item.status === 'rejected' || item.status === 'cancelled') ? '' : ('退款 &yen;' + item.amount);
 
+      var p = item.product;
+      var c = item.customer || {};
       html += '<div class="refund-card">' +
         '<div class="refund-card-header">' +
           '<span class="order-no">' + item.id + '</span>' +
           '<span class="status ' + item.status + '">' + item.statusText + '</span>' +
         '</div>' +
         '<div class="refund-card-body">' +
-          '<div class="item-img"><img src="' + item.product.img + '" alt=""></div>' +
+          '<div class="item-img"><img src="' + p.img + '" alt=""></div>' +
           '<div class="item-info">' +
-            '<div class="item-name">' + item.product.name + '</div>' +
-            '<div class="item-spec">' + item.product.spec + '</div>' +
+            '<div class="item-name">' + p.name + '</div>' +
+            '<div class="item-spec">' + p.spec + '</div>' +
             '<div class="refund-info">' +
               '<span class="refund-type">' + item.type + '</span>' +
               '<span class="refund-amount">' + amountText + '</span>' +
             '</div>' +
           '</div>' +
         '</div>' +
+        '<div class="card-detail-row">' +
+          (p.category ? '<span><span class="label">分类：</span>' + p.category + '</span>' : '') +
+          (p.brand ? '<span><span class="label">品牌：</span>' + p.brand + '</span>' : '') +
+          (p.sku ? '<span><span class="label">SKU：</span>' + p.sku + '</span>' : '') +
+        '</div>' +
+        (c.name ? '<div class="card-customer-row">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '<div class="customer-info">' +
+            '<div class="customer-name-phone"><span>' + c.name + '</span><span>' + c.phone + '</span></div>' +
+            '<div class="customer-address">' + c.address + '</div>' +
+          '</div>' +
+        '</div>' : '') +
         '<div class="refund-card-footer">' +
           (item.status === 'rejected' ? '<button class="btn-sm" onclick="event.stopPropagation();location.href=\'apply_refund.html\'">重新申请</button>' : '') +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'' + detailUrl + '\'">查看详情</button>' +
@@ -596,22 +671,36 @@
       var detailUrl = getRefundDetailUrl(item);
       var reviewStepIndex = item.steps.indexOf('review');
       var canRevoke = reviewStepIndex > -1 && item.currentStep < reviewStepIndex;
+      var p = item.product;
+      var c = item.customer || {};
       html += '<div class="refund-card">' +
         '<div class="refund-card-header">' +
           '<span class="order-no">' + item.id + '</span>' +
           '<span class="status ' + item.status + '">' + item.statusText + '</span>' +
         '</div>' +
         '<div class="refund-card-body" onclick="location.href=\'' + detailUrl + '\'">' +
-          '<div class="item-img"><img src="' + item.product.img + '" alt=""></div>' +
+          '<div class="item-img"><img src="' + p.img + '" alt=""></div>' +
           '<div class="item-info">' +
-            '<div class="item-name">' + item.product.name + '</div>' +
-            '<div class="item-spec">' + item.product.spec + '</div>' +
+            '<div class="item-name">' + p.name + '</div>' +
+            '<div class="item-spec">' + p.spec + '</div>' +
             '<div class="refund-info">' +
               '<span class="refund-type">' + item.type + '</span>' +
               '<span class="refund-amount">退款 &yen;' + item.amount + '</span>' +
             '</div>' +
           '</div>' +
         '</div>' +
+        '<div class="card-detail-row">' +
+          (p.category ? '<span><span class="label">分类：</span>' + p.category + '</span>' : '') +
+          (p.brand ? '<span><span class="label">品牌：</span>' + p.brand + '</span>' : '') +
+          (p.sku ? '<span><span class="label">SKU：</span>' + p.sku + '</span>' : '') +
+        '</div>' +
+        (c.name ? '<div class="card-customer-row">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '<div class="customer-info">' +
+            '<div class="customer-name-phone"><span>' + c.name + '</span><span>' + c.phone + '</span></div>' +
+            '<div class="customer-address">' + c.address + '</div>' +
+          '</div>' +
+        '</div>' : '') +
         '<div class="refund-card-footer">' +
           (canRevoke ? '<button class="btn-sm" onclick="event.stopPropagation();alert(\'撤销申请成功\')">撤销申请</button>' : '') +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'' + detailUrl + '\'">查看详情</button>' +
@@ -655,6 +744,11 @@
               '<span class="refund-amount">&yen;' + order.price + '</span>' +
             '</div>' +
           '</div>' +
+        '</div>' +
+        '<div class="card-detail-row">' +
+          (order.category ? '<span><span class="label">分类：</span>' + order.category + '</span>' : '') +
+          (order.brand ? '<span><span class="label">品牌：</span>' + order.brand + '</span>' : '') +
+          (order.sku ? '<span><span class="label">SKU：</span>' + order.sku + '</span>' : '') +
         '</div>' +
         '<div class="refund-card-footer">' +
           '<button class="btn-sm primary" onclick="event.stopPropagation();location.href=\'apply_refund.html\'">退款/售后</button>' +
