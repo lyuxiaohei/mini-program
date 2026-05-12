@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>选择优惠券 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .sub-nav { background: #fff; }
+  .page-body {
+    background: #f5f5f5;
+    min-height: calc(100vh - 88px);
+    padding-bottom: 70px;
+  }
+  .coupon-section {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .coupon-section-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .coupon-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .coupon-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 10px 10px 10px 6px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .coupon-card:active { transform: scale(.97); }
+  .coupon-card.active {
+    border-color: #ff6034;
+    background: #fff8f5;
+  }
+  .coupon-card .cc-radio {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 2px 8px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+  }
+  .coupon-card.active .cc-radio { border-color: #ff6034; }
+  .coupon-card .cc-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all .15s;
+  }
+  .coupon-card.active .cc-radio::after { background: #ff6034; }
+  .coupon-card .cc-body { flex: 1; min-width: 0; }
+  .coupon-card .cc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .coupon-card .cc-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+  }
+  .coupon-card.active .cc-name { color: #ff6034; }
+  .coupon-card .cc-amount {
+    font-size: 11px;
+    color: #ff6034;
+    font-weight: 600;
+  }
+  .coupon-card .cc-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: #ff6034;
+    color: #fff;
+  }
+  .coupon-card .cc-threshold {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
+  }
+  .coupon-card .cc-expire {
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 2px;
+  }
+  .coupon-card .cc-expire.expiring-soon { color: #e65100; }
+  .coupon-card.unavailable {
+    opacity: .5;
+    pointer-events: none;
+  }
+  .coupon-card.unavailable .cc-radio { border-color: #ddd; }
+  .confirm-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 8px 12px 12px;
+    border-top: 1px solid #eee;
+    z-index: 200;
+  }
+  .confirm-bar .btn-confirm {
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .confirm-bar .btn-confirm:active { opacity: .85; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+  <div class="sub-nav">
+    <div class="nav-bar">
+      <div class="back-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">选择优惠券</span>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="coupon-section">
+      <div class="coupon-section-title">可用优惠券</div>
+      <div class="coupon-grid" id="couponGrid"></div>
+    </div>
+  </div>
+  <div class="confirm-bar">
+    <button class="btn-confirm" onclick="confirmSelect()">确认选择</button>
+  </div>
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var COUPONS = [
+    { id: 'C001', name: '满100减20', threshold: 10000, discount: 2000, expireDate: '2026-06-30 23:59:59' },
+    { id: 'C002', name: '满150减30', threshold: 15000, discount: 3000, expireDate: '2026-07-15 23:59:59' },
+    { id: 'C003', name: '无门槛10元券', threshold: 0, discount: 1000, expireDate: '2026-08-01 23:59:59' }
+  ];
+
+  var selectedCoupon = null;
+  var orderTotal = 0;
+
+  try {
+    var data = localStorage.getItem('order_products');
+    if (data) {
+      var products = JSON.parse(data);
+      orderTotal = products.reduce(function(s, p) { return s + Math.round(p.price * p.qty * 100); }, 0);
+    }
+  } catch(e) {}
+
+  var prevSelection = localStorage.getItem('selected_coupon_id');
+  selectedCoupon = prevSelection || null;
+
+  function getCoupon(id) {
+    for (var i = 0; i < COUPONS.length; i++) {
+      if (COUPONS[i].id === id) return COUPONS[i];
+    }
+    return null;
+  }
+
+  function renderCoupons() {
+    var html = '';
+    // "Not using" option
+    html += '<div class="coupon-card' + (selectedCoupon === null ? ' active' : '') + '" data-id="" onclick="selectCoupon(this)">';
+    html += '<div class="cc-radio"></div>';
+    html += '<div class="cc-body"><div class="cc-header"><span class="cc-name">不使用优惠券</span></div>';
+    html += '<div class="cc-threshold">不使用优惠券抵扣</div>';
+    html += '</div></div>';
+
+    COUPONS.forEach(function(c) {
+      var isActive = c.id === selectedCoupon;
+      var available = orderTotal >= c.threshold;
+      html += '<div class="coupon-card' + (isActive ? ' active' : '') + (!available ? ' unavailable' : '') + '" data-id="' + c.id + '" onclick="selectCoupon(this)">';
+      html += '<div class="cc-radio"></div>';
+      html += '<div class="cc-body">';
+      html += '<div class="cc-header"><span class="cc-name">' + c.name + '</span>';
+      html += '<span class="cc-amount">¥' + (c.discount / 100).toFixed(0) + '</span>';
+      if (isActive) html += '<span class="cc-badge">已选</span>';
+      html += '</div>';
+      if (c.threshold > 0) {
+        html += '<div class="cc-threshold">满' + (c.threshold / 100).toFixed(0) + '元可用' + (available ? '' : '（未满足）') + '</div>';
+      } else {
+        html += '<div class="cc-threshold">无门槛</div>';
+      }
+      var diffMs = new Date(c.expireDate).getTime() - Date.now();
+      var diffDays = Math.ceil(diffMs / 86400000);
+      if (diffDays <= 30) {
+        html += '<div class="cc-expire expiring-soon">' + diffDays + '天后过期</div>';
+      } else {
+        html += '<div class="cc-expire">在' + c.expireDate + '前有效</div>';
+      }
+      html += '</div></div>';
+    });
+    document.getElementById('couponGrid').innerHTML = html;
+  }
+
+  window.selectCoupon = function(el) {
+    var id = el.dataset.id;
+    if (id === '') { selectedCoupon = null; }
+    else { selectedCoupon = selectedCoupon === id ? null : id; }
+    renderCoupons();
+  };
+
+  window.confirmSelect = function() {
+    if (selectedCoupon) {
+      localStorage.setItem('selected_coupon_id', selectedCoupon);
+    } else {
+      localStorage.removeItem('selected_coupon_id');
+    }
+    location.href = 'order_product.html';
+  };
+
+  window.goBack = function() {
+    location.href = 'order_product.html';
+  };
+
+  renderCoupons();
+})();
+</script>
+</body>
+</html>
