@@ -63,12 +63,27 @@
     transition: all .15s;
   }
   .movie-card.active .mc-radio::after { background: #ff6034; }
-  .movie-card .mc-body { flex: 1; min-width: 0; }
+  .movie-card .mc-body { flex: 1; min-width: 0; position: relative; }
   .movie-card .mc-header {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding-right: 24px;
   }
+  .movie-card .mc-detail-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .movie-card .mc-detail-btn:active { color: #999; }
+  .movie-card .mc-detail-btn svg { width: 16px; height: 16px; }
   .movie-card .mc-name {
     font-size: 13px;
     font-weight: 600;
@@ -178,19 +193,20 @@
 
     MOVIE_CARDS.forEach(function(c) {
       var isActive = c.id === selectedCard;
-      html += '<div class="movie-card' + (isActive ? ' active' : '') + '" data-id="' + c.id + '" onclick="selectCard(this)">';
-      html += '<div class="mc-radio"></div>';
+      html += '<div class="movie-card' + (isActive ? ' active' : '') + '" data-id="' + c.id + '">';
+      html += '<div class="mc-radio" onclick="selectCard(this.parentElement)"></div>';
       html += '<div class="mc-body">';
-      html += '<div class="mc-header"><span class="mc-name">' + c.name + '</span>';
+      html += '<div class="mc-detail-btn" onclick="event.stopPropagation();goToDetail(\'' + c.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>';
+      html += '<div class="mc-header" onclick="selectCard(this.parentElement.parentElement)"><span class="mc-name">' + c.name + '</span>';
       if (isActive) html += '<span class="mc-badge">已选</span>';
       html += '</div>';
-      html += '<div class="mc-info">剩余 <b>' + c.remaining + '</b> 次，每次价值 <b>¥' + (c.pricePerUse / 100).toFixed(0) + '</b></div>';
+      html += '<div class="mc-info" onclick="selectCard(this.parentElement.parentElement)">剩余 <b>' + c.remaining + '</b> 次，每次价值 <b>¥' + (c.pricePerUse / 100).toFixed(0) + '</b></div>';
       var diffMs = new Date(c.expireDate).getTime() - Date.now();
       var diffDays = Math.ceil(diffMs / 86400000);
       if (diffDays <= 30) {
-        html += '<div class="mc-expire expiring-soon">' + diffDays + '天后过期</div>';
+        html += '<div class="mc-expire expiring-soon" onclick="selectCard(this.parentElement.parentElement)">' + diffDays + '天后过期</div>';
       } else {
-        html += '<div class="mc-expire">在' + c.expireDate + '前有效</div>';
+        html += '<div class="mc-expire" onclick="selectCard(this.parentElement.parentElement)">在' + c.expireDate + '前有效</div>';
       }
       html += '</div></div>';
     });
@@ -215,6 +231,11 @@
 
   window.goBack = function() {
     location.href = 'order_movie.html';
+  };
+
+  window.goToDetail = function(id) {
+    localStorage.setItem('movie_pass_detail_id', id);
+    location.href = 'movie_pass_detail.html';
   };
 
   renderCards();
