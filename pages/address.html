@@ -209,121 +209,6 @@
   }
   .modal-actions .modal-btn.cancel { color: #666; border-right: 1px solid #eee; }
   .modal-actions .modal-btn.confirm { color: #ff6034; font-weight: 600; }
-
-  /* Add/Edit Address Form */
-  .address-form {
-    padding: 12px;
-  }
-  .form-group {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    overflow: hidden;
-  }
-  .form-row {
-    display: flex;
-    align-items: center;
-    padding: 14px 12px;
-    border-bottom: 1px solid #f5f5f5;
-  }
-  .form-row:last-child { border-bottom: none; }
-  .form-row label {
-    width: 70px;
-    font-size: 14px;
-    color: #333;
-    flex-shrink: 0;
-  }
-  .form-row input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #333;
-    background: transparent;
-  }
-  .form-row input::placeholder { color: #bbb; }
-  .form-row textarea {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #333;
-    background: transparent;
-    resize: none;
-    min-height: 60px;
-    line-height: 1.5;
-  }
-  .form-row textarea::placeholder { color: #bbb; }
-
-  /* Paste recognition */
-  .paste-section {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-  .paste-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px 6px;
-  }
-  .paste-header .paste-label {
-    font-size: 13px;
-    color: #ff6034;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .paste-header .paste-label svg { width: 14px; height: 14px; }
-  .paste-header .paste-hint {
-    font-size: 11px;
-    color: #bbb;
-  }
-  .paste-textarea {
-    display: block;
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 13px;
-    color: #333;
-    background: transparent;
-    resize: none;
-    min-height: 50px;
-    max-height: 80px;
-    padding: 0 12px 10px;
-    line-height: 1.5;
-  }
-  .paste-textarea::placeholder { color: #ccc; }
-  .paste-divider {
-    height: 1px;
-    background: #f0f0f0;
-    margin: 0 12px;
-  }
-
-  .form-actions {
-    display: flex;
-    gap: 12px;
-    padding: 20px 12px;
-  }
-  .form-actions .btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: 24px;
-    font-size: 15px;
-    text-align: center;
-    cursor: pointer;
-    border: none;
-  }
-  .form-actions .btn-cancel {
-    background: #f5f5f5;
-    color: #666;
-  }
-  .form-actions .btn-save {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    font-weight: 600;
-  }
 </style>
 </head>
 <body>
@@ -370,159 +255,22 @@
     </div>
   </div>
 
-  <!-- Add/Edit Address Modal -->
-  <div class="modal-overlay" id="formModal">
-    <div class="modal" style="width: 340px; max-height: 90vh; overflow-y: auto;">
-      <div class="modal-title" id="formTitle">新增收货地址</div>
-      <div class="address-form">
-        <!-- Paste Recognition -->
-        <div class="paste-section">
-          <div class="paste-header">
-            <span class="paste-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-              粘贴地址识别
-            </span>
-            <span class="paste-hint">粘贴完整地址自动填充</span>
-          </div>
-          <textarea class="paste-textarea" id="pasteArea" placeholder="粘贴完整地址，如：张三 13812345678 江苏省南京市鼓楼区汉中路100号"></textarea>
-        </div>
-        <div class="paste-divider"></div>
-
-        <div class="form-group">
-          <div class="form-row">
-            <label>收货人</label>
-            <input type="text" id="inputName" placeholder="请输入收货人姓名">
-          </div>
-          <div class="form-row">
-            <label>手机号</label>
-            <input type="tel" id="inputPhone" placeholder="请输入手机号码">
-          </div>
-          <div class="form-row">
-            <label>所在地区</label>
-            <input type="text" id="inputArea" placeholder="请选择省市区">
-          </div>
-          <div class="form-row">
-            <label>详细地址</label>
-            <textarea id="inputDetail" placeholder="请输入详细地址"></textarea>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-cancel" id="cancelForm">取消</button>
-          <button class="btn btn-save" id="saveForm">保存</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
 <script src="../js/auth.js"></script>
 <script src="../js/auth-guard.js"></script>
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  // Address data
   var addresses = [
-    { id: 1, name: '张三', phone: '138****8888', area: '江苏省南京市', detail: '鼓楼区汉中路100号江苏银行大厦18楼', isDefault: true },
-    { id: 2, name: '李四', phone: '139****6666', area: '江苏省苏州市', detail: '工业园区金鸡湖大道999号', isDefault: false },
-    { id: 3, name: '王五', phone: '137****5555', area: '江苏省无锡市', detail: '滨湖区蠡湖大道2000号', isDefault: false }
+    { id: 1, name: '张三', phone: '138****8888', area: '江苏省南京市鼓楼区', detail: '汉中路100号江苏银行大厦18楼', isDefault: true },
+    { id: 2, name: '李四', phone: '139****6666', area: '江苏省苏州市工业园区', detail: '金鸡湖大道999号', isDefault: false },
+    { id: 3, name: '王五', phone: '137****5555', area: '江苏省无锡市滨湖区', detail: '蠡湖大道2000号', isDefault: false }
   ];
 
   var deleteTargetId = null;
-  var editTargetId = null;
-
   var addressList = document.getElementById('addressList');
   var deleteModal = document.getElementById('deleteModal');
-  var formModal = document.getElementById('formModal');
 
-  // ===== Paste Recognition =====
-  var pasteArea = document.getElementById('pasteArea');
-
-  function parseAddress(text) {
-    var result = { name: '', phone: '', area: '', detail: '' };
-    if (!text || !text.trim()) return result;
-    var s = text.trim();
-
-    // Extract phone number (1xx-xxxxxxxxx format)
-    var phoneMatch = s.match(/1[3-9]\d{9}/);
-    if (phoneMatch) {
-      result.phone = phoneMatch[0];
-      s = s.replace(phoneMatch[0], ' ');
-    }
-
-    // Extract province/city/district
-    var areaMatch = s.match(/([\u4e00-\u9fa5]{2,6}(?:省|市|自治区|特别行政区))([\u4e00-\u9fa5]{2,6}(?:市|区|县|盟|州|旗))?([\u4e00-\u9fa5]{2,6}(?:区|县|市|镇|乡|街道))?/);
-    if (areaMatch) {
-      result.area = (areaMatch[1] || '') + (areaMatch[2] || '') + (areaMatch[3] || '');
-      s = s.replace(areaMatch[0], ' ');
-    }
-
-    // The remaining text: split to find name and detail
-    var parts = s.split(/[\s,，;；、|]+/).filter(function(p) { return p.length > 0; });
-
-    // Detail address: longest remaining segment with address-like content
-    var detailParts = [];
-    var nameParts = [];
-
-    parts.forEach(function(p) {
-      // Contains address-like characters (road, number, building, etc.)
-      if (/[路街道号栋楼室单元巷弄弄堂]|(\d{1,5}[号栋楼室])/.test(p) || p.length > 8) {
-        detailParts.push(p);
-      } else if (p.length <= 5 && !/\d{4,}/.test(p)) {
-        // Short text, likely a name
-        nameParts.push(p);
-      } else {
-        detailParts.push(p);
-      }
-    });
-
-    if (nameParts.length > 0) {
-      result.name = nameParts[0];
-    }
-
-    if (detailParts.length > 0) {
-      result.detail = detailParts.join('');
-    } else if (!result.area && result.name) {
-      // Fallback: everything after name could be area+detail
-      var remaining = text.replace(result.phone, '').replace(result.name, '').trim();
-      result.detail = remaining;
-    }
-
-    return result;
-  }
-
-  function fillFormFromParse(parsed) {
-    if (!parsed.name && !parsed.phone && !parsed.area && !parsed.detail) return;
-    if (parsed.name) document.getElementById('inputName').value = parsed.name;
-    if (parsed.phone) document.getElementById('inputPhone').value = parsed.phone;
-    if (parsed.area) document.getElementById('inputArea').value = parsed.area;
-    if (parsed.detail) document.getElementById('inputDetail').value = parsed.detail;
-  }
-
-  pasteArea.addEventListener('paste', function() {
-    setTimeout(function() {
-      var text = pasteArea.value;
-      if (text.trim()) {
-        var parsed = parseAddress(text);
-        fillFormFromParse(parsed);
-        pasteArea.value = '';
-      }
-    }, 100);
-  });
-
-  // Also parse on input (for typing/copy-paste)
-  var pasteTimer = null;
-  pasteArea.addEventListener('input', function() {
-    clearTimeout(pasteTimer);
-    pasteTimer = setTimeout(function() {
-      var text = pasteArea.value;
-      if (text.trim().length > 10) {
-        var parsed = parseAddress(text);
-        fillFormFromParse(parsed);
-      }
-    }, 800);
-  });
-
-  // Render address list
   function renderList() {
     if (addresses.length === 0) {
       addressList.innerHTML = '<div class="empty-state">' +
@@ -561,7 +309,6 @@
     });
     addressList.innerHTML = html;
 
-    // Bind events
     document.querySelectorAll('.set-default').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var id = parseInt(this.dataset.id);
@@ -575,13 +322,8 @@
         var id = parseInt(this.dataset.id);
         var addr = addresses.find(function(a) { return a.id === id; });
         if (addr) {
-          editTargetId = id;
-          document.getElementById('formTitle').textContent = '编辑收货地址';
-          document.getElementById('inputName').value = addr.name;
-          document.getElementById('inputPhone').value = addr.phone;
-          document.getElementById('inputArea').value = addr.area;
-          document.getElementById('inputDetail').value = addr.detail;
-          formModal.classList.add('show');
+          localStorage.setItem('edit_address', JSON.stringify(addr));
+          location.href = 'address_edit.html';
         }
       });
     });
@@ -594,15 +336,10 @@
     });
   }
 
-  // Add button
+  // Add button - navigate to edit page
   document.getElementById('addBtn').addEventListener('click', function() {
-    editTargetId = null;
-    document.getElementById('formTitle').textContent = '新增收货地址';
-    document.getElementById('inputName').value = '';
-    document.getElementById('inputPhone').value = '';
-    document.getElementById('inputArea').value = '';
-    document.getElementById('inputDetail').value = '';
-    formModal.classList.add('show');
+    localStorage.removeItem('edit_address');
+    location.href = 'address_edit.html';
   });
 
   // Delete modal
@@ -620,51 +357,6 @@
     }
   });
 
-  // Form modal
-  document.getElementById('cancelForm').addEventListener('click', function() {
-    formModal.classList.remove('show');
-    editTargetId = null;
-  });
-
-  document.getElementById('saveForm').addEventListener('click', function() {
-    var name = document.getElementById('inputName').value.trim();
-    var phone = document.getElementById('inputPhone').value.trim();
-    var area = document.getElementById('inputArea').value.trim();
-    var detail = document.getElementById('inputDetail').value.trim();
-
-    if (!name || !phone || !area || !detail) {
-      alert('请填写完整信息');
-      return;
-    }
-
-    if (editTargetId) {
-      // Edit
-      var addr = addresses.find(function(a) { return a.id === editTargetId; });
-      if (addr) {
-        addr.name = name;
-        addr.phone = phone;
-        addr.area = area;
-        addr.detail = detail;
-      }
-    } else {
-      // Add new
-      var newId = Math.max.apply(null, addresses.map(function(a) { return a.id; }).concat([0])) + 1;
-      addresses.push({
-        id: newId,
-        name: name,
-        phone: phone,
-        area: area,
-        detail: detail,
-        isDefault: addresses.length === 0
-      });
-    }
-
-    renderList();
-    formModal.classList.remove('show');
-    editTargetId = null;
-  });
-
-  // Close modal on overlay click
   deleteModal.addEventListener('click', function(e) {
     if (e.target === deleteModal) {
       deleteModal.classList.remove('show');
@@ -672,10 +364,27 @@
     }
   });
 
-  formModal.addEventListener('click', function(e) {
-    if (e.target === formModal) {
-      formModal.classList.remove('show');
-      editTargetId = null;
+  // Handle returning from address_edit.html
+  window.addEventListener('pageshow', function() {
+    var saved = localStorage.getItem('saved_address');
+    if (saved) {
+      localStorage.removeItem('saved_address');
+      var addr = JSON.parse(saved);
+      if (addr.isNew) {
+        delete addr.isNew;
+        addr.id = Math.max.apply(null, addresses.map(function(a) { return a.id; }).concat([0])) + 1;
+        if (addresses.length === 0) addr.isDefault = true;
+        addresses.push(addr);
+      } else {
+        var existing = addresses.find(function(a) { return a.id === addr.id; });
+        if (existing) {
+          existing.name = addr.name;
+          existing.phone = addr.phone;
+          existing.area = addr.area;
+          existing.detail = addr.detail;
+        }
+      }
+      renderList();
     }
   });
 

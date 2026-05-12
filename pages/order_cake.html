@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>确认订单（蛋糕） - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Address section - read only for cake */
+  .address-section {
+    background: #fff;
+    padding: 14px 12px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .address-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, #ff6034 0, #ff6034 8px, #ee0a24 8px, #ee0a24 16px, #ff9800 16px, #ff9800 24px);
+  }
+  .address-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .address-row svg { width: 20px; height: 20px; color: #ff6034; flex-shrink: 0; margin-top: 2px; }
+  .address-info { flex: 1; }
+  .address-name-phone {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .address-detail {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+  }
+  .address-readonly-tag {
+    font-size: 11px;
+    color: #999;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  /* Product items */
+  .order-products {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .order-product-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .order-product-item:last-child { border-bottom: none; }
+  .order-product-item .prod-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f8f8f8;
+  }
+  .order-product-item .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+  .order-product-item .prod-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .order-product-item .prod-name {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .order-product-item .prod-spec {
+    font-size: 11px;
+    color: #999;
+  }
+  .order-product-item .prod-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .order-product-item .prod-price {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .order-product-item .prod-qty {
+    font-size: 13px;
+    color: #999;
+  }
+
+  /* Options section */
+  .order-options {
+    background: #fff;
+    margin-bottom: 8px;
+  }
+  .option-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .option-item:last-child { border-bottom: none; }
+  .option-item .opt-label { font-size: 14px; color: #333; }
+  .option-item .opt-value {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #666;
+  }
+
+  /* Remark */
+  .remark-row {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .remark-row:active { background: #fafafa; }
+  .remark-row .rr-label { font-size: 14px; color: #333; }
+  .remark-row .rr-value {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #999;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .remark-row .rr-value svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .remark-drawer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+  }
+  .remark-drawer-overlay.show { display: flex; }
+  .remark-drawer {
+    width: 100%;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 0 16px 20px;
+    animation: drawerUp .25s ease;
+  }
+  @keyframes drawerUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .remark-drawer-handle { width: 36px; height: 4px; border-radius: 2px; background: #ddd; margin: 10px auto 14px; }
+  .remark-drawer-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 12px; }
+  .remark-drawer textarea {
+    width: 100%; height: 80px;
+    border: 1px solid #eee; border-radius: 8px; padding: 10px;
+    font-size: 14px; color: #333; resize: none; outline: none; box-sizing: border-box;
+  }
+  .remark-drawer textarea:focus { border-color: #ff6034; }
+  .remark-drawer textarea::placeholder { color: #ccc; }
+  .remark-drawer-counter { text-align: right; font-size: 11px; color: #ccc; margin-top: 4px; }
+  .remark-drawer-counter .current { color: #999; }
+  .remark-drawer .drawer-btn {
+    width: 100%; height: 44px; border: none; border-radius: 22px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 12px;
+  }
+  .remark-drawer .drawer-btn:active { opacity: .85; }
+
+  /* Payment mode */
+  .pay-mode-section {
+    background: #fff;
+    margin-bottom: 8px;
+  }
+  .pay-mode-title {
+    padding: 12px 12px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .pay-mode-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+  .pay-mode-item:last-child { border-bottom: none; }
+  .pay-mode-item:active { background: #fafafa; }
+  .pay-mode-item .pm-info { flex: 1; }
+  .pay-mode-item .pm-name { font-size: 13px; color: #333; font-weight: 500; }
+  .pay-mode-item .pm-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .pay-mode-item .pm-radio.checked {
+    background: #ff6034;
+    border-color: #ff6034;
+  }
+  .pay-mode-item .pm-radio.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  /* Pay channel (WeChat/Alipay) */
+  .pay-channel-section {
+    display: none;
+    background: #fff;
+    margin-bottom: 8px;
+    padding: 0 12px 8px;
+  }
+  .pay-channel-section.show { display: block; }
+  .pay-channel-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+  .pay-channel-item:last-child { border-bottom: none; }
+  .pay-channel-item .ch-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  .pay-channel-item .ch-icon svg { width: 18px; height: 18px; color: #fff; }
+  .pay-channel-item .ch-icon.wechat { background: #07c160; }
+  .pay-channel-item .ch-icon.alipay { background: #1677ff; }
+  .pay-channel-item .ch-name { flex: 1; font-size: 13px; color: #333; }
+  .pay-channel-item .ch-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .pay-channel-item .ch-radio.checked {
+    background: #ff6034;
+    border-color: #ff6034;
+  }
+  .pay-channel-item .ch-radio.checked::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  /* Combo points input */
+  .combo-input-section {
+    display: none;
+    background: #fff;
+    margin-bottom: 8px;
+    padding: 12px;
+  }
+  .combo-input-section.show { display: block; }
+  .combo-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .combo-input-row label {
+    font-size: 13px;
+    color: #333;
+    white-space: nowrap;
+  }
+  .combo-input-row input {
+    flex: 1;
+    height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 8px;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    outline: none;
+  }
+  .combo-input-row input:focus { border-color: #ff6034; }
+  .combo-input-row .unit {
+    font-size: 13px;
+    color: #999;
+    white-space: nowrap;
+  }
+  .combo-input-row .max-btn {
+    font-size: 11px;
+    color: #ff6034;
+    background: #fff3e0;
+    border: 1px solid #ffcc80;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .combo-input-row .max-btn:active { background: #ffe0b2; }
+  .combo-input-hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: 6px;
+  }
+  .combo-input-hint .hl { color: #ff6034; }
+  .combo-input-error {
+    font-size: 11px;
+    color: #ee0a24;
+    margin-top: 4px;
+    display: none;
+  }
+  .combo-input-error.show { display: block; }
+
+  /* Summary row clickable */
+  .summary-row.clickable {
+    cursor: pointer;
+    padding: 6px 0;
+  }
+  .summary-row.clickable:active { opacity: .7; }
+  .summary-row.clickable .sr-arrow { width: 14px; height: 14px; color: #ccc; flex-shrink: 0; margin-left: 4px; }
+
+  /* Product allocation inline */
+  .prod-alloc {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed #f0f0f0;
+  }
+  .prod-alloc.show { display: flex; }
+  .prod-alloc .alloc-tag {
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .alloc-tag.matched { background: #e8f5e9; color: #4caf50; }
+  .alloc-tag.unmatched { background: #f5f5f5; color: #bbb; }
+  .prod-alloc .alloc-detail {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .alloc-detail .alloc-points { color: #ff6034; font-weight: 500; }
+  .alloc-detail .alloc-cash { color: #333; }
+
+  /* Price summary */
+  .price-summary {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+    color: #666;
+  }
+  .summary-row.total {
+    padding-top: 8px;
+    margin-top: 4px;
+    border-top: 1px solid #f5f5f5;
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+  }
+  .summary-row .total-price {
+    color: #ee0a24;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .summary-row .total-price .symbol { font-size: 12px; }
+
+  /* Submit bar */
+  .submit-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    border-top: 1px solid #eee;
+    z-index: 200;
+    padding: 0 12px 8px;
+  }
+  .submit-bar .total-area {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .submit-bar .total-label { font-size: 14px; color: #333; }
+  .submit-bar .total-num { font-size: 20px; color: #ee0a24; font-weight: 700; }
+  .submit-bar .total-num .symbol { font-size: 12px; }
+  .submit-bar .btn-submit {
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    border: none;
+    padding: 0 32px;
+    height: 42px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 21px;
+  }
+  .submit-bar .btn-submit:active { opacity: 0.85; }
+
+  /* Pay popup - centered dialog */
+  .pay-popup-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .pay-popup-overlay.show { display: flex; }
+  .pay-popup {
+    position: relative;
+    width: calc(100% - 48px);
+    max-width: 320px;
+    background: #fff;
+    border-radius: 16px;
+    z-index: 301;
+    overflow: hidden;
+    animation: popupFadeIn 0.2s ease;
+  }
+  @keyframes popupFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Step 1: confirm */
+  .pay-step { display: none; }
+  .pay-step.active { display: block; }
+  .pay-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 0;
+    position: relative;
+  }
+  .pay-popup-header .popup-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+  }
+  .pay-popup-header .popup-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #999;
+  }
+  .pay-popup-header .popup-close svg { width: 18px; height: 18px; }
+  .pay-popup-amount {
+    text-align: center;
+    padding: 20px 16px 12px;
+  }
+  .pay-popup-amount .amount {
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+  }
+  .pay-popup-amount .amount .symbol { font-size: 20px; }
+  .pay-popup-channel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 16px 0;
+    padding: 12px 14px;
+    background: #f8f8f8;
+    border-radius: 10px;
+  }
+  .pay-popup-channel .ch-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pay-popup-channel .ch-icon svg { width: 20px; height: 20px; color: #fff; }
+  .pay-popup-channel .ch-name { flex: 1; font-size: 14px; color: #333; font-weight: 500; }
+  .pay-popup-beans {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 16px 0;
+    padding: 10px 14px;
+    background: #fff9f5;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+  .pay-popup-beans .val { color: #ff6034; font-weight: 600; }
+  .pay-popup-coupon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 16px 0;
+    padding: 10px 14px;
+    background: #fff3e0;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+  .pay-popup-coupon .val { color: #ff6034; font-weight: 600; }
+  .pay-popup-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 20px 16px 24px;
+    height: 44px;
+    background: #07c160;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pay-popup-btn:active { opacity: 0.85; }
+
+  /* Step 2: password */
+  .pwd-header {
+    text-align: center;
+    padding: 20px 16px 4px;
+    position: relative;
+  }
+  .pwd-header .pwd-back {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #999;
+  }
+  .pwd-header .pwd-back svg { width: 18px; height: 18px; }
+  .pwd-header .pwd-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+  }
+  .pwd-body {
+    text-align: center;
+    padding: 16px 16px 0;
+  }
+  .pwd-body .pwd-channel-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .pwd-body .pwd-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .pwd-body .pwd-amount .symbol { font-size: 16px; }
+  .pwd-grid {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 20px;
+  }
+  .pwd-dot {
+    width: 40px;
+    height: 44px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+  .pwd-dot::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #333;
+    display: none;
+  }
+  .pwd-dot.filled::after { display: block; }
+  .pwd-grid-wrap {
+    position: relative;
+  }
+  .pwd-hidden-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .pwd-hint {
+    font-size: 12px;
+    color: #999;
+    margin-top: 16px;
+    padding-bottom: 24px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">确认订单</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 70px;">
+
+    <!-- Address (read-only, from third party) -->
+    <div class="address-section">
+      <div class="address-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="address-info">
+          <div class="address-name-phone">张三  138****8888</div>
+          <div class="address-detail">南京市鼓楼区中山北路123号 甜蜜时光蛋糕店</div>
+          <div class="address-readonly-tag">地址由商家提供</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products (Cake) -->
+    <div class="order-products" id="orderProducts">
+      <div class="order-product-item" data-price="168" data-qty="1" data-sku="CAKE001" data-category="cat-cake" data-brand="brand-cake" data-tags="蛋糕">
+        <div class="prod-img"><img src="../images/unsplash/cake-birthday.jpg" alt=""></div>
+        <div class="prod-info">
+          <div class="prod-name">经典鲜奶油生日蛋糕 8寸</div>
+          <div class="prod-spec">8寸 草莓味</div>
+          <div class="prod-price-row">
+            <span class="prod-price">&yen;168.00</span>
+            <span class="prod-qty">&times;1</span>
+          </div>
+            <div class="prod-alloc"></div>
+        </div>
+      </div>
+      <div class="order-product-item" data-price="58" data-qty="1" data-sku="CAKE002" data-category="cat-cake" data-brand="brand-cake" data-tags="蛋糕">
+        <div class="prod-img"><img src="../images/unsplash/cake-cupcake.jpg" alt=""></div>
+        <div class="prod-info">
+          <div class="prod-name">法式杯子蛋糕礼盒 6只装</div>
+          <div class="prod-spec">混合口味 6只</div>
+          <div class="prod-price-row">
+            <span class="prod-price">&yen;58.00</span>
+            <span class="prod-qty">&times;1</span>
+          </div>
+            <div class="prod-alloc"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="order-options">
+      <div class="option-item">
+        <span class="opt-label">配送方式</span>
+        <div class="opt-value">
+          <span>商家配送 免邮</span>
+        </div>
+      </div>
+      <div class="option-item">
+        <span class="opt-label">预计送达</span>
+        <div class="opt-value">
+          <span>今天 14:00-16:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remark -->
+    <div class="remark-row" onclick="openRemarkDrawer()">
+      <span class="rr-label">备注</span>
+      <div class="rr-value">
+        <span id="remarkPreview">选填</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- Remark Drawer -->
+    <div class="remark-drawer-overlay" id="remarkDrawer" onclick="closeRemarkDrawer(event)">
+      <div class="remark-drawer" onclick="event.stopPropagation()">
+        <div class="remark-drawer-handle"></div>
+        <div class="remark-drawer-title">备注</div>
+        <textarea id="remarkInput" maxlength="200" placeholder="请输入备注信息（如蜡烛数量、贺卡内容等）"></textarea>
+        <div class="remark-drawer-counter"><span class="current" id="remarkCount">0</span>/200</div>
+        <button class="drawer-btn" onclick="confirmRemark()">确定</button>
+      </div>
+    </div>
+
+    <!-- Price Summary -->
+    <div class="price-summary" id="priceSummary">
+      <!-- Dynamically rendered by JS -->
+    </div>
+
+    <!-- Payment Mode -->
+    <div class="pay-mode-section">
+      <div class="pay-mode-title">支付方式</div>
+      <div id="payModeList"></div>
+    </div>
+
+    <!-- Combo Points Input -->
+    <div class="combo-input-section" id="comboInput">
+      <div class="combo-input-row">
+        <label>使用苏银豆</label>
+        <input type="number" id="comboPointsInput" value="0" min="0" max="12000" step="1">
+        <span class="unit">苏银豆</span>
+        <span class="max-btn" onclick="fillMaxPoints()">最大</span>
+      </div>
+      <div class="combo-input-hint">可用苏银豆 <span class="hl" id="balanceHint">12,000</span>，最多可抵扣 <span class="hl" id="maxDeductHint">¥226.00</span></div>
+      <div class="combo-input-error" id="comboError">苏银豆数量不能超过可用余额</div>
+    </div>
+
+    <!-- Pay Channel (WeChat/Alipay) -->
+    <div class="pay-channel-section" id="payChannel">
+      <div class="pay-channel-item" data-channel="wechat" onclick="selectChannel(this)">
+        <div class="ch-icon wechat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.133 0 .241-.11.241-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 01-.023-.156.49.49 0 01.201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.952-7.062-6.122zM14.033 13.4c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z"/></svg>
+        </div>
+        <div class="ch-name">微信支付</div>
+        <div class="ch-radio checked"></div>
+      </div>
+      <div class="pay-channel-item" data-channel="alipay" onclick="selectChannel(this)">
+        <div class="ch-icon alipay">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.422 15.358c-3.32-1.326-6.092-3.014-6.092-3.014s1.439-3.667 1.853-5.943H13.01V4.79h5.16V3.478h-5.16V.296h-2.384s-.036.017-.036.048v3.134H5.454V4.79h5.136v1.612H6.16v1.21h9.136c-.318 1.448-1.06 3.498-1.06 3.498s-3.714-1.614-6.282-1.96c-3.918-.528-6.092 1.612-6.282 3.926-.226 2.758 2.206 4.744 5.236 4.744 3.03 0 5.53-1.714 7.528-4.132 3.176 1.678 9.322 3.94 9.322 3.94s-.336-.436-2.338-.77zM8.002 16.688c-3.254 0-4.494-1.954-4.33-3.726.132-1.414 1.424-3.196 4.078-3.196 2.344 0 4.908 1.068 6.894 2.356-1.74 2.358-3.876 4.566-6.642 4.566z"/></svg>
+        </div>
+        <div class="ch-name">支付宝</div>
+        <div class="ch-radio"></div>
+      </div>
+    </div>
+
+  </div><!-- end page-scroll -->
+
+  <!-- Submit Bar -->
+  <div class="submit-bar">
+    <div class="total-area">
+      <span class="total-label">合计：</span>
+      <span class="total-num" id="bottomTotal"><span class="symbol">&yen;</span>226.00</span>
+    </div>
+    <button class="btn-submit" id="btnSubmit" onclick="handleSubmit()">立即支付</button>
+  </div>
+
+  <!-- Payment Popup -->
+  <div class="pay-popup-overlay" id="payPopupOverlay">
+    <div class="pay-popup" id="payPopup" onclick="event.stopPropagation()">
+
+      <!-- Step 1: confirm info -->
+      <div class="pay-step active" id="payStep1">
+        <div class="pay-popup-header">
+          <span class="popup-title">收银台</span>
+          <div class="popup-close" onclick="closePayPopup()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="pay-popup-amount">
+          <div class="amount" id="popupAmount"><span class="symbol">&yen;</span>0.00</div>
+        </div>
+        <div class="pay-popup-channel" id="popupChannel" style="display:none;">
+          <div class="ch-icon" id="popupChIcon" style="background:#07c160;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.133 0 .241-.11.241-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 01-.023-.156.49.49 0 01.201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.952-7.062-6.122zM14.033 13.4c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z"/></svg>
+          </div>
+          <span class="ch-name" id="popupChName">微信支付</span>
+        </div>
+        <div class="pay-popup-beans" id="popupBeans" style="display:none;">
+          <span>苏银豆已抵扣</span>
+          <span class="val" id="popupBeansVal">-¥0.00（0苏银豆）</span>
+        </div>
+        <div class="pay-popup-coupon" id="popupCoupon" style="display:none;">
+          <span>优惠券已抵扣</span>
+          <span class="val" id="popupCouponVal">-¥0.00</span>
+        </div>
+        <button class="pay-popup-btn" onclick="showPwdStep()">确认支付</button>
+      </div>
+
+      <!-- Step 2: password -->
+      <div class="pay-step" id="payStep2">
+        <div class="pwd-header">
+          <div class="pwd-back" onclick="showConfirmStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </div>
+          <span class="pwd-title">请输入支付密码</span>
+        </div>
+        <div class="pwd-body">
+          <div class="pwd-channel-name" id="pwdChannelName">微信支付</div>
+          <div class="pwd-amount" id="pwdAmount"><span class="symbol">&yen;</span>0.00</div>
+          <div class="pwd-grid-wrap">
+            <input type="tel" maxlength="6" class="pwd-hidden-input" id="pwdInput" inputmode="numeric" autocomplete="off">
+            <div class="pwd-grid" id="pwdGrid">
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="pwd-hint">请输入6位支付密码</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  // Only general type batch for cake orders
+  var POINTS_BATCHES = [
+    { id: 'B005', type: 'general', label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null, matchValue: null, expireDate: '2027-01-01 00:00:00' }
+  ];
+
+  var COUPONS = [
+    { id: 'C001', name: '满100减20', threshold: 10000, discount: 2000, expireDate: '2026-06-30 23:59:59' },
+    { id: 'C002', name: '满150减30', threshold: 15000, discount: 3000, expireDate: '2026-07-15 23:59:59' },
+    { id: 'C003', name: '无门槛10元券', threshold: 0, discount: 1000, expireDate: '2026-08-01 23:59:59' }
+  ];
+
+  var pointsActive = false;
+  var couponActive = false;
+  var selectedBatch = null;
+  var selectedCoupon = null;
+  var currentMode = 'cash';
+  var currentChannel = 'wechat';
+  var comboPoints = 0;
+
+  function getBatch(id) {
+    for (var i = 0; i < POINTS_BATCHES.length; i++) {
+      if (POINTS_BATCHES[i].id === id) return POINTS_BATCHES[i];
+    }
+    return null;
+  }
+
+  function getCoupon(id) {
+    for (var i = 0; i < COUPONS.length; i++) {
+      if (COUPONS[i].id === id) return COUPONS[i];
+    }
+    return null;
+  }
+
+  function getGoodsTotal() {
+    var total = 0;
+    document.querySelectorAll('.order-product-item').forEach(function(item) {
+      total += parseFloat(item.dataset.price) * parseInt(item.dataset.qty);
+    });
+    return total;
+  }
+
+  function getProducts() {
+    var items = [];
+    document.querySelectorAll('.order-product-item').forEach(function(el) {
+      items.push({
+        el: el, sku: el.dataset.sku, category: el.dataset.category,
+        brand: el.dataset.brand, tags: (el.dataset.tags || '').split(','),
+        price: parseFloat(el.dataset.price), qty: parseInt(el.dataset.qty)
+      });
+    });
+    return items;
+  }
+
+  function getProductsForStorage() {
+    var items = [];
+    document.querySelectorAll('.order-product-item').forEach(function(el) {
+      items.push({
+        sku: el.dataset.sku, category: el.dataset.category,
+        brand: el.dataset.brand, tags: el.dataset.tags || '',
+        price: parseFloat(el.dataset.price), qty: parseInt(el.dataset.qty),
+        name: el.querySelector('.prod-name').textContent
+      });
+    });
+    return items;
+  }
+
+  function isMatched(batchId, product) {
+    var b = getBatch(batchId);
+    if (!b) return false;
+    if (b.matchAttr === null) return true;
+    if (b.matchAttr === 'tags') return product.tags.indexOf(b.matchValue) !== -1;
+    return product[b.matchAttr] === b.matchValue;
+  }
+
+  function getMatchedProducts(batchId) {
+    return getProducts().filter(function(p) { return isMatched(batchId, p); });
+  }
+
+  function getMatchedTotal(batchId) {
+    return getMatchedProducts(batchId).reduce(function(s, p) { return s + p.price * p.qty; }, 0);
+  }
+
+  function getMaxConsumable(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return 0;
+    var matchedTotal = Math.round(getMatchedTotal(batchId) * 100);
+    return Math.min(b.balance, matchedTotal);
+  }
+
+  function getCouponDiscount() {
+    if (!selectedCoupon) return 0;
+    var c = getCoupon(selectedCoupon);
+    if (!c) return 0;
+    var total = Math.round(getGoodsTotal() * 100);
+    if (total < c.threshold) return 0;
+    return c.discount;
+  }
+
+  function allocateByWeight(totalPoints, matchedProducts) {
+    if (!matchedProducts.length) return [];
+    var weightSum = matchedProducts.reduce(function(s, p) { return s + p.price * p.qty; }, 0);
+    if (weightSum === 0) return [];
+    var allocated = 0, result = [];
+    matchedProducts.forEach(function(p, i) {
+      var pts = (i === matchedProducts.length - 1) ? totalPoints - allocated : Math.floor(totalPoints * (p.price * p.qty) / weightSum);
+      result.push({ product: p, points: pts, cash: Math.round(p.price * p.qty * 100) - pts });
+      allocated += pts;
+    });
+    return result;
+  }
+
+  // Modes that require cash payment channel
+  function usesCash(mode) { return mode === 'cash' || mode === 'beans_cash' || mode === 'coupon_cash' || mode === 'beans_coupon_cash'; }
+  // Modes that use points
+  function usesPoints(mode) { return mode === 'beans' || mode === 'beans_cash' || mode === 'beans_coupon' || mode === 'beans_coupon_cash'; }
+
+  // ===== Price Summary Entry Rows =====
+
+  function renderPointsEntry() {
+    if (pointsActive && selectedBatch) {
+      var b = getBatch(selectedBatch);
+      var maxCons = getMaxConsumable(selectedBatch);
+      return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + b.name + '抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:#ff6034;">-' + maxCons + '积分（¥' + (maxCons / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+    }
+    return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:#999;">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+  }
+
+  function renderCouponEntry() {
+    if (couponActive && selectedCoupon) {
+      var c = getCoupon(selectedCoupon);
+      var disc = getCouponDiscount();
+      return '<div class="summary-row clickable" onclick="goToCouponSelect()"><span>' + c.name + '</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:#ff6034;">-¥' + (disc / 100).toFixed(2) + '</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+    }
+    return '<div class="summary-row clickable" onclick="goToCouponSelect()"><span>优惠券</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:#999;">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+  }
+
+  // ===== Render Payment Modes (dynamic) =====
+
+  function payModeHtml(mode, name) {
+    return '<div class="pay-mode-item" data-mode="' + mode + '" onclick="selectPayMode(this)">' +
+      '<div class="pm-info"><div class="pm-name">' + name + '</div></div>' +
+      '<div class="pm-radio"></div></div>';
+  }
+
+  function renderPayModes() {
+    var html = '';
+
+    if (!pointsActive && !couponActive) {
+      // No discount selected
+      html += payModeHtml('cash', '现金支付');
+      currentMode = 'cash';
+    }
+    else if (pointsActive && !couponActive) {
+      // Points only
+      html += payModeHtml('beans', '积分支付');
+      html += payModeHtml('beans_cash', '组合支付');
+      currentMode = 'beans';
+    }
+    else if (couponActive && !pointsActive) {
+      // Coupon only
+      html += payModeHtml('coupon_cash', '现金支付');
+      currentMode = 'coupon_cash';
+    }
+    else if (pointsActive && couponActive) {
+      // Both points and coupon: offer full-points and combo (points + cash)
+      html += payModeHtml('beans_coupon', '积分支付');
+      html += payModeHtml('beans_coupon_cash', '组合支付');
+      currentMode = 'beans_coupon';
+    }
+
+    document.getElementById('payModeList').innerHTML = html;
+
+    var first = document.querySelector('#payModeList .pay-mode-item');
+    if (first) {
+      first.querySelector('.pm-radio').classList.add('checked');
+      currentMode = first.dataset.mode;
+    }
+
+    renderSummary();
+  }
+
+  // ===== Render Product Allocation Tags =====
+
+  function renderProductAlloc() {
+    var matched = getMatchedProducts(selectedBatch);
+    var all = getProducts();
+    var totalPoints = 0;
+    if (pointsActive && selectedBatch) {
+      if (currentMode === 'beans') totalPoints = getMaxConsumable(selectedBatch);
+      else if (currentMode === 'beans_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
+      else if (currentMode === 'beans_coupon') totalPoints = getMaxConsumable(selectedBatch);
+      else if (currentMode === 'beans_coupon_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
+    }
+
+    var alloc = allocateByWeight(totalPoints, matched);
+    var showAlloc = pointsActive && usesPoints(currentMode);
+
+    all.forEach(function(prod) {
+      var item = alloc.find(function(a) { return a.product.el === prod.el; });
+      var isMatch = isMatched(selectedBatch, prod);
+      var allocEl = prod.el.querySelector('.prod-alloc');
+      if (!showAlloc) { allocEl.className = 'prod-alloc'; allocEl.innerHTML = ''; return; }
+      allocEl.className = 'prod-alloc show';
+      var pts = item ? item.points : 0;
+      var cash = item ? item.cash : Math.round(prod.price * prod.qty * 100);
+      var tagClass = isMatch ? 'matched' : 'unmatched';
+      var tagText = isMatch ? '可用' : '不支持';
+      var h = '<span class="alloc-tag ' + tagClass + '">' + tagText + '</span>';
+      h += '<span class="alloc-detail">';
+      if (pts > 0) h += '<span class="alloc-points">' + pts + '积分</span> + ';
+      h += '<span class="alloc-cash">¥' + (cash / 100).toFixed(2) + '</span></span>';
+      allocEl.innerHTML = h;
+    });
+  }
+
+  // ===== Render Price Summary =====
+
+  function renderSummary() {
+    var goods = getGoodsTotal();
+    var goodsCents = Math.round(goods * 100);
+    var html = '<div class="summary-row"><span>商品金额</span><span>¥' + goods.toFixed(2) + '</span></div>';
+
+    html += renderPointsEntry();
+    html += renderCouponEntry();
+
+    var pointsUsed = 0, couponUsed = 0;
+
+    if (couponActive) couponUsed = getCouponDiscount();
+    var afterCoupon = goodsCents - couponUsed;
+
+    if (pointsActive && selectedBatch) {
+      var maxCons = getMaxConsumable(selectedBatch);
+      if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
+      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
+      else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
+    }
+
+    var cashAmount = goodsCents - couponUsed - pointsUsed;
+    if (cashAmount < 0) cashAmount = 0;
+
+    if (cashAmount > 0 && usesCash(currentMode)) {
+      html += '<div class="summary-row"><span>现金支付</span><span>¥' + (cashAmount / 100).toFixed(2) + '</span></div>';
+    }
+    html += '<div class="summary-row total"><span>实付金额</span><span class="total-price"><span class="symbol">¥</span>' + (cashAmount / 100).toFixed(2) + '</span></div>';
+    document.getElementById('priceSummary').innerHTML = html;
+
+    var bottomTotal = document.getElementById('bottomTotal');
+    var btnSubmit = document.getElementById('btnSubmit');
+    bottomTotal.innerHTML = '<span class="symbol">¥</span>' + (cashAmount / 100).toFixed(2);
+    btnSubmit.textContent = '立即支付';
+
+    // Show combo input when in combo modes
+    var showCombo = (currentMode === 'beans_cash' || currentMode === 'beans_coupon_cash');
+    document.getElementById('comboInput').classList.toggle('show', showCombo);
+    document.getElementById('payChannel').classList.toggle('show', usesCash(currentMode));
+
+    if (showCombo && selectedBatch) {
+      var b2 = getBatch(selectedBatch);
+      var maxCons2 = getMaxConsumable(selectedBatch);
+      var effectiveMax = couponActive ? Math.min(maxCons2, afterCoupon) : maxCons2;
+      document.getElementById('balanceHint').textContent = b2.balance.toLocaleString();
+      document.getElementById('maxDeductHint').textContent = '¥' + (effectiveMax / 100).toFixed(2);
+    }
+
+    var payModeSection = document.querySelector('.pay-mode-section');
+    if (payModeSection) {
+      payModeSection.style.display = (pointsActive || couponActive) ? '' : 'none';
+    }
+
+    renderProductAlloc();
+  }
+
+  // ===== Navigation =====
+
+  window.goToBatchSelect = function() {
+    localStorage.setItem('order_products', JSON.stringify(getProductsForStorage()));
+    localStorage.setItem('nav_source', 'batch');
+    localStorage.setItem('order_type', 'cake');
+    localStorage.setItem('return_page', 'order_cake.html');
+    if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
+    location.href = 'points_batch_select.html';
+  };
+
+  window.goToCouponSelect = function() {
+    localStorage.setItem('order_products', JSON.stringify(getProductsForStorage()));
+    localStorage.setItem('nav_source', 'coupon');
+    localStorage.setItem('return_page', 'order_cake.html');
+    if (selectedCoupon) localStorage.setItem('selected_coupon_id', selectedCoupon);
+    location.href = 'coupon_select.html';
+  };
+
+  // ===== Payment Mode Selection =====
+
+  window.selectPayMode = function(el) {
+    document.querySelectorAll('#payModeList .pay-mode-item .pm-radio').forEach(function(r) { r.classList.remove('checked'); });
+    el.querySelector('.pm-radio').classList.add('checked');
+    currentMode = el.dataset.mode;
+    renderSummary();
+  };
+
+  window.selectChannel = function(el) {
+    document.querySelectorAll('.pay-channel-item .ch-radio').forEach(function(r) { r.classList.remove('checked'); });
+    el.querySelector('.ch-radio').classList.add('checked');
+    currentChannel = el.dataset.channel;
+  };
+
+  // ===== Combo Points Input =====
+
+  window.fillMaxPoints = function() {
+    if (!selectedBatch) return;
+    var maxCons = getMaxConsumable(selectedBatch);
+    var couponUsed = couponActive ? getCouponDiscount() : 0;
+    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
+    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
+    comboPoints = effectiveMax;
+    document.getElementById('comboPointsInput').value = comboPoints;
+    document.getElementById('comboError').classList.remove('show');
+    renderSummary();
+  };
+
+  document.getElementById('comboPointsInput').addEventListener('input', function() {
+    var val = parseInt(this.value) || 0;
+    var b = getBatch(selectedBatch);
+    if (!b) return;
+    var maxCons = getMaxConsumable(selectedBatch);
+    var couponUsed = couponActive ? getCouponDiscount() : 0;
+    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
+    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
+    var errorEl = document.getElementById('comboError');
+    if (val > b.balance) {
+      errorEl.textContent = '苏银豆数量不能超过可用余额（' + b.balance + '）';
+      errorEl.classList.add('show'); comboPoints = effectiveMax;
+    } else if (val > effectiveMax) {
+      errorEl.textContent = '苏银豆数量不能超过可抵扣金额（' + effectiveMax + '）';
+      errorEl.classList.add('show'); comboPoints = effectiveMax;
+    } else { errorEl.classList.remove('show'); comboPoints = val; }
+    renderSummary();
+  });
+
+  document.getElementById('comboPointsInput').addEventListener('blur', function() {
+    var maxCons = selectedBatch ? getMaxConsumable(selectedBatch) : 0;
+    var couponUsed = couponActive ? getCouponDiscount() : 0;
+    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
+    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
+    comboPoints = Math.max(0, Math.min(comboPoints, effectiveMax));
+    document.getElementById('comboPointsInput').value = comboPoints;
+    renderSummary();
+  });
+
+  // ===== Remark Drawer =====
+
+  document.getElementById('remarkInput').addEventListener('input', function() {
+    document.getElementById('remarkCount').textContent = this.value.length;
+  });
+
+  window.openRemarkDrawer = function() {
+    document.getElementById('remarkDrawer').classList.add('show');
+  };
+
+  window.closeRemarkDrawer = function(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('remarkDrawer').classList.remove('show');
+  };
+
+  window.confirmRemark = function() {
+    var val = document.getElementById('remarkInput').value.trim();
+    document.getElementById('remarkPreview').textContent = val || '选填';
+    document.getElementById('remarkDrawer').classList.remove('show');
+  };
+
+  // ===== Payment Popup =====
+
+  var channelData = {
+    wechat: { name: '微信支付', color: '#07c160' },
+    alipay: { name: '支付宝', color: '#1677ff' }
+  };
+
+  function getCashInfo() {
+    var goodsCents = Math.round(getGoodsTotal() * 100);
+    var pointsUsed = 0, couponUsed = 0;
+    if (couponActive) couponUsed = getCouponDiscount();
+    var afterCoupon = goodsCents - couponUsed;
+    if (pointsActive && selectedBatch) {
+      var maxCons = getMaxConsumable(selectedBatch);
+      if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
+      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
+      else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
+    }
+    var cashAmount = goodsCents - couponUsed - pointsUsed;
+    if (cashAmount < 0) cashAmount = 0;
+    return { goods: goodsCents, pointsUsed: pointsUsed, couponUsed: couponUsed, cashAmount: cashAmount };
+  }
+
+  window.handleSubmit = function() {
+    if (!usesCash(currentMode)) { location.href = 'pay_success.html'; return; }
+    var info = getCashInfo();
+    var ch = channelData[currentChannel] || channelData.wechat;
+
+    // Show cash amount (could be 0 in beans_coupon mode that uses cash channel for confirmation)
+    document.getElementById('popupAmount').innerHTML = '<span class="symbol">&yen;</span>' + (info.cashAmount / 100).toFixed(2);
+
+    // Show channel
+    var channelEl = document.getElementById('popupChannel');
+    if (info.cashAmount > 0) {
+      channelEl.style.display = 'flex';
+      document.getElementById('popupChIcon').style.background = ch.color;
+      document.getElementById('popupChName').textContent = ch.name;
+    } else {
+      channelEl.style.display = 'none';
+    }
+
+    // Show points deduction
+    var beansEl = document.getElementById('popupBeans');
+    if (info.pointsUsed > 0) {
+      beansEl.style.display = 'flex';
+      document.getElementById('popupBeansVal').textContent = '-' + info.pointsUsed + '积分（¥' + (info.pointsUsed / 100).toFixed(2) + '）';
+    } else { beansEl.style.display = 'none'; }
+
+    // Show coupon deduction
+    var couponEl = document.getElementById('popupCoupon');
+    if (info.couponUsed > 0) {
+      couponEl.style.display = 'flex';
+      document.getElementById('popupCouponVal').textContent = '-¥' + (info.couponUsed / 100).toFixed(2);
+    } else { couponEl.style.display = 'none'; }
+
+    document.getElementById('payStep1').classList.add('active');
+    document.getElementById('payStep2').classList.remove('active');
+    document.getElementById('pwdInput').value = '';
+    updatePwdDots();
+    document.getElementById('payPopupOverlay').classList.add('show');
+    document.getElementById('payPopupOverlay').onclick = function(e) { if (e.target === this) closePayPopup(); };
+  };
+
+  window.closePayPopup = function() { document.getElementById('payPopupOverlay').classList.remove('show'); };
+
+  window.showPwdStep = function() {
+    var info = getCashInfo();
+    var ch = channelData[currentChannel] || channelData.wechat;
+    document.getElementById('pwdChannelName').textContent = ch.name;
+    document.getElementById('pwdAmount').innerHTML = '<span class="symbol">&yen;</span>' + (info.cashAmount / 100).toFixed(2);
+    document.getElementById('payStep1').classList.remove('active');
+    document.getElementById('payStep2').classList.add('active');
+    document.getElementById('pwdInput').value = '';
+    updatePwdDots();
+    setTimeout(function() { document.getElementById('pwdInput').focus(); }, 100);
+  };
+
+  window.showConfirmStep = function() {
+    document.getElementById('payStep2').classList.remove('active');
+    document.getElementById('payStep1').classList.add('active');
+  };
+
+  function updatePwdDots() {
+    var val = document.getElementById('pwdInput').value;
+    document.querySelectorAll('.pwd-dot').forEach(function(dot, i) { dot.classList.toggle('filled', i < val.length); });
+  }
+
+  document.getElementById('pwdInput').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    updatePwdDots();
+    if (this.value.length === 6) { setTimeout(function() { location.href = 'pay_success.html'; }, 300); }
+  });
+
+  // ===== Init =====
+  selectedBatch = localStorage.getItem('selected_batch_id') || null;
+  selectedCoupon = localStorage.getItem('selected_coupon_id') || null;
+  pointsActive = !!selectedBatch;
+  couponActive = !!selectedCoupon;
+
+  if (pointsActive) {
+    comboPoints = getMaxConsumable(selectedBatch);
+    document.getElementById('comboPointsInput').value = comboPoints;
+  }
+
+  renderPayModes();
+
+  // ===== Handle page return =====
+  window.addEventListener('pageshow', function(e) {
+    var source = localStorage.getItem('nav_source');
+    localStorage.removeItem('nav_source');
+
+    if (source === 'batch') {
+      var newBatch = localStorage.getItem('selected_batch_id');
+      if (newBatch) {
+        pointsActive = true;
+        selectedBatch = newBatch;
+      } else {
+        pointsActive = false;
+        selectedBatch = null;
+      }
+      comboPoints = selectedBatch ? getMaxConsumable(selectedBatch) : 0;
+      document.getElementById('comboPointsInput').value = comboPoints;
+      renderPayModes();
+    }
+    else if (source === 'coupon') {
+      var newCoupon = localStorage.getItem('selected_coupon_id');
+      if (newCoupon) {
+        couponActive = true;
+        selectedCoupon = newCoupon;
+      } else {
+        couponActive = false;
+        selectedCoupon = null;
+      }
+      renderPayModes();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

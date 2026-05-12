@@ -167,6 +167,7 @@
 
   var selectedCoupon = null;
   var orderTotal = 0;
+  var returnPage = localStorage.getItem('return_page') || 'order_product.html';
 
   try {
     var data = localStorage.getItem('order_products');
@@ -235,11 +236,11 @@
     } else {
       localStorage.removeItem('selected_coupon_id');
     }
-    location.href = 'order_product.html';
+    location.href = returnPage;
   };
 
   window.goBack = function() {
-    location.href = 'order_product.html';
+    location.href = returnPage;
   };
 
   renderCoupons();

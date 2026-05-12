@@ -364,7 +364,7 @@
   function findBestBatch() {
     var best = null, bestVal = 0;
     POINTS_BATCHES.forEach(function(b) {
-      if (orderType === 'movie' && b.type !== 'general') return;
+      if ((orderType === 'movie' || orderType === 'cake') && b.type !== 'general') return;
       var v = getMaxConsumable(b.id);
       if (v > bestVal) { bestVal = v; best = b.id; }
     });
@@ -419,7 +419,7 @@
       var maxCons = getMaxConsumable(b.id);
       var isActive = b.id === selectedBatch;
       var isBest = b.id === best;
-      var disabled = orderType === 'movie' && b.type !== 'general';
+      var disabled = (orderType === 'movie' || orderType === 'cake') && b.type !== 'general';
       html += '<div class="batch-card' + (isActive ? ' active' : '') + (disabled ? ' unavailable' : '') + '" data-batch="' + b.id + '" onclick="selectBatch(this)">';
       html += '<div class="bc-radio"></div>';
       html += '<div class="bc-body">';
@@ -431,7 +431,8 @@
       var scopeText = '';
       if (b.scopeList) scopeText = b.scopeList[0] + '等';
       else scopeText = b.subLabel;
-      html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:#bbb;margin-left:6px;">不支持电影票</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
+      var disabledLabel = orderType === 'cake' ? '不支持蛋糕订单' : '不支持电影票';
+      html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:#bbb;margin-left:6px;">' + disabledLabel + '</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
       html += '<div class="bc-match">';
       if (matched.length > 0) {
         html += '<span class="match-yes">匹配' + matched.length + '件商品</span>，可消耗' + maxCons + '积分';
@@ -511,7 +512,7 @@
 
   // Init
   selectedBatch = prevSelection || findBestBatch();
-  if (orderType === 'movie' && selectedBatch) {
+  if ((orderType === 'movie' || orderType === 'cake') && selectedBatch) {
     var sel = getBatch(selectedBatch);
     if (sel && sel.type !== 'general') selectedBatch = findBestBatch();
   }
