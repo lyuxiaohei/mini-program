@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>选择积分批次 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .sub-nav { background: #fff; }
+  .page-body {
+    background: #f5f5f5;
+    min-height: calc(100vh - 88px);
+    padding-bottom: 70px;
+  }
+
+  /* Product summary */
+  .product-summary {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .product-summary-title {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .product-summary-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #333;
+  }
+  .product-summary-item + .product-summary-item {
+    border-top: 1px solid #f5f5f5;
+  }
+  .product-summary-item .ps-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 8px;
+  }
+  .product-summary-item .ps-price {
+    color: #ee0a24;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .product-summary-item .ps-match {
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+  .ps-match.matched { background: #e8f5e9; color: #4caf50; }
+  .ps-match.unmatched { background: #f5f5f5; color: #bbb; }
+
+  /* Batch selector */
+  .batch-section {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .batch-section-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .batch-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .batch-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 10px 10px 10px 6px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .batch-card:active { transform: scale(.97); }
+  .batch-card.active {
+    border-color: #ff6034;
+    background: #fff8f5;
+  }
+  .batch-card .bc-radio {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 2px 8px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+  }
+  .batch-card.active .bc-radio {
+    border-color: #ff6034;
+  }
+  .batch-card .bc-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all .15s;
+  }
+  .batch-card.active .bc-radio::after {
+    background: #ff6034;
+  }
+  .batch-card .bc-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .batch-card .bc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .batch-card .bc-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+  }
+  .batch-card.active .bc-name { color: #ff6034; }
+  .batch-card .bc-balance {
+    font-size: 11px;
+    color: #999;
+  }
+  .batch-card .bc-balance b { color: #333; }
+  .batch-card.active .bc-balance b { color: #ff6034; }
+  .batch-card .bc-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: #eee;
+    color: #999;
+  }
+  .batch-card.active .bc-badge {
+    background: #ff6034;
+    color: #fff;
+  }
+  .batch-card .bc-sublabel {
+    font-size: 11px;
+    color: #999;
+    margin-top: 1px;
+  }
+  .batch-card .bc-help {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #eee;
+    color: #999;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .batch-card .bc-match {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .batch-card .bc-match .match-yes { color: #4caf50; }
+  .batch-card .bc-match .match-no { color: #ccc; }
+  .batch-card .bc-expire-date {
+    margin-top: 4px;
+    font-size: 10px;
+    color: #bbb;
+  }
+  .batch-card .bc-expire-date.expiring-soon {
+    color: #e65100;
+  }
+  .batch-card.unavailable {
+    opacity: .5;
+    pointer-events: none;
+  }
+  .batch-card.unavailable .bc-radio { border-color: #ddd; }
+
+  /* Popup */
+  .batch-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .batch-popup-overlay.show { display: flex; }
+  .batch-popup {
+    width: calc(100% - 48px);
+    max-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    max-height: 60%;
+    overflow-y: auto;
+  }
+  .batch-popup-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .batch-popup-match {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .batch-popup-item {
+    font-size: 12px;
+    color: #333;
+    padding: 6px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .batch-popup-item:last-child { border-bottom: none; }
+  .batch-popup-close {
+    text-align: center;
+    padding-top: 12px;
+    font-size: 13px;
+    color: #ff6034;
+    cursor: pointer;
+  }
+
+  /* Bottom confirm */
+  .confirm-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 8px 12px 12px;
+    border-top: 1px solid #eee;
+    z-index: 200;
+  }
+  .confirm-bar .btn-confirm {
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .confirm-bar .btn-confirm:active { opacity: .85; }
+  .confirm-bar .btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  <div class="sub-nav">
+    <div class="nav-bar">
+      <div class="back-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">选择积分批次</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <!-- Product summary -->
+    <div class="product-summary">
+      <div class="product-summary-title">当前订单商品</div>
+      <div id="productList"></div>
+    </div>
+
+    <!-- Batch selector -->
+    <div class="batch-section">
+      <div class="batch-section-title">选择积分批次</div>
+      <div class="batch-grid" id="batchGrid"></div>
+    </div>
+  </div>
+
+  <!-- Confirm button -->
+  <div class="confirm-bar">
+    <button class="btn-confirm" id="btnConfirm" onclick="confirmSelect()">确认选择</button>
+  </div>
+
+  <!-- Popup container -->
+  <div id="popupContainer"></div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var POINTS_BATCHES = [
+    { id: 'B001', type: 'sku',      label: '指定商品积分', name: '5月生活积分', subLabel: '蓝牙耳机', balance: 5000,  matchAttr: 'sku',      matchValue: 'SKU002', expireDate: '2026-06-30 23:59:59' },
+    { id: 'B002', type: 'special',  label: '特殊商品积分', name: '劳动节积分', subLabel: '热销商品', balance: 2000,  matchAttr: 'tags',     matchValue: '热销', expireDate: '2026-06-01 23:59:59' },
+    { id: 'B003', type: 'brand',    label: '品牌商品积分', name: '品牌福利积分', subLabel: 'T恤品牌', balance: 3000,  matchAttr: 'brand',    matchValue: 'brand-tshirt', expireDate: '2026-06-03 16:00:00', scopeList: ['T恤品牌', '运动品牌', '潮牌'] },
+    { id: 'B004', type: 'category', label: '分类商品积分', name: '家居焕新积分', subLabel: '家居生活', balance: 8000,  matchAttr: 'category', matchValue: 'cat-home', expireDate: '2026-12-31 23:59:59', scopeList: ['家居生活', '数码配件', '个人护理'] },
+    { id: 'B005', type: 'general',  label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null,       matchValue: null, expireDate: '2027-01-01 00:00:00' }
+  ];
+
+  var products = [];
+  var selectedBatch = null;
+  var orderType = localStorage.getItem('order_type') || 'product';
+
+  // Load products from localStorage
+  try {
+    var data = localStorage.getItem('order_products');
+    if (data) products = JSON.parse(data);
+  } catch(e) {}
+
+  // Load previously selected batch
+  var prevSelection = localStorage.getItem('selected_batch_id');
+
+  function getBatch(id) {
+    for (var i = 0; i < POINTS_BATCHES.length; i++) {
+      if (POINTS_BATCHES[i].id === id) return POINTS_BATCHES[i];
+    }
+    return null;
+  }
+
+  function isMatched(batchId, product) {
+    var b = getBatch(batchId);
+    if (!b) return false;
+    if (b.matchAttr === null) return true;
+    if (b.matchAttr === 'tags') {
+      var tags = (product.tags || '').split(',');
+      return tags.indexOf(b.matchValue) !== -1;
+    }
+    return product[b.matchAttr] === b.matchValue;
+  }
+
+  function getMatchedProducts(batchId) {
+    return products.filter(function(p) { return isMatched(batchId, p); });
+  }
+
+  function getMatchedTotal(batchId) {
+    return getMatchedProducts(batchId).reduce(function(s, p) { return s + p.price * p.qty; }, 0);
+  }
+
+  function getMaxConsumable(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return 0;
+    var matchedTotal = Math.round(getMatchedTotal(batchId) * 100);
+    return Math.min(b.balance, matchedTotal);
+  }
+
+  function findBestBatch() {
+    var best = null, bestVal = 0;
+    POINTS_BATCHES.forEach(function(b) {
+      if ((orderType === 'movie' || orderType === 'cake') && b.type !== 'general') return;
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b.id; }
+    });
+    return best;
+  }
+
+  function renderProductSummary() {
+    var html = '';
+    products.forEach(function(p) {
+      var matchHtml = '';
+      if (selectedBatch) {
+        var isMatch = isMatched(selectedBatch, p);
+        matchHtml = '<span class="ps-match ' + (isMatch ? 'matched' : 'unmatched') + '">' + (isMatch ? '可用' : '不支持') + '</span>';
+      }
+      html += '<div class="product-summary-item">';
+      html += '<span class="ps-name">' + p.name + '</span>';
+      html += '<span class="ps-price">&yen;' + (p.price * p.qty).toFixed(2) + '</span>';
+      html += matchHtml;
+      html += '</div>';
+    });
+    document.getElementById('productList').innerHTML = html;
+  }
+
+  function renderBatchSelector() {
+    var html = '';
+    var best = findBestBatch();
+    var now = Date.now();
+    var sorted = POINTS_BATCHES.slice().sort(function(a, b) {
+      if (a.id === best && b.id !== best) return -1;
+      if (b.id === best && a.id !== best) return 1;
+      var aExp = new Date(a.expireDate).getTime();
+      var bExp = new Date(b.expireDate).getTime();
+      var a30 = aExp - now < 30 * 86400000;
+      var b30 = bExp - now < 30 * 86400000;
+      if (a30 && !b30) return -1;
+      if (b30 && !a30) return 1;
+      if (a30 && b30) return aExp - bExp;
+      var aCons = getMaxConsumable(a.id), bCons = getMaxConsumable(b.id);
+      if (aCons !== bCons) return bCons - aCons;
+      return getMatchedProducts(a.id).length - getMatchedProducts(b.id).length;
+    });
+
+    // "Not using" option
+    html += '<div class="batch-card' + (selectedBatch === null ? ' active' : '') + '" data-batch="" onclick="selectBatch(this)">';
+    html += '<div class="bc-radio"></div>';
+    html += '<div class="bc-body"><div class="bc-header"><span class="bc-name">不使用积分</span></div>';
+    html += '<div class="bc-sublabel" style="color:#999">不使用积分抵扣</div>';
+    html += '</div></div>';
+
+    sorted.forEach(function(b) {
+      var matched = getMatchedProducts(b.id);
+      var maxCons = getMaxConsumable(b.id);
+      var isActive = b.id === selectedBatch;
+      var isBest = b.id === best;
+      var disabled = (orderType === 'movie' || orderType === 'cake') && b.type !== 'general';
+      html += '<div class="batch-card' + (isActive ? ' active' : '') + (disabled ? ' unavailable' : '') + '" data-batch="' + b.id + '" onclick="selectBatch(this)">';
+      html += '<div class="bc-radio"></div>';
+      html += '<div class="bc-body">';
+      html += '<div class="bc-header"><span class="bc-name">' + b.name + '</span>';
+      html += '<span class="bc-balance">余额 <b>' + b.balance.toLocaleString() + '</b></span>';
+      if (isBest) html += '<span class="bc-badge">推荐</span>';
+      html += '</div>';
+      var showScope = b.type !== 'sku' && b.type !== 'special';
+      var scopeText = '';
+      if (b.scopeList) scopeText = b.scopeList[0] + '等';
+      else scopeText = b.subLabel;
+      var disabledLabel = orderType === 'cake' ? '不支持蛋糕订单' : '不支持电影票';
+      html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:#bbb;margin-left:6px;">' + disabledLabel + '</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
+      html += '<div class="bc-match">';
+      if (matched.length > 0) {
+        html += '<span class="match-yes">匹配' + matched.length + '件商品</span>，可消耗' + maxCons + '积分';
+      } else {
+        html += '<span class="match-no">无匹配商品</span>';
+      }
+      var diffMs = new Date(b.expireDate).getTime() - Date.now();
+      var diffDays = Math.ceil(diffMs / 86400000);
+      if (diffDays <= 30) {
+        html += '<div class="bc-expire-date expiring-soon">该批次积分' + diffDays + '天后过期</div>';
+      } else {
+        html += '<div class="bc-expire-date">在' + b.expireDate + '前有效</div>';
+      }
+      html += '</div></div></div>';
+    });
+    document.getElementById('batchGrid').innerHTML = html;
+  }
+
+  window.selectBatch = function(el) {
+    var id = el.dataset.batch;
+    selectedBatch = id === '' ? null : id;
+    renderBatchSelector();
+    renderProductSummary();
+  };
+
+  window.showHelp = function(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return;
+    var matched = products.filter(function(p) { return isMatched(batchId, p); });
+    var matchInfo = '';
+    if (b.matchAttr === null) matchInfo = '全场通用';
+    else if (b.matchAttr === 'sku') matchInfo = '适用商品：' + b.subLabel;
+    else if (b.matchAttr === 'tags') matchInfo = '适用标签：' + b.matchValue;
+    else if (b.matchAttr === 'brand') matchInfo = '适用品牌：' + (b.scopeList ? b.scopeList.join('、') : b.subLabel);
+    else if (b.matchAttr === 'category') matchInfo = '适用分类：' + (b.scopeList ? b.scopeList.join('、') : b.subLabel);
+    var items = '';
+    if (b.scopeList) {
+      b.scopeList.forEach(function(s) {
+        items += '<div class="batch-popup-item">' + s + '</div>';
+      });
+    } else if (b.matchAttr === null) {
+      items = '<div class="batch-popup-item">全部商品均可使用</div>';
+    } else {
+      matched.forEach(function(p) {
+        items += '<div class="batch-popup-item">' + p.name + '</div>';
+      });
+      if (!matched.length) items = '<div class="batch-popup-item">当前订单无匹配商品</div>';
+    }
+    var popup = '<div class="batch-popup-overlay show" id="helpPopup" onclick="closeHelp(event)">';
+    popup += '<div class="batch-popup" onclick="event.stopPropagation()">';
+    popup += '<div class="batch-popup-title">' + b.name + '</div>';
+    popup += '<div class="batch-popup-match">' + matchInfo + '</div>';
+    popup += '<div style="font-size:12px;color:#999;margin:8px 0 4px;">匹配商品：</div>';
+    popup += items;
+    popup += '<div class="batch-popup-close" onclick="closeHelp()">关闭</div>';
+    popup += '</div></div>';
+    document.getElementById('popupContainer').innerHTML = popup;
+  };
+
+  window.closeHelp = function(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('popupContainer').innerHTML = '';
+  };
+
+  window.confirmSelect = function() {
+    if (selectedBatch) {
+      localStorage.setItem('selected_batch_id', selectedBatch);
+    } else {
+      localStorage.removeItem('selected_batch_id');
+    }
+    location.href = localStorage.getItem('return_page') || 'order_product.html';
+  };
+
+  window.goBack = function() {
+    location.href = localStorage.getItem('return_page') || 'order_product.html';
+  };
+
+  // Init
+  selectedBatch = prevSelection || findBestBatch();
+  if ((orderType === 'movie' || orderType === 'cake') && selectedBatch) {
+    var sel = getBatch(selectedBatch);
+    if (sel && sel.type !== 'general') selectedBatch = findBestBatch();
+  }
+  renderBatchSelector();
+  renderProductSummary();
+})();
+</script>
+</body>
+</html>
