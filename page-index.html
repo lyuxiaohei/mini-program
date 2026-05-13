@@ -41,11 +41,13 @@
   }
   .links {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
   .links a {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px 12px;
     background: #f8f8f8;
     border-radius: 8px;
@@ -80,6 +82,10 @@
     background: #722ed1;
     color: #fff;
   }
+  .links a .ver.v5 {
+    background: #13c2c2;
+    color: #fff;
+  }
   .tip {
     background: #fffbe6;
     border: 1px solid #ffe58f;
@@ -100,8 +106,8 @@
 <div class="section">
   <h2>一级页面（底部Tab）</h2>
   <div class="links">
-    <a href="pages/home_page.html">首页</a>
-    <a href="pages/category.html">分类</a>
+    <a href="pages/home_page.html">首页 <span class="ver">V0</span></a>
+    <a href="pages/category.html">分类 <span class="ver">V0</span></a>
     <a href="pages/cart.html">购物车 <span class="ver v3">V0.3</span></a>
     <a href="pages/profile.html">我的 <span class="ver">V0.1</span></a>
   </div>
@@ -114,17 +120,11 @@
     <a href="pages/search_filter.html">搜索结果 <span class="ver">V0.1</span></a>
     <a href="pages/product_detail.html">商品详情 <span class="ver v3">V0.3</span></a>
     <a href="pages/product_list.html">商品列表</a>
-    <a href="pages/brand_list.html">品牌专区</a>
-    <a href="pages/activity_page.html">活动专题</a>
-    <a href="pages/flash_sale.html">限时秒杀</a>
     <a href="pages/browse_history.html">浏览记录 <span class="ver">V0.1</span></a>
     <a href="pages/order_list.html">我的订单 <span class="ver v3">V0.3</span></a>
     <a href="pages/favorites.html">我的收藏 <span class="ver">V0.1</span></a>
     <a href="pages/coupon.html">卡券包</a>
-    <a href="pages/wallet.html">我的钱包</a>
     <a href="pages/points_center.html">我的积分 <span class="ver v2">V0.2</span></a>
-    <a href="pages/vip_center.html">会员中心</a>
-    <a href="pages/newuser_gift.html">新人专享</a>
     <a href="pages/message.html">消息中心</a>
     <a href="pages/settings.html">设置 <span class="ver">V0.1</span></a>
   </div>
@@ -146,7 +146,9 @@
     <a href="pages/points_exchange.html">积分卡券兑换 <span class="ver v2">V0.2</span></a>
     <a href="pages/points_movie.html">兑换电影票次卡 <span class="ver v2">V0.2</span></a>
     <a href="pages/coupon_bind.html">卡券绑定</a>
-    <a href="pages/order_product.html">确认订单 <span class="ver v3">V0.3</span></a>
+    <a href="pages/order_product.html">确认订单（商品）<span class="ver v3">V0.3 NEW</span></a>
+    <a href="pages/order_cake.html">确认订单（蛋糕）<span class="ver v5">V0.5</span></a>
+    <a href="pages/order_movie.html">确认订单（电影票）<span class="ver v5">V0.5</span></a>
     <a href="pages/order_pay.html">订单支付 <span class="ver v3">V0.3</span></a>
     <a href="pages/pay_success.html">支付成功 <span class="ver v3">V0.3</span></a>
     <a href="pages/order_detail.html">订单详情 <span class="ver v3">V0.3</span></a>

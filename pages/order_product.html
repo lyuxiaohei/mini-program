@@ -947,7 +947,8 @@
     { id: 'B002', type: 'special',  label: '特殊商品积分', name: '劳动节积分', subLabel: '热销商品', balance: 2000,  matchAttr: 'tags',     matchValue: '热销', expireDate: '2026-06-01 23:59:59' },
     { id: 'B003', type: 'brand',    label: '品牌商品积分', name: '品牌福利积分', subLabel: 'T恤品牌', balance: 3000,  matchAttr: 'brand',    matchValue: 'brand-tshirt', expireDate: '2026-06-03 16:00:00', scopeList: ['T恤品牌', '运动品牌', '潮牌'] },
     { id: 'B004', type: 'category', label: '分类商品积分', name: '家居焕新积分', subLabel: '家居生活', balance: 8000,  matchAttr: 'category', matchValue: 'cat-home', expireDate: '2026-12-31 23:59:59', scopeList: ['家居生活', '数码配件', '个人护理'] },
-    { id: 'B005', type: 'general',  label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null,       matchValue: null, expireDate: '2027-01-01 00:00:00' }
+    { id: 'B005', type: 'general',  label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null,       matchValue: null, expireDate: '2027-01-01 00:00:00' },
+    { id: 'B006', type: 'general',  label: '通兑商品积分', name: '活动积分', subLabel: '全场通用', balance: 50000, matchAttr: null,       matchValue: null, expireDate: '2027-06-30 00:00:00' }
   ];
 
   var COUPONS = [
@@ -1065,7 +1066,7 @@
     return result;
   }
 
-  function usesCash(mode) { return mode === 'cash' || mode === 'beans_cash' || mode === 'coupon_cash'; }
+  function usesCash(mode) { return mode === 'cash' || mode === 'beans_cash' || mode === 'coupon_cash' || mode === 'beans_coupon_cash'; }
 
   // ===== Price Summary Entry Rows =====
 
@@ -1112,7 +1113,13 @@
       currentMode = 'coupon_cash';
     }
     else if (pointsActive && couponActive) {
+      var couponUsed = getCouponDiscount();
+      var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
+      var maxCons = getMaxConsumable(selectedBatch);
       html += payModeHtml('beans_coupon', '积分支付');
+      if (maxCons < afterCoupon) {
+        html += payModeHtml('beans_coupon_cash', '组合支付');
+      }
       currentMode = 'beans_coupon';
     }
 
@@ -1137,10 +1144,11 @@
       if (currentMode === 'beans') totalPoints = getMaxConsumable(selectedBatch);
       else if (currentMode === 'beans_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
       else if (currentMode === 'beans_coupon') totalPoints = getMaxConsumable(selectedBatch);
+      else if (currentMode === 'beans_coupon_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
     }
 
     var alloc = allocateByWeight(totalPoints, matched);
-    var showAlloc = pointsActive && (currentMode === 'beans' || currentMode === 'beans_cash' || currentMode === 'beans_coupon');
+    var showAlloc = pointsActive && (currentMode === 'beans' || currentMode === 'beans_cash' || currentMode === 'beans_coupon' || currentMode === 'beans_coupon_cash');
 
     all.forEach(function(prod) {
       var item = alloc.find(function(a) { return a.product.el === prod.el; });
@@ -1181,6 +1189,7 @@
       if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
       else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
       else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
     }
 
     var cashAmount = goodsCents - couponUsed - pointsUsed;
@@ -1197,14 +1206,16 @@
     bottomTotal.innerHTML = '<span class="symbol">¥</span>' + (cashAmount / 100).toFixed(2);
     btnSubmit.textContent = '立即支付';
 
-    document.getElementById('comboInput').classList.toggle('show', currentMode === 'beans_cash');
+    var showCombo = (currentMode === 'beans_cash' || currentMode === 'beans_coupon_cash');
+    document.getElementById('comboInput').classList.toggle('show', showCombo);
     document.getElementById('payChannel').classList.toggle('show', usesCash(currentMode));
 
-    if (currentMode === 'beans_cash' && selectedBatch) {
+    if (showCombo && selectedBatch) {
       var b2 = getBatch(selectedBatch);
       var maxCons2 = getMaxConsumable(selectedBatch);
+      var effectiveMax = couponActive ? Math.min(maxCons2, afterCoupon) : maxCons2;
       document.getElementById('balanceHint').textContent = b2.balance.toLocaleString();
-      document.getElementById('maxDeductHint').textContent = '¥' + (maxCons2 / 100).toFixed(2);
+      document.getElementById('maxDeductHint').textContent = '¥' + (effectiveMax / 100).toFixed(2);
     }
 
     var payModeSection = document.querySelector('.pay-mode-section');
@@ -1336,6 +1347,7 @@
       if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
       else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
       else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
     }
     var cashAmount = goodsCents - couponUsed - pointsUsed;
     if (cashAmount < 0) cashAmount = 0;
