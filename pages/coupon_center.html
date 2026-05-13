@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>我的卡券 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* 与 order_list / message / coupon 等子页一致：灰底 + 白顶栏 + 白底粘性 Tab + 白卡片列表 */
+  .coupon-page {
+    background: #f5f5f5;
+  }
+  .coupon-main {
+    padding: 12px;
+    padding-bottom: 24px;
+  }
+  .coupon-section {
+    margin: 0;
+  }
+  .cc-tabs-bar {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    position: sticky;
+    top: 88px;
+    z-index: 50;
+  }
+  .cc-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+  }
+  .cc-tab:active {
+    background: #f8f8f8;
+  }
+  .cc-tab.cc-tab--active {
+    color: #333;
+    font-weight: 600;
+  }
+  .cc-tab.cc-tab--active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: 1px;
+  }
+  .cc-tab-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: #999;
+    margin-left: 2px;
+  }
+  .cc-tab.cc-tab--active .cc-tab-count {
+    color: #999;
+  }
+  .cc-panel {
+    min-height: 40px;
+  }
+  .cc-kind {
+    margin-bottom: 16px;
+  }
+  .cc-kind:last-child {
+    margin-bottom: 0;
+  }
+  .cc-kind-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 10px;
+    padding: 4px 0 0;
+  }
+  .cc-kind-lead {
+    font-size: 12px;
+    color: #999;
+    margin: 0 0 8px;
+    line-height: 1.45;
+  }
+  .cc-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cc-card {
+    display: block;
+    padding: 14px 12px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+  }
+  .cc-card:active {
+    transform: scale(0.98);
+  }
+  .cc-card.is-disabled {
+    opacity: 0.55;
+  }
+  .cc-card--simple .cc-simple-desc {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+  .cc-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .cc-batch-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+  .cc-card-arrow {
+    font-size: 16px;
+    color: #bbb;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+  .cc-metrics {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #666;
+  }
+  .cc-metrics b {
+    color: #ee0a24;
+    font-weight: 700;
+    margin-left: 2px;
+  }
+  .cc-card.is-disabled .cc-metrics b {
+    color: #999;
+  }
+  .cc-metric-sep {
+    width: 1px;
+    height: 12px;
+    background: #e8e8e8;
+  }
+  .cc-rule-block {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #f0f0f0;
+  }
+  .cc-rule-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .cc-rule-preview-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+  .cc-rule-preview-label {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .cc-rule-preview {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cc-rule-toggle {
+    flex-shrink: 0;
+    align-self: flex-end;
+    padding: 2px 0 2px 8px;
+    margin: 0;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    color: #ff6034;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1.2;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-rule-toggle:active {
+    opacity: 0.75;
+  }
+  .cc-rule-detail {
+    margin-top: 10px;
+  }
+  .cc-rule-detail[hidden] {
+    display: none !important;
+  }
+  .cc-field {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #f0f0f0;
+  }
+  .cc-rule-detail .cc-field:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .cc-field-k {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .cc-field-v {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.55;
+  }
+  .cc-empty {
+    text-align: center;
+    padding: 28px 12px;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.5;
+    background: #fff;
+    border-radius: 12px;
+  }
+  .cc-empty--soft {
+    padding: 24px 12px;
+    font-size: 13px;
+    color: #999;
+    background: #fff;
+    border-radius: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title">我的卡券</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="cc-tabs-bar" role="tablist">
+    <button type="button" class="cc-tab cc-tab--active" id="ccTabAvail" role="tab" aria-selected="true" data-cc-tab="avail">
+      可用<span class="cc-tab-count" id="ccTabCountAvail">(0)</span>
+    </button>
+    <button type="button" class="cc-tab" id="ccTabUnavail" role="tab" aria-selected="false" data-cc-tab="unavail">
+      不可用<span class="cc-tab-count" id="ccTabCountUnavail">(0)</span>
+    </button>
+  </div>
+
+  <div class="page-scroll coupon-page" style="padding-bottom: 16px;">
+    <div class="coupon-main">
+      <div class="coupon-section">
+        <div id="ccPanelAvail" class="cc-panel" role="tabpanel">
+          <div id="ccAvailKinds"></div>
+        </div>
+        <div id="ccPanelUnavail" class="cc-panel" style="display: none;" role="tabpanel">
+          <div id="ccUnavailKinds"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/movie_pass_cards.js"></script>
+<script>
+(function() {
+  /**
+   * 可用 Tab 下：非次卡类演示数据（满减券 / 代金券等）。
+   * @type {{ kind: string, name: string, desc: string, href: string }[]}
+   */
+  var OTHER_COUPONS_AVAILABLE = [
+    { kind: '满减券', name: '满 200 元减 30 元', desc: '全场实物商品可用 · 2026-05-31 23:59 到期', href: '#' },
+    { kind: '代金券', name: '10 元无门槛', desc: '限自营品类 · 单笔限用 1 张 · 2026-06-10 到期', href: '#' }
+  ];
+
+  /**
+   * 不可用 Tab 下：非次卡类演示数据。
+   * @type {{ kind: string, name: string, desc: string, href: string }[]}
+   */
+  var OTHER_COUPONS_UNAVAILABLE = [
+    { kind: '满减券', name: '满 100 元减 10 元（已过期）', desc: '已过期 · 有效期至 2025-12-01', href: '#' }
+  ];
+
+  /**
+   * 转义 HTML。
+   * @param {string} s
+   * @returns {string}
+   */
+  function escapeHtml(s) {
+    if (s == null || s === '') return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  /**
+   * 取批次卡名称。
+   * @param {{ batchCardName?: string, name: string }} c
+   * @returns {string}
+   */
+  function getBatchCardName(c) {
+    return c.batchCardName || c.name || '';
+  }
+
+  /**
+   * 渲染电影票次卡卡片（使用规则与最高单次规格合并为一区，右下角展开）。
+   * @param {object} c
+   * @param {boolean} unavailable
+   * @returns {string}
+   */
+  function renderMoviePassCard(c, unavailable) {
+    var rule = c.usageRule || '—';
+    var spec = c.maxSingleUseSpec || '—';
+    var cardClass = 'cc-card' + (unavailable ? ' is-disabled' : '');
+    return (
+      '<a href="movie_pass_detail.html?id=' + encodeURIComponent(c.id) + '" class="' + cardClass + '">' +
+        '<div class="cc-card-head">' +
+          '<span class="cc-batch-name">' + escapeHtml(getBatchCardName(c)) + '</span>' +
+          '<span class="cc-card-arrow">›</span>' +
+        '</div>' +
+        '<div class="cc-metrics">' +
+          '<span>总共 <b>' + c.total + '</b> 次</span>' +
+          '<span class="cc-metric-sep" aria-hidden="true"></span>' +
+          '<span>已使用 <b>' + c.used + '</b> 次</span>' +
+        '</div>' +
+        '<div class="cc-rule-block">' +
+          '<div class="cc-rule-row">' +
+            '<div class="cc-rule-preview-wrap">' +
+              '<span class="cc-rule-preview-label">使用规则</span>' +
+              '<p class="cc-rule-preview">' + escapeHtml(rule) + '</p>' +
+            '</div>' +
+            '<button type="button" class="cc-rule-toggle" aria-expanded="false" aria-label="展开完整使用规则与规格">展开</button>' +
+          '</div>' +
+          '<div class="cc-rule-detail" hidden>' +
+            '<div class="cc-field">' +
+              '<div class="cc-field-k">使用规则</div>' +
+              '<div class="cc-field-v">' + escapeHtml(rule) + '</div>' +
+            '</div>' +
+            '<div class="cc-field">' +
+              '<div class="cc-field-k">最高单次使用规格</div>' +
+              '<div class="cc-field-v">' + escapeHtml(spec) + '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</a>'
+    );
+  }
+
+  /**
+   * 渲染通用券（满减/代金等）简易卡片。
+   * @param {{ name: string, desc: string, href: string }} item
+   * @param {boolean} unavailable
+   * @returns {string}
+   */
+  function renderSimpleCouponCard(item, unavailable) {
+    var cardClass = 'cc-card cc-card--simple' + (unavailable ? ' is-disabled' : '');
+    return (
+      '<a href="' + escapeHtml(item.href) + '" class="' + cardClass + '">' +
+        '<div class="cc-card-head">' +
+          '<span class="cc-batch-name">' + escapeHtml(item.name) + '</span>' +
+          '<span class="cc-card-arrow">›</span>' +
+        '</div>' +
+        '<div class="cc-simple-desc">' + escapeHtml(item.desc) + '</div>' +
+      '</a>'
+    );
+  }
+
+  /**
+   * 按 kind 分组列表项并输出一个类型区块 HTML。
+   * @param {string} kindTitle
+   * @param {string} kindLead
+   * @param {string} listInnerHtml
+   * @returns {string}
+   */
+  function renderKindBlock(kindTitle, kindLead, listInnerHtml) {
+    var inner = listInnerHtml || '<div class="cc-empty cc-empty--soft">暂无该类型卡券</div>';
+    var lead = (kindLead && String(kindLead).trim()) ? '<p class="cc-kind-lead">' + escapeHtml(kindLead) + '</p>' : '';
+    return (
+      '<div class="cc-kind">' +
+        '<h3 class="cc-kind-title">' + escapeHtml(kindTitle) + '</h3>' +
+        lead +
+        '<div class="cc-card-list">' + inner + '</div>' +
+      '</div>'
+    );
+  }
+
+  /**
+   * 将 OTHER_COUPONS_* 按 kind 分组。
+   * @param {typeof OTHER_COUPONS_AVAILABLE} list
+   * @returns {Record<string, typeof OTHER_COUPONS_AVAILABLE>}
+   */
+  function groupOtherCouponsByKind(list) {
+    var map = {};
+    list.forEach(function(item) {
+      var k = item.kind || '其他';
+      if (!map[k]) map[k] = [];
+      map[k].push(item);
+    });
+    return map;
+  }
+
+  /**
+   * 渲染「可用」面板：各类型卡券。
+   */
+  function buildAvailKindsHtml() {
+    var availMovies = [];
+    if (typeof MOVIE_PASS_CARDS !== 'undefined') {
+      MOVIE_PASS_CARDS.forEach(function(c) {
+        if (typeof isMoviePassAvailable === 'function' && isMoviePassAvailable(c)) availMovies.push(c);
+      });
+    }
+    var movieInner = availMovies.length
+      ? availMovies.map(function(c) { return renderMoviePassCard(c, false); }).join('')
+      : '<div class="cc-empty cc-empty--soft">暂无可用电影票次卡</div>';
+    var parts = [];
+    parts.push(renderKindBlock('电影票次卡', '', movieInner));
+    var grouped = groupOtherCouponsByKind(OTHER_COUPONS_AVAILABLE);
+    Object.keys(grouped).forEach(function(kind) {
+      var items = grouped[kind];
+      var inner = items.map(function(it) { return renderSimpleCouponCard(it, false); }).join('');
+      parts.push(renderKindBlock(kind, '', inner));
+    });
+    return parts.join('');
+  }
+
+  /**
+   * 渲染「不可用」面板：各类型卡券。
+   */
+  function buildUnavailKindsHtml() {
+    var unavailMovies = [];
+    if (typeof MOVIE_PASS_CARDS !== 'undefined') {
+      MOVIE_PASS_CARDS.forEach(function(c) {
+        if (typeof isMoviePassAvailable === 'function' && !isMoviePassAvailable(c)) unavailMovies.push(c);
+      });
+    }
+    var movieInner = unavailMovies.length
+      ? unavailMovies.map(function(c) { return renderMoviePassCard(c, true); }).join('')
+      : '<div class="cc-empty cc-empty--soft">暂无不可用电影票次卡</div>';
+    var parts = [];
+    parts.push(renderKindBlock('电影票次卡', '', movieInner));
+    var grouped = groupOtherCouponsByKind(OTHER_COUPONS_UNAVAILABLE);
+    Object.keys(grouped).forEach(function(kind) {
+      var items = grouped[kind];
+      var inner = items.map(function(it) { return renderSimpleCouponCard(it, true); }).join('');
+      parts.push(renderKindBlock(kind, '', inner));
+    });
+    return parts.join('');
+  }
+
+  /**
+   * 计算 Tab 角标数量（各类型条数之和）。
+   * @returns {{ avail: number, unavail: number }}
+   */
+  function countTabTotals() {
+    var nAvail = 0;
+    var nUnavail = 0;
+    if (typeof MOVIE_PASS_CARDS !== 'undefined') {
+      MOVIE_PASS_CARDS.forEach(function(c) {
+        if (typeof isMoviePassAvailable === 'function' && isMoviePassAvailable(c)) nAvail += 1;
+        else nUnavail += 1;
+      });
+    }
+    nAvail += OTHER_COUPONS_AVAILABLE.length;
+    nUnavail += OTHER_COUPONS_UNAVAILABLE.length;
+    return { avail: nAvail, unavail: nUnavail };
+  }
+
+  /**
+   * 刷新页面。
+   */
+  function renderCouponCenter() {
+    var counts = countTabTotals();
+    document.getElementById('ccTabCountAvail').textContent = '(' + counts.avail + ')';
+    document.getElementById('ccTabCountUnavail').textContent = '(' + counts.unavail + ')';
+    document.getElementById('ccAvailKinds').innerHTML = buildAvailKindsHtml();
+    document.getElementById('ccUnavailKinds').innerHTML = buildUnavailKindsHtml();
+  }
+
+  /**
+   * 切换 Tab。
+   * @param {'avail'|'unavail'} key
+   */
+  function switchCouponTab(key) {
+    var isAvail = key === 'avail';
+    document.getElementById('ccTabAvail').classList.toggle('cc-tab--active', isAvail);
+    document.getElementById('ccTabUnavail').classList.toggle('cc-tab--active', !isAvail);
+    document.getElementById('ccTabAvail').setAttribute('aria-selected', isAvail ? 'true' : 'false');
+    document.getElementById('ccTabUnavail').setAttribute('aria-selected', isAvail ? 'false' : 'true');
+    document.getElementById('ccPanelAvail').style.display = isAvail ? 'block' : 'none';
+    document.getElementById('ccPanelUnavail').style.display = isAvail ? 'none' : 'block';
+  }
+
+  document.getElementById('ccTabAvail').addEventListener('click', function() {
+    switchCouponTab('avail');
+  });
+  document.getElementById('ccTabUnavail').addEventListener('click', function() {
+    switchCouponTab('unavail');
+  });
+
+  /**
+   * 电影票次卡：点击右下角「展开/收起」切换完整规则，并阻止冒泡以免触发卡片跳转。
+   * @param {MouseEvent} e
+   * @returns {void}
+   */
+  function onCouponSectionClick(e) {
+    var btn = e.target && e.target.closest ? e.target.closest('.cc-rule-toggle') : null;
+    if (!btn || !btn.closest('.cc-card')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var card = btn.closest('.cc-card');
+    var detail = card && card.querySelector ? card.querySelector('.cc-rule-detail') : null;
+    if (!detail) return;
+    var willOpen = detail.hasAttribute('hidden');
+    if (willOpen) {
+      detail.removeAttribute('hidden');
+      btn.textContent = '收起';
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', '收起完整使用规则与规格');
+    } else {
+      detail.setAttribute('hidden', '');
+      btn.textContent = '展开';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', '展开完整使用规则与规格');
+    }
+  }
+
+  document.querySelector('.coupon-section').addEventListener('click', onCouponSectionClick);
+
+  renderCouponCenter();
+})();
+</script>
+</body>
+</html>

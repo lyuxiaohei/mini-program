@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>电影票次卡详情 - 苏银豆商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .mpd-sub-nav {
+    background: linear-gradient(180deg, rgba(65, 67, 72, 0.96) 0%, rgba(86, 83, 77, 0.92) 100%);
+  }
+  .mpd-sub-nav .status-bar,
+  .mpd-sub-nav .nav-title,
+  .mpd-sub-nav .back-btn svg {
+    color: #fff;
+  }
+  .mpd-sub-nav .status-bar .icons svg {
+    fill: #fff;
+  }
+  .mpd-page {
+    background: #f5f6f8;
+    min-height: calc(100vh - 88px);
+  }
+  .mpd-main {
+    padding: 12px 12px 24px;
+  }
+  .mpd-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
+  }
+  .mpd-lead {
+    font-size: 12px;
+    color: #999;
+    margin: 0 0 14px;
+    line-height: 1.45;
+  }
+  .mpd-stats {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .mpd-stat {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fafbff, #f3f5ff);
+    border: 1px solid #e8eaf6;
+  }
+  .mpd-stat .n {
+    font-size: 20px;
+    font-weight: 700;
+    color: #3949ab;
+    display: block;
+  }
+  .mpd-stat .n.is-zero {
+    color: #bdbdbd;
+  }
+  .mpd-stat .l {
+    font-size: 11px;
+    color: #7986cb;
+    margin-top: 4px;
+    display: block;
+  }
+  .mpd-desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+  .mpd-ex-banner {
+    text-align: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    color: #616161;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .mpd-ex-summary {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+  /* 原信息页：卡信息 + 使用记录（合并至本页） */
+  .mpd-merged {
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .mpd-merged-ex-tip {
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fafafa;
+    color: #757575;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .mpd-merged-lead {
+    font-size: 12px;
+    color: #999;
+    margin: 0 0 12px;
+    line-height: 1.45;
+  }
+  .mpd-rows .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 13px;
+  }
+  .mpd-rows .row:last-child {
+    border-bottom: none;
+  }
+  .mpd-rows .k {
+    color: #999;
+    flex-shrink: 0;
+  }
+  .mpd-rows .v {
+    color: #333;
+    text-align: right;
+    word-break: break-all;
+  }
+  .mpd-usage-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin: 16px 0 8px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .mpd-usage-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 13px;
+  }
+  .mpd-usage-item:last-child {
+    border-bottom: none;
+  }
+  .mpd-usage-item .t {
+    color: #999;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .mpd-usage-item .tag {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5c6bc0;
+    background: #e8eaf6;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .mpd-usage-item .tag.tag--done {
+    color: #757575;
+    background: #eeeeee;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="sub-nav mpd-sub-nav">
+    <div class="status-bar">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="location.href='coupon_center.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <span class="nav-title" id="mpdNavTitle">电影票次卡详情</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="page-scroll mpd-page">
+    <div class="mpd-main">
+      <div class="mpd-card">
+        <!-- 待使用 -->
+        <div id="mpdModeActive">
+          <p class="mpd-lead" id="mpdLead">平台已充值至您账户的观影次数</p>
+          <div class="mpd-stats">
+            <div class="mpd-stat"><span class="n" id="mpdTotal">0</span><span class="l">总次数</span></div>
+            <div class="mpd-stat"><span class="n" id="mpdUsed">0</span><span class="l">已使用</span></div>
+            <div class="mpd-stat"><span class="n" id="mpdRemain">0</span><span class="l">剩余可用</span></div>
+          </div>
+          <p class="mpd-desc" id="mpdDesc"></p>
+        </div>
+
+        <!-- 已用尽 -->
+        <div id="mpdModeExhausted" style="display: none;">
+          <div class="mpd-ex-banner">本卡次数已全部使用完毕</div>
+          <p class="mpd-lead" id="mpdLeadEx"></p>
+          <p class="mpd-ex-summary" id="mpdExSummary"></p>
+        </div>
+
+        <!-- 原 movie_pass_info 内容：卡信息 + 使用记录 -->
+        <div class="mpd-merged">
+          <div id="mpdMergedExTip" class="mpd-merged-ex-tip" style="display: none;">本卡次数已用尽 · 以下为存档信息与完整扣次记录</div>
+          <p class="mpd-merged-lead" id="mpdMergedLead"></p>
+          <div class="mpd-rows" id="mpdRows"></div>
+          <div class="mpd-usage-title" id="mpdUsageTitle">使用记录</div>
+          <div id="mpdUsageList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/movie_pass_cards.js"></script>
+<script>
+(function() {
+  /**
+   * 单次使用上限金额展示文案；无字段或非空字符串时回落为「—」。
+   * @param {{ maxSingleUseAmountText?: string }} c
+   * @returns {string}
+   */
+  function mpdMaxSingleUseAmountDisplay(c) {
+    var t = c && c.maxSingleUseAmountText != null ? String(c.maxSingleUseAmountText).trim() : '';
+    return t !== '' ? t : '—';
+  }
+
+  /**
+   * 渲染信息行（卡名称、卡号等）。
+   * @param {string} k
+   * @param {string} v
+   * @returns {string}
+   */
+  function mpdRowHtml(k, v) {
+    return '<div class="row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+  }
+
+  /**
+   * 渲染使用记录行。
+   * @param {{ time: string, desc: string, deductLabel: string }} u
+   * @param {boolean} exhausted
+   * @returns {string}
+   */
+  function mpdUsageItemHtml(u, exhausted) {
+    var tagClass = exhausted ? 'tag tag--done' : 'tag';
+    return (
+      '<div class="mpd-usage-item">' +
+        '<div><div class="t">' + u.time + '</div><div>' + u.desc + '</div></div>' +
+        '<span class="' + tagClass + '">' + u.deductLabel + '</span>' +
+      '</div>'
+    );
+  }
+
+  /**
+   * 填充原信息页的卡信息行 + 使用记录列表。
+   * @param {object} c
+   * @param {boolean} exhausted
+   */
+  function fillMergedInfoSection(c, exhausted) {
+    document.getElementById('mpdMergedExTip').style.display = exhausted ? 'block' : 'none';
+    document.getElementById('mpdMergedLead').textContent = exhausted
+      ? (c.listSubtitle + ' · 卡号、有效期与完整扣次存档')
+      : (c.listSubtitle + ' · 卡号、有效期与使用记录');
+    document.getElementById('mpdRows').innerHTML =
+      mpdRowHtml('卡名称', c.name) +
+      mpdRowHtml('卡号', c.cardNo) +
+      mpdRowHtml('充值到账时间', c.creditedAt) +
+      mpdRowHtml('有效期至', c.expireText) +
+      mpdRowHtml('适用范围', c.scope) +
+      mpdRowHtml('单次使用上限金额', mpdMaxSingleUseAmountDisplay(c)) +
+      mpdRowHtml('状态', c.statusDetail);
+    document.getElementById('mpdUsageTitle').textContent = exhausted ? '完整扣次记录' : '使用记录';
+    document.getElementById('mpdUsageList').innerHTML = (c.usages || []).map(function(u) {
+      return mpdUsageItemHtml(u, exhausted);
+    }).join('');
+  }
+
+  /**
+   * 按当前 URL 的 id 填充详情页（含原信息页内容）。
+   */
+  function initMoviePassDetailPage() {
+    var id = typeof getMoviePassIdFromQuery === 'function' ? getMoviePassIdFromQuery() : '';
+    var c = typeof getMoviePassCardById === 'function' ? getMoviePassCardById(id) : null;
+    if (!c) return;
+    var exhausted = typeof isMoviePassExhausted === 'function' && isMoviePassExhausted(c);
+    var activeBlock = document.getElementById('mpdModeActive');
+    var exBlock = document.getElementById('mpdModeExhausted');
+
+    if (exhausted) {
+      activeBlock.style.display = 'none';
+      exBlock.style.display = 'block';
+      document.getElementById('mpdNavTitle').textContent = '电影票次卡详情';
+      document.title = '电影票次卡详情 - 苏银豆商城';
+      document.getElementById('mpdLeadEx').textContent = c.listSubtitle + ' · 本卡已用尽';
+      var lastTime = (c.usages && c.usages[0]) ? c.usages[0].time : '—';
+      document.getElementById('mpdExSummary').textContent =
+        '共 ' + c.total + ' 次已全部扣完，最后一次消费时间：' + lastTime + '；卡片有效期至 ' + c.expireText + '。';
+    } else {
+      exBlock.style.display = 'none';
+      activeBlock.style.display = 'block';
+      document.getElementById('mpdNavTitle').textContent = '电影票次卡详情';
+      document.title = '电影票次卡详情 - 苏银豆商城';
+      document.getElementById('mpdLead').textContent = c.listSubtitle + ' · 待使用次数权益（平台已充值至您账户）';
+      document.getElementById('mpdTotal').textContent = String(c.total);
+      document.getElementById('mpdUsed').textContent = String(c.used);
+      var remainEl = document.getElementById('mpdRemain');
+      remainEl.textContent = String(c.remain);
+      remainEl.className = 'n' + (c.remain === 0 ? ' is-zero' : '');
+      document.getElementById('mpdDesc').textContent = c.desc;
+    }
+    fillMergedInfoSection(c, exhausted);
+  }
+  initMoviePassDetailPage();
+})();
+</script>
+</body>
+</html>
