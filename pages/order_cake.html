@@ -887,7 +887,8 @@
 (function() {
   // Only general type batch for cake orders
   var POINTS_BATCHES = [
-    { id: 'B005', type: 'general', label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null, matchValue: null, expireDate: '2027-01-01 00:00:00' }
+    { id: 'B005', type: 'general', label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null, matchValue: null, expireDate: '2027-01-01 00:00:00' },
+    { id: 'B006', type: 'general', label: '通兑商品积分', name: '活动积分', subLabel: '全场通用', balance: 50000, matchAttr: null, matchValue: null, expireDate: '2027-06-30 00:00:00' }
   ];
 
   var COUPONS = [
@@ -1049,9 +1050,13 @@
       currentMode = 'coupon_cash';
     }
     else if (pointsActive && couponActive) {
-      // Both points and coupon: offer full-points and combo (points + cash)
+      var couponUsed = getCouponDiscount();
+      var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
+      var maxCons = getMaxConsumable(selectedBatch);
       html += payModeHtml('beans_coupon', '积分支付');
-      html += payModeHtml('beans_coupon_cash', '组合支付');
+      if (maxCons < afterCoupon) {
+        html += payModeHtml('beans_coupon_cash', '组合支付');
+      }
       currentMode = 'beans_coupon';
     }
 

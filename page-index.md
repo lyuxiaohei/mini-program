@@ -4,8 +4,8 @@
 
 ### 一级页面（底部Tab）
 
-- [首页](pages/home_page.html)
-- [分类](pages/category.html)
+- [首页](pages/home_page.html) `V0`
+- [分类](pages/category.html) `V0`
 - [购物车](pages/cart.html)
 - [我的](pages/profile.html) `V0.1`
 
@@ -15,17 +15,11 @@
 - [搜索结果](pages/search_filter.html) `V0.1`
 - [商品详情](pages/product_detail.html) `V0.3`
 - [商品列表](pages/product_list.html)
-- [品牌专区](pages/brand_list.html)
-- [活动专题](pages/activity_page.html)
-- [限时秒杀](pages/flash_sale.html)
 - [浏览记录](pages/browse_history.html) `V0.1`
 - [我的订单](pages/order_list.html)
 - [我的收藏](pages/favorites.html) `V0.1`
 - [卡券包](pages/coupon.html)
-- [我的钱包](pages/wallet.html)
 - [我的积分](pages/points_center.html) `V0.2开发验收版本`
-- [会员中心](pages/vip_center.html)
-- [新人专享](pages/newuser_gift.html)
 - [消息中心](pages/message.html)
 - [设置](pages/settings.html) `V0.1`
 
@@ -43,7 +37,9 @@
 - [积分卡券兑换](pages/points_exchange.html) `V0.2开发验收版本`
 - [兑换电影票次卡](pages/points_movie.html) `V0.2开发验收版本`
 - [卡券绑定](pages/coupon_bind.html)
-- [确认订单](pages/order.html)
+- [确认订单（商品）](pages/order_product.html) `V0.3 NEW`
+- [确认订单（蛋糕）](pages/order_cake.html) `V0.5`
+- [确认订单（电影票）](pages/order_movie.html) `V0.5`
 - [订单支付](pages/order_pay.html)
 - [支付成功](pages/pay_success.html)
 - [订单详情](pages/order_detail.html)
