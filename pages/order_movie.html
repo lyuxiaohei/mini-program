@@ -1041,7 +1041,7 @@
 
     var payModeSection = document.querySelector('.pay-mode-section');
     if (payModeSection) {
-      payModeSection.style.display = (movieActive || pointsActive) ? '' : 'none';
+      payModeSection.style.display = (movieActive || pointsActive) && currentMode !== 'movie' ? '' : 'none';
     }
   }
 
@@ -1049,6 +1049,7 @@
 
   window.goToMovieCardSelect = function() {
     localStorage.setItem('nav_source', 'movie');
+    localStorage.setItem('return_page', 'order_movie.html');
     if (selectedMovieCard) localStorage.setItem('selected_movie_card_id', selectedMovieCard);
     location.href = 'movie_card_select.html';
   };
@@ -1057,6 +1058,10 @@
     localStorage.setItem('nav_source', 'batch');
     localStorage.setItem('order_type', 'movie');
     localStorage.setItem('return_page', 'order_movie.html');
+    localStorage.setItem('order_products', JSON.stringify([{
+      sku: 'MOVIE001', category: 'cat-movie', brand: 'brand-movie', tags: '电影',
+      price: ticketPrice / 100, qty: ticketQty, name: '电影票'
+    }]));
     if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
     location.href = 'points_batch_select.html';
   };

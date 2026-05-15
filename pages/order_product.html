@@ -840,7 +840,7 @@
     </div>
 
     <!-- Combo Points Input -->
-    <div class="combo-input-section show" id="comboInput">
+    <div class="combo-input-section" id="comboInput">
       <div class="combo-input-row">
         <label>使用苏银豆</label>
         <input type="number" id="comboPointsInput" value="100" min="0" max="1280" step="1">
@@ -1240,6 +1240,7 @@
   window.goToCouponSelect = function() {
     localStorage.setItem('order_products', JSON.stringify(getProductsForStorage()));
     localStorage.setItem('nav_source', 'coupon');
+    localStorage.setItem('return_page', 'order_product.html');
     if (selectedCoupon) localStorage.setItem('selected_coupon_id', selectedCoupon);
     location.href = 'coupon_select.html';
   };

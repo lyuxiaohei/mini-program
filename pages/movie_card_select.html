@@ -220,17 +220,19 @@
     renderCards();
   };
 
+  var returnPage = localStorage.getItem('return_page') || 'order_movie.html';
+
   window.confirmSelect = function() {
     if (selectedCard) {
       localStorage.setItem('selected_movie_card_id', selectedCard);
     } else {
       localStorage.removeItem('selected_movie_card_id');
     }
-    location.href = 'order_movie.html';
+    location.href = returnPage;
   };
 
   window.goBack = function() {
-    location.href = 'order_movie.html';
+    location.href = returnPage;
   };
 
   window.goToDetail = function(id) {
