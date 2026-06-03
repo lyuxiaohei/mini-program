@@ -8,11 +8,11 @@
 <style>
   /* Rating summary */
   .rating-summary {
-    background: #fff;
-    padding: 16px;
+    background: var(--card-bg);
+    padding: var(--space-lg);
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: var(--space-xl);
   }
   .rating-score {
     text-align: center;
@@ -21,22 +21,22 @@
   .rating-score .score-num {
     font-size: 36px;
     font-weight: 700;
-    color: #ff6034;
+    color: var(--primary-start);
     line-height: 1;
   }
   .rating-score .score-label {
-    font-size: 11px;
-    color: #999;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
   }
   .rating-stars-row {
     display: flex;
     align-items: center;
     gap: 2px;
-    margin-top: 6px;
+    margin-top: var(--space-sm);
     justify-content: center;
   }
-  .rating-stars-row .star { font-size: 14px; color: #ff6034; }
+  .rating-stars-row .star { font-size: var(--font-base); color: var(--primary-start); }
   .rating-bars {
     flex: 1;
     min-width: 0;
@@ -44,34 +44,34 @@
   .rating-bar-row {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 4px;
-    font-size: 11px;
-    color: #999;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .rating-bar-row:last-child { margin-bottom: 0; }
   .rating-bar-label { width: 32px; text-align: right; flex-shrink: 0; }
   .rating-bar-track {
     flex: 1;
     height: 6px;
-    background: #f0f0f0;
-    border-radius: 3px;
+    background: var(--border-divider);
+    border-radius: var(--radius-xs);
     overflow: hidden;
   }
   .rating-bar-fill {
     height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
+    border-radius: var(--radius-xs);
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
   }
-  .rating-bar-count { width: 28px; flex-shrink: 0; color: #bbb; }
+  .rating-bar-count { width: 28px; flex-shrink: 0; color: var(--text-muted); }
 
   /* Filter tabs */
   .filter-bar {
     display: flex;
-    background: #fff;
-    padding: 10px 12px;
-    gap: 8px;
-    border-top: 1px solid #f5f5f5;
+    background: var(--card-bg);
+    padding: var(--space-md) 12px;
+    gap: var(--space-sm);
+    border-top: 1px solid var(--bg-color);
     overflow-x: auto;
     position: sticky;
     top: 88px;
@@ -80,122 +80,122 @@
   .filter-bar::-webkit-scrollbar { display: none; }
   .filter-tag {
     flex-shrink: 0;
-    padding: 5px 14px;
-    border-radius: 16px;
-    font-size: 12px;
-    color: #666;
-    background: #f5f5f5;
+    padding: var(--space-xs) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    background: var(--bg-color);
     cursor: pointer;
     white-space: nowrap;
   }
   .filter-tag:active { opacity: 0.7; }
   .filter-tag.active {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
   }
   .filter-tag .tag-count {
-    font-size: 10px;
+    font-size: var(--font-xs);
     margin-left: 2px;
   }
 
   /* SKU filter */
   .sku-filter {
-    background: #fff;
-    padding: 0 12px 10px;
+    background: var(--card-bg);
+    padding: 0 var(--space-md) var(--space-md);
     display: flex;
     align-items: center;
-    gap: 8px;
-    border-bottom: 8px solid #f5f5f5;
+    gap: var(--space-sm);
+    border-bottom: 8px solid var(--bg-color);
   }
   .sku-filter-label {
-    font-size: 12px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     flex-shrink: 0;
   }
   .sku-chip {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    color: #999;
-    background: #f5f5f5;
+    padding: var(--space-xs) 10px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    background: var(--bg-color);
     cursor: pointer;
     white-space: nowrap;
   }
   .sku-chip:active { opacity: 0.7; }
   .sku-chip.active {
-    background: #fff0ed;
-    color: #ff6034;
-    border: 1px solid #ff6034;
+    background: var(--card-bg)0ed;
+    color: var(--primary-start);
+    border: 1px solid var(--primary-start);
   }
 
   /* Review list */
   .review-list {
-    background: #fff;
+    background: var(--card-bg);
   }
   .review-card {
-    padding: 14px 16px;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-lg) 16px;
+    border-bottom: 1px solid var(--bg-color);
   }
   .review-card:last-child { border-bottom: none; }
   .review-card-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
   }
   .review-card-header .avatar {
     width: 28px;
     height: 28px;
     border-radius: 50%;
     overflow: hidden;
-    background: #f0f0f0;
+    background: var(--border-divider);
     flex-shrink: 0;
   }
   .review-card-header .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .review-card-header .nickname {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     flex: 1;
   }
   .review-card-header .stars {
     display: flex;
     gap: 1px;
   }
-  .review-card-header .stars .star { font-size: 12px; color: #ff6034; }
-  .review-card-header .stars .star.empty { color: #ddd; }
+  .review-card-header .stars .star { font-size: var(--font-sm); color: var(--primary-start); }
+  .review-card-header .stars .star.empty { color: var(--text-disabled); }
   .review-card-body {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     line-height: 1.6;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
   }
   .review-card-images {
     display: flex;
-    gap: 6px;
+    gap: var(--space-sm);
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
   }
   .review-card-images img {
     width: 80px;
     height: 80px;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     object-fit: cover;
   }
   .review-card-footer {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .review-card-footer .spec-tag {
-    font-size: 11px;
-    color: #999;
-    background: #f5f5f5;
-    padding: 2px 8px;
-    border-radius: 10px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    background: var(--bg-color);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-md);
   }
   .review-card-footer .date {
-    font-size: 11px;
-    color: #ccc;
+    font-size: var(--font-sm);
+    color: var(--text-light);
   }
 
   /* Empty */
@@ -204,11 +204,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 20px;
-    color: #999;
+    padding: 80px var(--space-xl);
+    color: var(--text-tertiary);
   }
-  .empty-state svg { width: 60px; height: 60px; color: #ddd; margin-bottom: 12px; }
-  .empty-state .empty-text { font-size: 13px; }
+  .empty-state svg { width: 60px; height: 60px; color: var(--text-disabled); margin-bottom: var(--space-md); }
+  .empty-state .empty-text { font-size: var(--font-sm); }
 </style>
 </head>
 <body>
@@ -237,7 +237,7 @@
     <div class="rating-score">
       <div class="score-num">4.9</div>
       <div class="rating-stars-row">
-        <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        <span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span>
       </div>
       <div class="score-label">好评率 98%</div>
     </div>
@@ -371,7 +371,7 @@
   function renderStars(count) {
     var html = '';
     for (var i = 0; i < 5; i++) {
-      html += '<span class="star ' + (i < count ? '' : 'empty') + '">&#9733;</span>';
+      html += '<span class="star ' + (i < count ? '' : 'empty') + '">&var(--primary-start);</span>';
     }
     return html;
   }
@@ -452,5 +452,6 @@
   renderList();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

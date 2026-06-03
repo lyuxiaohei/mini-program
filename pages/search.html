@@ -18,27 +18,27 @@
 
   /* Search input area below header */
   .search-input-area {
-    background: #fff;
-    padding: 10px 12px;
+    background: var(--card-bg);
+    padding: var(--space-md) 12px;
   }
   .search-input-wrap {
     display: flex;
     align-items: center;
-    background: #f5f5f5;
-    border-radius: 20px;
-    padding: 8px 12px;
-    gap: 8px;
+    background: var(--bg-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-sm) 12px;
+    gap: var(--space-sm);
   }
-  .search-input-wrap svg { width: 18px; height: 18px; color: #999; flex-shrink: 0; }
+  .search-input-wrap svg { width: 18px; height: 18px; color: var(--text-tertiary); flex-shrink: 0; }
   .search-input-wrap input {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: var(--font-base);
     background: transparent;
-    color: #333;
+    color: var(--text-color);
   }
-  .search-input-wrap input::placeholder { color: #bbb; }
+  .search-input-wrap input::placeholder { color: var(--text-muted); }
   .search-input-wrap .clear-btn {
     width: 18px;
     height: 18px;
@@ -46,13 +46,13 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #ccc;
+    color: var(--text-light);
   }
   .search-input-wrap .clear-btn svg { width: 16px; height: 16px; }
   .search-input-wrap .clear-btn.show { display: flex; }
   .search-input-wrap .search-btn {
-    font-size: 14px;
-    color: #ff6034;
+    font-size: var(--font-base);
+    color: var(--primary-start);
     cursor: pointer;
     white-space: nowrap;
   }
@@ -60,42 +60,42 @@
 
   /* History section */
   .history-section {
-    padding: 16px 12px;
+    padding: var(--space-lg) 12px;
   }
   .history-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
-  .history-header .title { font-size: 14px; font-weight: 600; color: #333; }
+  .history-header .title { font-size: var(--font-base); font-weight: 600; color: var(--text-color); }
   .history-header .clear-btn {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
   }
-  .history-header .clear-btn:active { color: #666; }
+  .history-header .clear-btn:active { color: var(--text-secondary); }
   .history-header .clear-btn svg { width: 14px; height: 14px; }
   .history-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--space-md);
   }
   .history-item {
-    background: #f5f5f5;
-    padding: 7px 14px;
-    border-radius: 16px;
-    font-size: 13px;
-    color: #666;
+    background: var(--bg-color);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     cursor: pointer;
   }
-  .history-item:active { background: #eee; }
+  .history-item:active { background: var(--border-color); }
   .history-empty {
-    font-size: 12px;
-    color: #ccc;
+    font-size: var(--font-sm);
+    color: var(--text-light);
   }
 </style>
 </head>
@@ -238,5 +238,6 @@
 </script>
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

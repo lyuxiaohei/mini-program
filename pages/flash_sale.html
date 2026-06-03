@@ -8,57 +8,57 @@
 <style>
   /* Header countdown */
   .flash-header {
-    background: linear-gradient(135deg, #ee0a24, #ff6034);
-    padding: 16px;
-    color: #fff;
+    background: linear-gradient(135deg, var(--price-color), var(--primary-start));
+    padding: var(--space-lg);
+    color: var(--card-bg);
     text-align: center;
   }
   .flash-title {
-    font-size: 22px;
+    font-size: var(--font-2xl);
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .flash-title svg { width: 28px; height: 28px; }
   .flash-subtitle {
-    font-size: 13px;
+    font-size: var(--font-sm);
     opacity: 0.9;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .countdown-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .countdown-label {
-    font-size: 13px;
+    font-size: var(--font-sm);
     opacity: 0.9;
   }
   .countdown-num {
-    background: #fff;
-    color: #ee0a24;
-    font-size: 18px;
+    background: var(--card-bg);
+    color: var(--price-color);
+    font-size: var(--font-lg);
     font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-xs);
     min-width: 28px;
     text-align: center;
   }
   .countdown-sep {
-    font-size: 16px;
+    font-size: var(--font-md);
     font-weight: 700;
   }
 
   /* Time slots */
   .time-slots {
     display: flex;
-    background: #fff;
-    padding: 8px 12px;
-    gap: 8px;
+    background: var(--card-bg);
+    padding: var(--space-sm) 12px;
+    gap: var(--space-sm);
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -66,44 +66,44 @@
   .time-slot {
     flex-shrink: 0;
     text-align: center;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    background: #f5f5f5;
+    background: var(--bg-color);
   }
   .time-slot.active {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
   }
   .time-slot.past { opacity: 0.5; }
   .time-slot .time {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
     margin-bottom: 2px;
   }
   .time-slot .status {
-    font-size: 11px;
+    font-size: var(--font-sm);
     opacity: 0.8;
   }
 
   /* Product list */
   .flash-list {
-    padding: 12px;
+    padding: var(--space-md);
   }
   .flash-item {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
     overflow: hidden;
     display: flex;
-    gap: 12px;
-    padding: 12px;
+    gap: var(--space-md);
+    padding: var(--space-md);
   }
   .flash-item:active { opacity: 0.95; }
   .flash-img {
     width: 100px;
     height: 100px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex-shrink: 0;
     position: relative;
@@ -117,11 +117,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: #ee0a24;
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 0 0 8px 0;
+    background: var(--price-color);
+    color: var(--card-bg);
+    font-size: var(--font-xs);
+    padding: 2px var(--space-sm);
+    border-radius: 0 0 var(--space-sm) 0;
   }
   .flash-info {
     flex: 1;
@@ -131,8 +131,8 @@
     min-width: 0;
   }
   .flash-name {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -140,32 +140,32 @@
     overflow: hidden;
   }
   .flash-desc {
-    font-size: 12px;
-    color: #999;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
   }
   .flash-price-row {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-top: 8px;
+    margin-top: var(--space-sm);
   }
   .flash-price {
     display: flex;
     align-items: baseline;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .flash-price .current {
-    font-size: 20px;
+    font-size: var(--font-xl);
     font-weight: 700;
-    color: #ee0a24;
+    color: var(--price-color);
   }
   .flash-price .current small {
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
   .flash-price .original {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     text-decoration: line-through;
   }
   .flash-stock {
@@ -174,63 +174,63 @@
   .stock-bar {
     width: 80px;
     height: 4px;
-    background: #ffe8e8;
-    border-radius: 2px;
+    background: var(--selected-bg);
+    border-radius: var(--radius-xs);
     overflow: hidden;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
   }
   .stock-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
-    border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
+    border-radius: var(--radius-xs);
   }
   .stock-text {
-    font-size: 10px;
-    color: #ee0a24;
+    font-size: var(--font-xs);
+    color: var(--price-color);
   }
   .btn-buy {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     border: none;
-    padding: 8px 16px;
-    border-radius: 16px;
-    font-size: 12px;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
     font-weight: 600;
     cursor: pointer;
-    margin-top: 8px;
+    margin-top: var(--space-sm);
   }
   .btn-buy:active { opacity: 0.85; }
   .btn-buy.disabled {
-    background: #ccc;
+    background: var(--text-light);
     cursor: not-allowed;
   }
 
   /* Tips banner */
   .tips-banner {
-    background: #fff5f0;
-    margin: 0 12px 12px;
-    border-radius: 8px;
-    padding: 10px 12px;
+    background: var(--selected-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md) 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
   }
-  .tips-banner svg { width: 16px; height: 16px; color: #ff6034; flex-shrink: 0; }
-  .tips-banner span { font-size: 12px; color: #ff6034; }
+  .tips-banner svg { width: 16px; height: 16px; color: var(--primary-start); flex-shrink: 0; }
+  .tips-banner span { font-size: var(--font-sm); color: var(--primary-start); }
 
   /* Empty */
   .empty-state {
     text-align: center;
-    padding: 60px 20px;
-    color: #999;
+    padding: 60px var(--space-xl);
+    color: var(--text-tertiary);
   }
   .empty-state svg {
     width: 80px;
     height: 80px;
-    color: #ddd;
-    margin-bottom: 16px;
+    color: var(--text-disabled);
+    margin-bottom: var(--space-lg);
   }
-  .empty-state .empty-text { font-size: 14px; }
+  .empty-state .empty-text { font-size: var(--font-base); }
 
   /* Reminder toast */
   .reminder-toast {
@@ -239,10 +239,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0,0,0,0.8);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
+    color: var(--card-bg);
+    padding: var(--space-md) 24px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-base);
     z-index: 1000;
     display: none;
   }
@@ -415,5 +415,6 @@
   renderProducts();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

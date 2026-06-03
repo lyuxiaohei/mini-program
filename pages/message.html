@@ -9,8 +9,8 @@
   /* Tab bar */
   .msg-tabs-bar {
     display: flex;
-    background: #fff;
-    border-bottom: 1px solid #f0f0f0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-divider);
     position: sticky;
     top: 88px;
     z-index: 50;
@@ -18,15 +18,15 @@
   .msg-tab {
     flex: 1;
     text-align: center;
-    padding: 12px 0;
-    font-size: 14px;
-    color: #666;
+    padding: var(--space-md) 0;
+    font-size: var(--font-base);
+    color: var(--text-secondary);
     cursor: pointer;
     position: relative;
   }
-  .msg-tab:active { background: #f8f8f8; }
+  .msg-tab:active { background: var(--bg-input); }
   .msg-tab.active {
-    color: #333;
+    color: var(--text-color);
     font-weight: 600;
   }
   .msg-tab.active::after {
@@ -37,56 +37,56 @@
     transform: translateX(-50%);
     width: 24px;
     height: 2px;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
-    border-radius: 1px;
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
+    border-radius: var(--radius-xs);
   }
   .msg-tab .tab-badge {
     position: absolute;
     top: 6px;
     right: calc(50% - 18px);
-    background: #ee0a24;
-    color: #fff;
-    font-size: 9px;
+    background: var(--price-color);
+    color: var(--card-bg);
+    font-size: var(--font-xs);
     min-width: 14px;
     height: 14px;
-    border-radius: 7px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 3px;
+    padding: 0 var(--space-xs);
   }
 
   /* Message list */
   .msg-list {
-    padding: 12px;
+    padding: var(--space-md);
   }
   .msg-item {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
     overflow: hidden;
     cursor: pointer;
   }
-  .msg-item:active { background: #fafafa; }
+  .msg-item:active { background: var(--hover-bg); }
   .msg-item-header {
     display: flex;
     align-items: center;
-    padding: 12px;
-    gap: 12px;
+    padding: var(--space-md);
+    gap: var(--space-md);
   }
   .msg-icon {
     width: 44px;
     height: 44px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .msg-icon svg { width: 24px; height: 24px; color: #fff; }
-  .msg-icon.order { background: linear-gradient(135deg, #2196f3, #1565c0); }
-  .msg-icon.system { background: linear-gradient(135deg, #ff9800, #f57c00); }
-  .msg-icon.activity { background: linear-gradient(135deg, #e91e63, #c2185b); }
+  .msg-icon svg { width: 24px; height: 24px; color: var(--card-bg); }
+  .msg-icon.order { background: linear-gradient(135deg, var(--info-color), var(--info-color)); }
+  .msg-icon.system { background: linear-gradient(135deg, var(--warning-color), var(--warning-dark)); }
+  .msg-icon.activity { background: linear-gradient(135deg, var(--error-light), var(--price-color)); }
 
   .msg-info {
     flex: 1;
@@ -94,10 +94,10 @@
     position: relative;
   }
   .msg-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -105,21 +105,21 @@
   .msg-title .unread-dot {
     width: 8px;
     height: 8px;
-    background: #ee0a24;
+    background: var(--price-color);
     border-radius: 50%;
     flex-shrink: 0;
   }
   .msg-preview {
-    font-size: 13px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .msg-time {
-    font-size: 11px;
-    color: #bbb;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-top: var(--space-xs);
   }
 
   /* Empty state */
@@ -128,30 +128,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 20px;
-    color: #999;
+    padding: 80px var(--space-xl);
+    color: var(--text-tertiary);
   }
   .empty-state svg {
     width: 80px;
     height: 80px;
-    color: #ddd;
-    margin-bottom: 16px;
+    color: var(--text-disabled);
+    margin-bottom: var(--space-lg);
   }
-  .empty-state .empty-text { font-size: 14px; }
+  .empty-state .empty-text { font-size: var(--font-base); }
 
   /* Clear button */
   .clear-bar {
-    padding: 16px;
+    padding: var(--space-lg);
     text-align: center;
   }
   .btn-clear {
-    font-size: 13px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     background: transparent;
     border: none;
     cursor: pointer;
   }
-  .btn-clear:active { color: #666; }
+  .btn-clear:active { color: var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -324,5 +324,6 @@
   renderList();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

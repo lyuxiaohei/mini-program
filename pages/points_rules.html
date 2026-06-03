@@ -12,51 +12,51 @@
   .rules-sub-nav .status-bar,
   .rules-sub-nav .nav-title,
   .rules-sub-nav .back-btn svg {
-    color: #fff;
+    color: var(--card-bg);
   }
   .rules-sub-nav .status-bar .icons svg {
-    fill: #fff;
+    fill: var(--card-bg);
   }
   .title-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .title-wrap .bean {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+    background: linear-gradient(135deg, var(--vip-gold-light), var(--primary-start));
   }
   .rules-page {
-    background: #f5f6f8;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .rule-list {
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .main {
-    padding: 12px 12px 16px;
+    padding: var(--space-md) 12px 16px;
   }
   .rule-list {
-    background: #fff;
-    padding: 16px;
+    background: var(--card-bg);
+    padding: var(--space-lg);
   }
   .rule-item + .rule-item {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid #f0f1f4;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--bg-color);
   }
   .rule-item strong {
     display: block;
-    font-size: 15px;
-    color: #222;
-    margin-bottom: 6px;
+    font-size: var(--font-md);
+    color: var(--text-dark);
+    margin-bottom: var(--space-sm);
   }
   .rule-item p {
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.7;
   }
 </style>
@@ -111,5 +111,6 @@
 <script src="../js/auth.js"></script>
 <script src="../js/auth-guard.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

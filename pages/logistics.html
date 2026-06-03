@@ -8,119 +8,119 @@
 <style>
   /* Package card */
   .package-card {
-    background: #fff;
-    border-radius: 12px;
-    margin: 8px 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin: var(--space-sm) 12px;
     overflow: hidden;
   }
-  .package-card + .package-card { margin-top: 8px; }
+  .package-card + .package-card { margin-top: var(--space-sm); }
 
   /* Courier header */
   .courier-header {
-    padding: 14px 12px;
+    padding: var(--space-lg) 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid #f5f5f5;
+    gap: var(--space-md);
+    border-bottom: 1px solid var(--bg-color);
   }
   .courier-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .courier-icon svg { width: 20px; height: 20px; color: #fff; }
+  .courier-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
   .courier-info { flex: 1; }
-  .courier-name { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 2px; }
-  .courier-no { font-size: 11px; color: #999; }
+  .courier-name { font-size: var(--font-base); font-weight: 600; color: var(--text-color); margin-bottom: 2px; }
+  .courier-no { font-size: var(--font-sm); color: var(--text-tertiary); }
   .courier-copy {
-    font-size: 11px;
-    color: #ff6034;
-    border: 1px solid #ff6034;
-    padding: 2px 8px;
-    border-radius: 10px;
+    font-size: var(--font-sm);
+    color: var(--primary-start);
+    border: 1px solid var(--primary-start);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-md);
     cursor: pointer;
   }
-  .courier-copy:active { background: #fff5f0; }
+  .courier-copy:active { background: var(--selected-bg); }
 
   /* Products in package */
   .package-products {
-    padding: 10px 12px;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-md) 12px;
+    border-bottom: 1px solid var(--bg-color);
   }
   .pkg-product-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 0;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
   }
-  .pkg-product-item + .pkg-product-item { margin-top: 4px; }
+  .pkg-product-item + .pkg-product-item { margin-top: var(--space-xs); }
   .pkg-product-item .pp-img {
     width: 40px;
     height: 40px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex-shrink: 0;
-    background: #f8f8f8;
+    background: var(--bg-input);
   }
   .pkg-product-item .pp-img img { width: 100%; height: 100%; object-fit: cover; }
   .pkg-product-item .pp-name {
     flex: 1;
-    font-size: 12px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .pkg-product-item .pp-qty {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     flex-shrink: 0;
   }
 
   /* Package status bar */
   .package-status {
-    padding: 10px 12px;
+    padding: var(--space-md) 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
   }
-  .package-status:active { background: #fafafa; }
+  .package-status:active { background: var(--hover-bg); }
   .package-status .status-left {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
   }
-  .status-dot.shipping { background: #ff6034; }
-  .status-dot.delivered { background: #4caf50; }
-  .status-dot.pending { background: #ff9800; }
+  .status-dot.shipping { background: var(--primary-start); }
+  .status-dot.delivered { background: var(--success-color); }
+  .status-dot.pending { background: var(--warning-color); }
   .status-text {
-    font-size: 13px;
-    color: #ff6034;
+    font-size: var(--font-sm);
+    color: var(--primary-start);
     font-weight: 500;
   }
-  .status-text.delivered { color: #4caf50; }
-  .status-text.pending { color: #ff9800; }
+  .status-text.delivered { color: var(--success-color); }
+  .status-text.pending { color: var(--warning-color); }
   .status-time {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .status-toggle {
     display: flex;
     align-items: center;
     gap: 2px;
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .status-toggle svg {
     width: 14px;
@@ -131,13 +131,13 @@
 
   /* Timeline */
   .timeline-section {
-    padding: 0 12px 12px;
+    padding: 0 var(--space-md) var(--space-md);
     display: none;
   }
   .timeline-section.show { display: block; }
   .timeline {
     position: relative;
-    padding-left: 20px;
+    padding-left: var(--space-xl);
   }
   .timeline::before {
     content: '';
@@ -146,11 +146,11 @@
     top: 6px;
     bottom: 6px;
     width: 2px;
-    background: #eee;
+    background: var(--border-color);
   }
   .timeline-item {
     position: relative;
-    padding-bottom: 16px;
+    padding-bottom: var(--space-lg);
   }
   .timeline-item:last-child { padding-bottom: 0; }
   .timeline-item .dot {
@@ -160,23 +160,23 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: #ddd;
-    border: 2px solid #fff;
+    background: var(--text-disabled);
+    border: 2px solid var(--card-bg);
   }
   .timeline-item:first-child .dot {
-    background: #ff6034;
+    background: var(--primary-start);
     box-shadow: 0 0 0 3px rgba(255,96,52,0.2);
   }
   .timeline-item .tl-content {
-    font-size: 12px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 2px;
   }
-  .timeline-item:first-child .tl-content { color: #333; font-weight: 500; }
+  .timeline-item:first-child .tl-content { color: var(--text-color); font-weight: 500; }
   .timeline-item .tl-time {
-    font-size: 11px;
-    color: #bbb;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
   }
 </style>
 </head>
@@ -319,5 +319,6 @@
   renderPackages();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

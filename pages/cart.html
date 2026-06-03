@@ -10,22 +10,22 @@
   .cart-edit-bar {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
-    background: #fff;
-    font-size: 13px;
-    color: #666;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--card-bg);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--bg-color);
   }
 
   /* Cart item */
   .cart-list {
-    padding: 8px 12px;
+    padding: var(--space-sm) var(--space-md);
   }
   .cart-item-wrapper {
     position: relative;
     overflow: hidden;
-    margin-bottom: 8px;
-    border-radius: 10px;
+    margin-bottom: var(--space-sm);
+    border-radius: var(--radius-md);
   }
   .cart-item-wrapper .delete-btn {
     position: absolute;
@@ -33,25 +33,25 @@
     top: 0;
     bottom: 0;
     width: 72px;
-    background: #ee0a24;
-    color: #fff;
+    background: var(--price-color);
+    color: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 500;
     cursor: pointer;
     z-index: 0;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   }
-  .cart-item-wrapper .delete-btn:active { background: #c0091e; }
+  .cart-item-wrapper .delete-btn:active { background: var(--price-color); }
   .cart-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px;
+    gap: var(--space-md);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
     position: relative;
     transition: transform 0.2s ease;
     z-index: 1;
@@ -60,7 +60,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2px solid #ddd;
+    border: 2px solid var(--text-disabled);
     flex-shrink: 0;
     cursor: pointer;
     display: flex;
@@ -69,14 +69,14 @@
     transition: all 0.2s;
   }
   .cart-item .checkbox.checked {
-    background: #ff6034;
-    border-color: #ff6034;
+    background: var(--primary-start);
+    border-color: var(--primary-start);
   }
   .cart-item .checkbox.checked::after {
     content: '';
     width: 6px;
     height: 10px;
-    border: 2px solid #fff;
+    border: 2px solid var(--card-bg);
     border-top: none;
     border-left: none;
     transform: rotate(45deg) translateY(-1px);
@@ -84,10 +84,10 @@
   .cart-item .item-img {
     width: 80px;
     height: 80px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex-shrink: 0;
-    background: #f8f8f8;
+    background: var(--bg-input);
   }
   .cart-item .item-img img { width: 100%; height: 100%; object-fit: cover; }
   .cart-item .item-info {
@@ -95,11 +95,11 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-xs);
   }
   .cart-item .item-name {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -107,15 +107,15 @@
     overflow: hidden;
   }
   .cart-item .item-stock-low {
-    font-size: 11px;
-    color: #ee0a24;
+    font-size: var(--font-sm);
+    color: var(--price-color);
   }
   .cart-item .item-spec {
-    font-size: 11px;
-    color: #999;
-    background: #f5f5f5;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    background: var(--bg-color);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-xs);
     display: inline-block;
     align-self: flex-start;
   }
@@ -126,11 +126,11 @@
     margin-top: 2px;
   }
   .cart-item .item-price {
-    color: #ee0a24;
-    font-size: 15px;
+    color: var(--price-color);
+    font-size: var(--font-md);
     font-weight: 700;
   }
-  .cart-item .item-price .symbol { font-size: 10px; }
+  .cart-item .item-price .symbol { font-size: var(--font-xs); }
 
   /* Quantity control */
   .qty-control {
@@ -141,29 +141,29 @@
   .qty-btn {
     width: 24px;
     height: 24px;
-    border: 1px solid #ddd;
-    background: #fff;
+    border: 1px solid var(--text-disabled);
+    background: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    color: #666;
+    font-size: var(--font-base);
+    color: var(--text-secondary);
     cursor: pointer;
   }
-  .qty-btn:first-child { border-radius: 4px 0 0 4px; }
-  .qty-btn:last-child { border-radius: 0 4px 4px 0; }
-  .qty-btn:active { background: #f5f5f5; }
-  .qty-btn.disabled { color: #ddd; pointer-events: none; }
+  .qty-btn:first-child { border-radius: var(--radius-xs) 0 0 var(--radius-xs); }
+  .qty-btn:last-child { border-radius: 0 var(--radius-xs) var(--radius-xs) 0; }
+  .qty-btn:active { background: var(--bg-color); }
+  .qty-btn.disabled { color: var(--text-disabled); pointer-events: none; }
   .qty-num {
     width: 32px;
     height: 24px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid var(--text-disabled);
+    border-bottom: 1px solid var(--text-disabled);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
   }
 
   /* Off-shelf item (已下架) */
@@ -182,17 +182,17 @@
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.5);
-    color: #fff;
+    color: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    border-radius: 8px;
+    font-size: var(--font-sm);
+    border-radius: var(--radius-sm);
   }
   .cart-item.offshelf .item-name,
   .cart-item.offshelf .item-spec,
   .cart-item.offshelf .item-price {
-    color: #999;
+    color: var(--text-tertiary);
   }
   .cart-item.offshelf .checkbox {
     display: none;
@@ -201,8 +201,8 @@
     display: none;
   }
   .cart-item.offshelf .offshelf-text {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
 
   /* Sold-out item (已售罄) — reuse offshelf layout */
@@ -215,21 +215,21 @@
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5);
-    color: #fff;
+    color: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    border-radius: 8px;
+    font-size: var(--font-sm);
+    border-radius: var(--radius-sm);
   }
   .cart-item.soldout .item-name,
   .cart-item.soldout .item-spec,
-  .cart-item.soldout .item-price { color: #999; }
+  .cart-item.soldout .item-price { color: var(--text-tertiary); }
   .cart-item.soldout .checkbox { display: none; }
   .cart-item.soldout .qty-control { display: none; }
   .cart-item.soldout .soldout-text {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
 
   /* No-stock in this area (该地区无库存) */
@@ -242,30 +242,30 @@
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5);
-    color: #fff;
+    color: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    border-radius: 8px;
+    font-size: var(--font-sm);
+    border-radius: var(--radius-sm);
   }
   .cart-item.noship .item-name,
   .cart-item.noship .item-spec,
-  .cart-item.noship .item-price { color: #999; }
+  .cart-item.noship .item-price { color: var(--text-tertiary); }
   .cart-item.noship .checkbox { display: none; }
   .cart-item.noship .qty-control { display: none; }
   .cart-item.noship .noship-info {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .cart-item.noship .noship-text {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .cart-item.noship .noship-link {
-    font-size: 11px;
-    color: #ff6034;
+    font-size: var(--font-sm);
+    color: var(--primary-start);
     cursor: pointer;
     white-space: nowrap;
   }
@@ -277,42 +277,42 @@
     bottom: 56px;
     left: 0;
     right: 0;
-    background: #fff;
+    background: var(--card-bg);
     display: flex;
     align-items: center;
     height: 56px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     z-index: 200;
-    padding-bottom: 8px;
+    padding-bottom: var(--space-sm);
   }
   .checkout-bar .select-all {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 0 12px;
-    font-size: 13px;
-    color: #333;
+    gap: var(--space-sm);
+    padding: 0 var(--space-md);
+    font-size: var(--font-sm);
+    color: var(--text-color);
     cursor: pointer;
   }
   .checkout-bar .select-all .checkbox {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2px solid #ddd;
+    border: 2px solid var(--text-disabled);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
   }
   .checkout-bar .select-all .checkbox.checked {
-    background: #ff6034;
-    border-color: #ff6034;
+    background: var(--primary-start);
+    border-color: var(--primary-start);
   }
   .checkout-bar .select-all .checkbox.checked::after {
     content: '';
     width: 6px;
     height: 10px;
-    border: 2px solid #fff;
+    border: 2px solid var(--card-bg);
     border-top: none;
     border-left: none;
     transform: rotate(45deg) translateY(-1px);
@@ -320,22 +320,22 @@
   .checkout-bar .total-area {
     flex: 1;
     text-align: right;
-    padding-right: 12px;
+    padding-right: var(--space-md);
   }
-  .checkout-bar .total-label { font-size: 13px; color: #333; }
-  .checkout-bar .total-price { font-size: 16px; color: #ee0a24; font-weight: 700; }
-  .checkout-bar .total-price .symbol { font-size: 11px; }
+  .checkout-bar .total-label { font-size: var(--font-sm); color: var(--text-color); }
+  .checkout-bar .total-price { font-size: var(--font-md); color: var(--price-color); font-weight: 700; }
+  .checkout-bar .total-price .symbol { font-size: var(--font-sm); }
   .checkout-bar .btn-checkout {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     border: none;
-    padding: 0 20px;
+    padding: 0 var(--space-xl);
     height: 40px;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
     cursor: pointer;
-    border-radius: 20px;
-    margin-right: 10px;
+    border-radius: var(--radius-xl);
+    margin-right: var(--space-md);
   }
   .checkout-bar .btn-checkout:active { opacity: 0.85; }
 
@@ -345,17 +345,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 20px;
-    gap: 16px;
+    padding: 80px var(--space-xl);
+    gap: var(--space-lg);
   }
-  .empty-cart svg { width: 80px; height: 80px; color: #ddd; }
-  .empty-cart p { font-size: 14px; color: #999; }
+  .empty-cart svg { width: 80px; height: 80px; color: var(--text-disabled); }
+  .empty-cart p { font-size: var(--font-base); color: var(--text-tertiary); }
   .empty-cart a {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    padding: 8px 24px;
-    border-radius: 20px;
-    font-size: 14px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
   }
 </style>
 </head>
@@ -690,24 +690,24 @@
     var overlay = document.createElement('div');
     overlay.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:flex;align-items:flex-end;justify-content:center;';
     var popup = document.createElement('div');
-    popup.style.cssText = 'width:100%;background:#fff;border-radius:16px 16px 0 0;padding:16px;max-height:60%;overflow-y:auto;';
+    popup.style.cssText = 'width:100%;background:var(--card-bg);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:var(--space-lg);max-height:60%;overflow-y:auto;';
     popup.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
-        '<span style="font-size:16px;font-weight:600;color:#333;">选择收货地址</span>' +
-        '<span style="color:#999;cursor:pointer;font-size:14px;" id="closeAddrPopup">关闭</span>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);">' +
+        '<span style="font-size:var(--font-md);font-weight:600;color:var(--text-color);">选择收货地址</span>' +
+        '<span style="color:var(--text-tertiary);cursor:pointer;font-size:var(--font-base);" id="closeAddrPopup">关闭</span>' +
       '</div>' +
-      '<div style="padding:12px;border-radius:10px;background:#fff9f5;border:2px solid #ff6034;margin-bottom:8px;">' +
-        '<div style="font-size:14px;font-weight:500;color:#333;">张三  138****8888</div>' +
-        '<div style="font-size:12px;color:#666;margin-top:4px;">北京市朝阳区建国路88号 悦享大厦A座12层</div>' +
-        '<div style="font-size:11px;color:#ff6034;margin-top:4px;">当前默认</div>' +
+      '<div style="padding:var(--space-md);border-radius:var(--radius-md);background:var(--card-bg)9f5;border:2px solid var(--primary-start);margin-bottom:var(--space-sm);">' +
+        '<div style="font-size:var(--font-base);font-weight:500;color:var(--text-color);">张三  138****8888</div>' +
+        '<div style="font-size:var(--font-sm);color:var(--text-secondary);margin-top:var(--space-xs);">北京市朝阳区建国路88号 悦享大厦A座12层</div>' +
+        '<div style="font-size:var(--font-sm);color:var(--primary-start);margin-top:var(--space-xs);">当前默认</div>' +
       '</div>' +
-      '<div style="padding:12px;border-radius:10px;background:#f8f8f8;margin-bottom:8px;cursor:pointer;" onclick="alert(\'已切换默认地址（原型演示）\')">' +
-        '<div style="font-size:14px;font-weight:500;color:#333;">李四  139****9999</div>' +
-        '<div style="font-size:12px;color:#666;margin-top:4px;">上海市浦东新区陆家嘴环路1000号 恒生大厦8层</div>' +
-        '<div style="font-size:11px;color:#4caf50;margin-top:4px;">设为默认可购买</div>' +
+      '<div style="padding:var(--space-md);border-radius:var(--radius-md);background:var(--bg-input);margin-bottom:var(--space-sm);cursor:pointer;" onclick="alert(\'已切换默认地址（原型演示）\')">' +
+        '<div style="font-size:var(--font-base);font-weight:500;color:var(--text-color);">李四  139****9999</div>' +
+        '<div style="font-size:var(--font-sm);color:var(--text-secondary);margin-top:var(--space-xs);">上海市浦东新区陆家嘴环路1000号 恒生大厦8层</div>' +
+        '<div style="font-size:var(--font-sm);color:var(--success-color);margin-top:var(--space-xs);">设为默认可购买</div>' +
       '</div>' +
-      '<div style="padding:12px;border-radius:10px;background:#f8f8f8;cursor:pointer;" onclick="location.href=\'address.html\'">' +
-        '<div style="font-size:13px;color:#ff6034;text-align:center;">管理收货地址</div>' +
+      '<div style="padding:var(--space-md);border-radius:var(--radius-md);background:var(--bg-input);cursor:pointer;" onclick="location.href=\'address.html\'">' +
+        '<div style="font-size:var(--font-sm);color:var(--primary-start);text-align:center;">管理收货地址</div>' +
       '</div>';
     overlay.appendChild(popup);
     document.querySelector('.phone-frame').appendChild(overlay);
@@ -718,5 +718,6 @@
   renderCart();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

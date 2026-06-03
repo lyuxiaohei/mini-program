@@ -9,8 +9,8 @@
   /* Filter bar */
   .filter-bar {
     display: flex;
-    background: #fff;
-    border-bottom: 1px solid #eee;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 88px;
     z-index: 50;
@@ -21,24 +21,24 @@
     align-items: center;
     justify-content: center;
     height: 40px;
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     cursor: pointer;
-    gap: 3px;
+    gap: var(--space-xs);
     position: relative;
   }
-  .filter-item:active { background: #f8f8f8; }
-  .filter-item.active { color: #ff6034; font-weight: 600; }
+  .filter-item:active { background: var(--bg-input); }
+  .filter-item.active { color: var(--primary-start); font-weight: 600; }
   .filter-item .arrow { font-size: 8px; }
-  .filter-item.active .arrow { color: #ff6034; }
+  .filter-item.active .arrow { color: var(--primary-start); }
 
   /* Product list grid */
   .list-content {
-    padding: 8px;
+    padding: var(--space-sm);
   }
   .product-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: var(--space-sm);
   }
 </style>
 </head>
@@ -148,5 +148,6 @@
   document.getElementById('productGrid').innerHTML = html;
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

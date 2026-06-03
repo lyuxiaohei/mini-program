@@ -8,9 +8,9 @@
 <style>
   /* VIP header */
   .vip-header {
-    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
-    padding: 20px 16px;
-    color: #fff;
+    background: linear-gradient(135deg, var(--text-dark), var(--text-dark));
+    padding: var(--space-xl) var(--space-lg);
+    color: var(--card-bg);
     position: relative;
     overflow: hidden;
   }
@@ -40,42 +40,42 @@
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
   .vip-badge {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #d4af37, #f4e5b0);
+    background: linear-gradient(135deg, var(--vip-gold), var(--vip-gold-light));
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
   }
-  .vip-badge svg { width: 36px; height: 36px; color: #8b6914; }
+  .vip-badge svg { width: 36px; height: 36px; color: var(--vip-gold); }
   .vip-info { flex: 1; }
   .vip-level {
-    font-size: 22px;
+    font-size: var(--font-2xl);
     font-weight: 700;
-    color: #d4af37;
-    margin-bottom: 4px;
+    color: var(--vip-gold);
+    margin-bottom: var(--space-xs);
   }
   .vip-progress {
     background: rgba(255,255,255,0.1);
     height: 6px;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     overflow: hidden;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
   }
   .vip-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #d4af37, #f4e5b0);
-    border-radius: 3px;
+    background: linear-gradient(90deg, var(--vip-gold), var(--vip-gold-light));
+    border-radius: var(--radius-xs);
     transition: width 0.3s;
   }
   .vip-progress-text {
-    font-size: 11px;
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.7);
   }
 
@@ -83,23 +83,23 @@
   .level-tabs {
     display: flex;
     background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 4px;
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs);
     position: relative;
     z-index: 1;
   }
   .level-tab {
     flex: 1;
     text-align: center;
-    padding: 8px;
-    font-size: 12px;
+    padding: var(--space-sm);
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.6);
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
   }
   .level-tab.active {
-    color: #1a1a1a;
-    background: linear-gradient(135deg, #d4af37, #f4e5b0);
+    color: var(--text-dark);
+    background: linear-gradient(135deg, var(--vip-gold), var(--vip-gold-light));
     font-weight: 600;
   }
   .level-tab.current {
@@ -108,28 +108,28 @@
 
   /* Privileges section */
   .privileges-section {
-    background: #fff;
-    margin: -16px 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: -16px var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
     position: relative;
     z-index: 2;
   }
   .section-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 16px;
+    color: var(--text-color);
+    margin-bottom: var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .section-title svg { width: 18px; height: 18px; color: #d4af37; }
+  .section-title svg { width: 18px; height: 18px; color: var(--vip-gold); }
 
   .privileges-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: var(--space-md);
   }
   .privilege-item {
     display: flex;
@@ -140,137 +140,137 @@
   .privilege-icon {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #fff9e6, #fff5cc);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--card-bg)9e6, var(--card-bg)5cc);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 6px;
+    margin-bottom: var(--space-sm);
     position: relative;
   }
-  .privilege-icon svg { width: 24px; height: 24px; color: #d4af37; }
-  .privilege-icon.locked svg { color: #ccc; }
+  .privilege-icon svg { width: 24px; height: 24px; color: var(--vip-gold); }
+  .privilege-icon.locked svg { color: var(--text-light); }
   .privilege-icon .lock-badge {
     position: absolute;
     bottom: -4px;
     right: -4px;
     width: 18px;
     height: 18px;
-    background: #999;
+    background: var(--text-tertiary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .privilege-icon .lock-badge svg { width: 10px; height: 10px; color: #fff; }
+  .privilege-icon .lock-badge svg { width: 10px; height: 10px; color: var(--card-bg); }
   .privilege-name {
-    font-size: 11px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
   }
-  .privilege-name.locked { color: #999; }
+  .privilege-name.locked { color: var(--text-tertiary); }
 
   /* Tasks section */
   .tasks-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .task-item {
     display: flex;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--bg-color);
   }
   .task-item:last-child { border-bottom: none; }
   .task-icon {
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 12px;
+    margin-right: var(--space-md);
   }
-  .task-icon svg { width: 20px; height: 20px; color: #fff; }
+  .task-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
   .task-info { flex: 1; }
   .task-title {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     margin-bottom: 2px;
   }
   .task-desc {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .task-reward {
-    font-size: 12px;
-    color: #d4af37;
+    font-size: var(--font-sm);
+    color: var(--vip-gold);
     font-weight: 600;
-    margin-right: 12px;
+    margin-right: var(--space-md);
   }
   .task-btn {
-    padding: 5px 14px;
-    border-radius: 14px;
-    font-size: 12px;
+    padding: 5px var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
     cursor: pointer;
     border: none;
   }
   .task-btn.go {
-    background: linear-gradient(135deg, #d4af37, #f4e5b0);
-    color: #8b6914;
+    background: linear-gradient(135deg, var(--vip-gold), var(--vip-gold-light));
+    color: var(--vip-gold);
   }
   .task-btn.done {
-    background: #f5f5f5;
-    color: #999;
+    background: var(--bg-color);
+    color: var(--text-tertiary);
   }
 
   /* Benefits section */
   .benefits-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
   .benefit-item {
     display: flex;
     align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-lg) var(--space-lg);
+    border-bottom: 1px solid var(--bg-color);
     cursor: pointer;
   }
   .benefit-item:last-child { border-bottom: none; }
-  .benefit-item:active { background: #fafafa; }
+  .benefit-item:active { background: var(--hover-bg); }
   .benefit-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 12px;
-    background: linear-gradient(135deg, #fff9e6, #fff5cc);
+    margin-right: var(--space-md);
+    background: linear-gradient(135deg, var(--card-bg)9e6, var(--card-bg)5cc);
   }
-  .benefit-icon svg { width: 20px; height: 20px; color: #d4af37; }
+  .benefit-icon svg { width: 20px; height: 20px; color: var(--vip-gold); }
   .benefit-info { flex: 1; }
   .benefit-title {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     margin-bottom: 2px;
   }
   .benefit-desc {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
-  .benefit-arrow { color: #ccc; }
+  .benefit-arrow { color: var(--text-light); }
   .benefit-arrow svg { width: 16px; height: 16px; }
 
   /* Level comparison */
   .level-comparison {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .level-table {
     width: 100%;
@@ -278,28 +278,28 @@
   }
   .level-table th,
   .level-table td {
-    padding: 10px 8px;
+    padding: var(--space-md) var(--space-sm);
     text-align: center;
-    font-size: 12px;
-    border-bottom: 1px solid #f5f5f5;
+    font-size: var(--font-sm);
+    border-bottom: 1px solid var(--bg-color);
   }
   .level-table th {
-    color: #999;
+    color: var(--text-tertiary);
     font-weight: 500;
   }
   .level-table td {
-    color: #333;
+    color: var(--text-color);
   }
   .level-table tr:last-child td { border-bottom: none; }
   .level-table .level-name {
     font-weight: 600;
-    color: #d4af37;
+    color: var(--vip-gold);
   }
   .level-table .current-level {
-    background: #fff9e6;
+    background: var(--card-bg)9e6;
   }
-  .check-icon { color: #4caf50; }
-  .cross-icon { color: #ccc; }
+  .check-icon { color: var(--success-color); }
+  .cross-icon { color: var(--text-light); }
 </style>
 </head>
 <body>
@@ -416,7 +416,7 @@
         <span>升级任务</span>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #ff6034, #ee0a24);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--primary-start), var(--price-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
         </div>
         <div class="task-info">
@@ -427,7 +427,7 @@
         <button class="task-btn go">去完成</button>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--success-color), var(--success-dark));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </div>
         <div class="task-info">
@@ -438,7 +438,7 @@
         <button class="task-btn go">去邀请</button>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #2196f3, #1565c0);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--info-color), var(--info-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
         <div class="task-info">
@@ -568,5 +568,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

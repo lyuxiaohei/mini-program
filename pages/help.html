@@ -8,130 +8,130 @@
 <style>
   /* Search bar */
   .help-search {
-    background: #fff;
-    padding: 12px;
+    background: var(--card-bg);
+    padding: var(--space-md);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .help-search-input {
     flex: 1;
     display: flex;
     align-items: center;
-    background: #f5f5f5;
-    border-radius: 20px;
-    padding: 8px 12px;
-    gap: 6px;
+    background: var(--bg-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-sm) 12px;
+    gap: var(--space-sm);
   }
-  .help-search-input svg { width: 16px; height: 16px; color: #999; }
+  .help-search-input svg { width: 16px; height: 16px; color: var(--text-tertiary); }
   .help-search-input input {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: var(--font-base);
     background: transparent;
-    color: #333;
+    color: var(--text-color);
   }
-  .help-search-input input::placeholder { color: #bbb; }
+  .help-search-input input::placeholder { color: var(--text-muted); }
 
   /* Hot questions */
   .hot-section {
-    background: #fff;
-    margin: 8px 12px;
-    border-radius: 12px;
-    padding: 14px;
+    background: var(--card-bg);
+    margin: var(--space-sm) 12px;
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .section-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 12px;
+    color: var(--text-color);
+    margin-bottom: var(--space-md);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
-  .section-title svg { width: 16px; height: 16px; color: #ff6034; }
+  .section-title svg { width: 16px; height: 16px; color: var(--primary-start); }
   .hot-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .hot-item {
-    background: #fff5f0;
-    color: #ff6034;
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 16px;
+    background: var(--selected-bg);
+    color: var(--primary-start);
+    font-size: var(--font-sm);
+    padding: var(--space-sm) 12px;
+    border-radius: var(--radius-lg);
     cursor: pointer;
   }
-  .hot-item:active { background: #ffe8db; }
+  .hot-item:active { background: var(--selected-bg); }
 
   /* FAQ sections */
   .faq-section {
-    background: #fff;
-    margin: 0 12px 8px;
-    border-radius: 12px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-sm);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
   .faq-category {
-    padding: 14px;
+    padding: var(--space-lg);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-md);
     cursor: pointer;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid var(--bg-color);
   }
   .faq-category:last-child { border-bottom: none; }
-  .faq-category:active { background: #fafafa; }
+  .faq-category:active { background: var(--hover-bg); }
   .faq-category-icon {
     width: 36px;
     height: 36px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .faq-category-icon svg { width: 20px; height: 20px; color: #fff; }
+  .faq-category-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
   .faq-category-info { flex: 1; }
   .faq-category-name {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 2px;
   }
   .faq-category-count {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
-  .faq-category-arrow { color: #ccc; }
+  .faq-category-arrow { color: var(--text-light); }
   .faq-category-arrow svg { width: 16px; height: 16px; }
 
   /* Question list */
   .question-list {
-    background: #fff;
-    margin: 0 12px 8px;
-    border-radius: 12px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-sm);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
   .question-item {
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid var(--bg-color);
   }
   .question-item:last-child { border-bottom: none; }
   .question-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px;
+    padding: var(--space-lg);
     cursor: pointer;
   }
-  .question-header:active { background: #fafafa; }
+  .question-header:active { background: var(--hover-bg); }
   .question-title {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     flex: 1;
   }
   .question-arrow {
-    color: #ccc;
+    color: var(--text-light);
     transition: transform 0.2s;
   }
   .question-arrow svg { width: 16px; height: 16px; }
@@ -139,42 +139,42 @@
 
   .question-answer {
     display: none;
-    padding: 0 14px 14px;
-    font-size: 13px;
-    color: #666;
+    padding: 0 var(--space-lg) var(--space-lg);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.7;
-    background: #fafafa;
+    background: var(--hover-bg);
   }
   .question-item.open .question-answer { display: block; }
 
   /* Contact */
   .contact-section {
-    background: #fff;
-    margin: 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
     text-align: center;
   }
   .contact-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
+    color: var(--text-color);
+    margin-bottom: var(--space-sm);
   }
   .contact-desc {
-    font-size: 13px;
-    color: #999;
-    margin-bottom: 16px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-lg);
   }
   .btn-contact {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    padding: 10px 24px;
-    border-radius: 20px;
-    font-size: 14px;
+    gap: var(--space-sm);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    padding: var(--space-md) 24px;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
     font-weight: 500;
     border: none;
     cursor: pointer;
@@ -233,7 +233,7 @@
     <!-- FAQ Categories -->
     <div class="faq-section">
       <div class="faq-category">
-        <div class="faq-category-icon" style="background: linear-gradient(135deg, #2196f3, #1565c0);">
+        <div class="faq-category-icon" style="background: linear-gradient(135deg, var(--info-color), var(--info-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
         </div>
         <div class="faq-category-info">
@@ -243,7 +243,7 @@
         <span class="faq-category-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
       <div class="faq-category">
-        <div class="faq-category-icon" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">
+        <div class="faq-category-icon" style="background: linear-gradient(135deg, var(--success-color), var(--success-dark));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         </div>
         <div class="faq-category-info">
@@ -253,7 +253,7 @@
         <span class="faq-category-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
       <div class="faq-category">
-        <div class="faq-category-icon" style="background: linear-gradient(135deg, #ff9800, #f57c00);">
+        <div class="faq-category-icon" style="background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
         <div class="faq-category-info">
@@ -263,7 +263,7 @@
         <span class="faq-category-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
       <div class="faq-category">
-        <div class="faq-category-icon" style="background: linear-gradient(135deg, #e91e63, #c2185b);">
+        <div class="faq-category-icon" style="background: linear-gradient(135deg, var(--error-light), var(--price-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
         </div>
         <div class="faq-category-info">
@@ -273,7 +273,7 @@
         <span class="faq-category-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>
       <div class="faq-category">
-        <div class="faq-category-icon" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);">
+        <div class="faq-category-icon" style="background: linear-gradient(135deg, var(--info-color), var(--info-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div class="faq-category-info">
@@ -286,7 +286,7 @@
 
     <!-- Common Questions -->
     <div class="question-list">
-      <div class="section-title" style="padding: 14px; border-bottom: 1px solid #f5f5f5; margin: 0;">常见问题</div>
+      <div class="section-title" style="padding: var(--space-lg); border-bottom: 1px solid var(--bg-color); margin: 0;">常见问题</div>
       <div class="question-item">
         <div class="question-header">
           <span class="question-title">如何注册苏银豆商城账号？</span>
@@ -376,5 +376,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

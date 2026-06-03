@@ -7,22 +7,22 @@
 <link rel="stylesheet" href="../css/common.css">
 <style>
   .exchange-page {
-    background: #f5f6f8;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .hero-wrap {
-    padding: 0 12px 12px;
+    padding: 0 var(--space-md) var(--space-md);
     background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
   }
   .exchange-card {
     position: relative;
     overflow: hidden;
-    border-radius: 18px;
-    padding: 18px 16px 16px;
-    color: #fff;
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    color: var(--card-bg);
     background:
       radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 30%),
-      linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
+      linear-gradient(135deg, var(--primary-start) 0%, var(--primary-start) 42%, var(--price-color) 100%);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.14);
   }
   .exchange-card::before {
@@ -52,107 +52,107 @@
   .card-badge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 10px;
+    padding: var(--space-xs) 10px;
     border-radius: 999px;
     background: rgba(255,255,255,0.16);
-    font-size: 12px;
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.92);
-    margin-bottom: 14px;
+    margin-bottom: var(--space-lg);
   }
   .card-title {
-    font-size: 22px;
+    font-size: var(--font-2xl);
     font-weight: 700;
     letter-spacing: 0.5px;
     line-height: 1.15;
     margin-bottom: 0;
   }
   .form-card {
-    margin: 0 12px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 18px 16px 20px;
+    margin: 0 var(--space-md);
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg) var(--space-xl);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .form-title {
-    font-size: 17px;
+    font-size: var(--font-lg);
     font-weight: 700;
-    color: #222;
-    margin-bottom: 16px;
+    color: var(--text-dark);
+    margin-bottom: var(--space-lg);
   }
   .form-label {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 8px;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
   }
   .exchange-input {
     width: 100%;
     height: 52px;
-    border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    padding: 0 14px;
-    font-size: 15px;
-    color: #333;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0 var(--space-lg);
+    font-size: var(--font-md);
+    color: var(--text-color);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .exchange-input:focus {
-    border-color: #ff6034;
+    border-color: var(--primary-start);
     box-shadow: 0 0 0 3px rgba(255, 96, 52, 0.08);
   }
   .exchange-input::placeholder {
-    color: #c7ccd6;
+    color: var(--text-light);
   }
   .exchange-btn {
     width: 100%;
     height: 46px;
     border: none;
-    border-radius: 23px;
+    border-radius: var(--radius-xl);
     margin-top: 18px;
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    background: #ebedf1;
-    color: #b6bcc7;
+    background: var(--bg-color);
+    color: var(--text-muted);
     cursor: not-allowed;
   }
   .exchange-btn.active {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     cursor: pointer;
   }
   .exchange-btn.active:active {
     opacity: 0.88;
   }
   .tips-card {
-    margin: 16px 12px 20px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 16px;
+    margin: var(--space-lg) 12px 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .tips-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
   }
   .tips-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
   .tips-list {
     list-style: none;
   }
   .tips-list li {
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.9;
-    padding-left: 14px;
+    padding-left: var(--space-lg);
     position: relative;
   }
   .tips-list li + li {
-    margin-top: 10px;
+    margin-top: var(--space-md);
   }
   .tips-list li::before {
     content: "";
@@ -162,7 +162,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #ff8d53;
+    background: var(--primary-start);
   }
 </style>
 </head>
@@ -239,5 +239,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

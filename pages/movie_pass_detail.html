@@ -12,159 +12,159 @@
   .mpd-sub-nav .status-bar,
   .mpd-sub-nav .nav-title,
   .mpd-sub-nav .back-btn svg {
-    color: #fff;
+    color: var(--card-bg);
   }
   .mpd-sub-nav .status-bar .icons svg {
-    fill: #fff;
+    fill: var(--card-bg);
   }
   .mpd-page {
-    background: #f5f6f8;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .mpd-main {
-    padding: 12px 12px 24px;
+    padding: var(--space-md) 12px 24px;
   }
   .mpd-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .mpd-lead {
-    font-size: 12px;
-    color: #999;
-    margin: 0 0 14px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin: 0 0 var(--space-lg);
     line-height: 1.45;
   }
   .mpd-stats {
     display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
   }
   .mpd-stat {
     flex: 1;
     text-align: center;
-    padding: 12px 8px;
-    border-radius: 12px;
-    background: linear-gradient(180deg, #fafbff, #f3f5ff);
-    border: 1px solid #e8eaf6;
+    padding: var(--space-md) 8px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, var(--card-bg), var(--card-bg));
+    border: 1px solid var(--info-bg);
   }
   .mpd-stat .n {
-    font-size: 20px;
+    font-size: var(--font-xl);
     font-weight: 700;
-    color: #3949ab;
+    color: var(--info-color);
     display: block;
   }
   .mpd-stat .n.is-zero {
-    color: #bdbdbd;
+    color: var(--text-muted);
   }
   .mpd-stat .l {
-    font-size: 11px;
-    color: #7986cb;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--info-color);
+    margin-top: var(--space-xs);
     display: block;
   }
   .mpd-desc {
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.55;
-    margin: 0 0 16px;
+    margin: 0 0 var(--space-lg);
   }
   .mpd-ex-banner {
     text-align: center;
-    padding: 12px 14px;
-    border-radius: 10px;
-    background: #f5f5f5;
-    color: #616161;
-    font-size: 14px;
+    padding: var(--space-md) 14px;
+    border-radius: var(--radius-md);
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    font-size: var(--font-base);
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .mpd-ex-summary {
-    font-size: 12px;
-    color: #888;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
     line-height: 1.55;
-    margin: 0 0 16px;
+    margin: 0 0 var(--space-lg);
   }
   /* 原信息页：卡信息 + 使用记录（合并至本页） */
   .mpd-merged {
-    margin-top: 4px;
-    padding-top: 16px;
-    border-top: 1px solid #f0f0f0;
+    margin-top: var(--space-xs);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-divider);
   }
   .mpd-merged-ex-tip {
     text-align: center;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: #fafafa;
-    color: #757575;
-    font-size: 12px;
+    padding: var(--space-md) 12px;
+    border-radius: var(--radius-md);
+    background: var(--hover-bg);
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .mpd-merged-lead {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     margin: 0 0 12px;
     line-height: 1.45;
   }
   .mpd-rows .row {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #f5f5f5;
-    font-size: 13px;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--bg-color);
+    font-size: var(--font-sm);
   }
   .mpd-rows .row:last-child {
     border-bottom: none;
   }
   .mpd-rows .k {
-    color: #999;
+    color: var(--text-tertiary);
     flex-shrink: 0;
   }
   .mpd-rows .v {
-    color: #333;
+    color: var(--text-color);
     text-align: right;
     word-break: break-all;
   }
   .mpd-usage-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #222;
-    margin: 16px 0 8px;
-    padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
+    color: var(--text-dark);
+    margin: var(--space-lg) 0 8px;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-divider);
   }
   .mpd-usage-item {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #f5f5f5;
-    font-size: 13px;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--bg-color);
+    font-size: var(--font-sm);
   }
   .mpd-usage-item:last-child {
     border-bottom: none;
   }
   .mpd-usage-item .t {
-    color: #999;
-    font-size: 12px;
-    margin-bottom: 4px;
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
+    margin-bottom: var(--space-xs);
   }
   .mpd-usage-item .tag {
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: var(--font-sm);
     font-weight: 600;
-    color: #5c6bc0;
-    background: #e8eaf6;
-    padding: 3px 8px;
-    border-radius: 6px;
+    color: var(--info-color);
+    background: var(--info-bg);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
   }
   .mpd-usage-item .tag.tag--done {
-    color: #757575;
-    background: #eeeeee;
+    color: var(--text-secondary);
+    background: var(--border-color)eee;
   }
 </style>
 </head>
@@ -324,5 +324,6 @@
   initMoviePassDetailPage();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

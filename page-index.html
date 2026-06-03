@@ -5,83 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>苏银豆商城 - 页面导航</title>
 <style>
+  :root {
+    --primary-start: #ff6034;
+    --primary-end: #ee0a24;
+    --price-color: #ee0a24;
+    --success-color: #52c41a;
+    --warning-color: #ff9800;
+    --text-color: #333;
+    --text-secondary: #666;
+    --text-tertiary: #999;
+    --text-muted: #bbb;
+    --bg-color: #f5f5f5;
+    --bg-input: #f8f8f8;
+    --card-bg: #fff;
+    --hover-bg: #fafafa;
+    --selected-bg: #fff5f0;
+    --border-color: #eee;
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+    --font-xs: 10px;
+    --font-sm: 12px;
+    --font-base: 14px;
+    --font-md: 16px;
+    --font-lg: 18px;
+    --font-xl: 20px;
+    --font-2xl: 24px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  /* Green theme */
+  .theme-green {
+    --primary-start: #07c160;
+    --primary-end: #059c4e;
+    --price-color: #059c4e;
+    --selected-bg: #e8f5e9;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-    background: #f5f5f5;
-    color: #333;
-    padding: 20px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: var(--space-xl);
     max-width: 800px;
     margin: 0 auto;
   }
   h1 {
-    font-size: 22px;
+    font-size: var(--font-xl);
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
   }
   .subtitle {
     text-align: center;
-    color: #999;
-    font-size: 13px;
-    margin-bottom: 24px;
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
+    margin-bottom: var(--space-xl);
   }
   .section {
-    background: #fff;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow-sm);
   }
   .section h2 {
-    font-size: 16px;
-    color: #ee0a24;
-    margin-bottom: 12px;
-    padding-left: 8px;
-    border-left: 3px solid #ee0a24;
+    font-size: var(--font-md);
+    color: var(--price-color);
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-sm);
+    border-left: 3px solid var(--price-color);
   }
   .links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .links a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 12px;
-    background: #f8f8f8;
-    border-radius: 8px;
+    padding: var(--space-md);
+    background: var(--bg-input);
+    border-radius: var(--radius-sm);
     text-decoration: none;
-    color: #333;
-    font-size: 14px;
+    color: var(--text-color);
+    font-size: var(--font-base);
     transition: background 0.15s;
   }
   .links a:hover {
-    background: #fff0ed;
-    color: #ee0a24;
+    background: var(--card-bg)0ed;
+    color: var(--price-color);
   }
   .links a .ver {
     display: inline-block;
-    margin-left: 4px;
-    padding: 1px 5px;
-    color: #fff;
-    font-size: 10px;
-    border-radius: 3px;
+    margin-left: var(--space-xs);
+    padding: 1px var(--space-xs);
+    color: var(--card-bg);
+    font-size: var(--font-xs);
+    border-radius: var(--radius-xs);
     vertical-align: middle;
   }
-  .links a .ver.v01 { background: #595959; }
-  .links a .ver.v2 { background: #f5a623; }
-  .links a .ver.v3 { background: #1890ff; }
-  .links a .ver.v4 { background: #52c41a; }
-  .links a .ver.v5 { background: #13c2c2; }
+  .links a .ver.v01 { background: var(--text-secondary); }
+  .links a .ver.v2 { background: var(--warning-color); }
+  .links a .ver.v3 { background: var(--info-light); }
+  .links a .ver.v4 { background: var(--success-color); }
+  .links a .ver.v5 { background: var(--info-color); }
   .tip {
-    background: #fffbe6;
-    border: 1px solid #ffe58f;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #ad6800;
+    background: var(--card-bg)be6;
+    border: 1px solid var(--warning-color);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-lg);
+    font-size: var(--font-sm);
+    color: var(--warning-dark);
   }
 </style>
 </head>
@@ -113,9 +158,17 @@
     <a href="pages/order_list.html">我的订单 <span class="ver v3">V0.3</span></a>
     <a href="pages/favorites.html">我的收藏 <span class="ver v01">V0.1</span></a>
     <a href="pages/coupon_center.html">我的卡券<span class="ver v5">V0.5</span></a>
+    <a href="pages/coupon.html">卡券包 <span class="ver v01">V0.1</span></a>
     <a href="pages/points_center.html">我的积分 <span class="ver v2">V0.2</span></a>
+    <a href="pages/wallet.html">我的钱包 <span class="ver v01">V0.1</span></a>
     <a href="pages/message.html">消息中心</a>
     <a href="pages/settings.html">设置 <span class="ver v01">V0.1</span></a>
+    <a href="pages/activity_page.html">活动专题</a>
+    <a href="pages/flash_sale.html">限时秒杀</a>
+    <a href="pages/vip_center.html">会员中心</a>
+    <a href="pages/brand_list.html">品牌专区</a>
+    <a href="pages/newuser_gift.html">新人专享</a>
+    <a href="pages/movie_cinema.html">电影/影院</a>
   </div>
 </div>
 
@@ -127,6 +180,7 @@
     <a href="pages/profile_edit.html">个人资料 <span class="ver v01">V0.1</span></a>
     <a href="pages/change_phone.html">修改手机号 <span class="ver v01">V0.1</span></a>
     <a href="pages/address.html">收货地址 <span class="ver v01">V0.1</span></a>
+    <a href="pages/address_edit.html">编辑地址 <span class="ver v01">V0.1</span></a>
     <a href="pages/points_detail.html">积分变动明细 <span class="ver v2">V0.2</span></a>
     <a href="pages/points_types.html">积分类型 <span class="ver v2">V0.2 NEW</span></a>
     <a href="pages/points_expire.html">即将失效积分 <span class="ver v2">V0.2</span></a>
@@ -135,9 +189,14 @@
     <a href="pages/points_exchange.html">积分卡券兑换 <span class="ver v2">V0.2</span></a>
     <a href="pages/points_movie.html">兑换电影票次卡 <span class="ver v2">V0.2</span></a>
     <a href="pages/coupon_bind.html">卡券绑定</a>
+    <a href="pages/coupon_select.html">选择优惠券 <span class="ver v5">V0.5</span></a>
+    <a href="pages/points_batch_select.html">选择积分批次 <span class="ver v5">V0.5</span></a>
     <a href="pages/order_product.html">确认订单（商品）<span class="ver v3">V0.3 NEW</span></a>
     <a href="pages/order_cake.html">确认订单（蛋糕）<span class="ver v5">V0.5</span></a>
     <a href="pages/order_movie.html">确认订单（电影票）<span class="ver v5">V0.5</span></a>
+    <a href="pages/movie_card_select.html">选择电影次卡 <span class="ver v5">V0.5</span></a>
+    <a href="pages/movie_pass_detail.html">电影票次卡详情 <span class="ver v5">V0.5</span></a>
+    <a href="pages/movie_pass_info.html">跳转中 <span class="ver v5">V0.5</span></a>
     <a href="pages/order_pay.html">订单支付 <span class="ver v3">V0.3</span></a>
     <a href="pages/pay_success.html">支付成功 <span class="ver v3">V0.3</span></a>
     <a href="pages/order_detail.html">订单详情 <span class="ver v3">V0.3</span></a>
@@ -151,6 +210,7 @@
     <a href="pages/review.html">评价中心</a>
     <a href="pages/write_review.html">发表评价</a>
     <a href="pages/product_reviews.html">商品评价</a>
+    <a href="pages/product_detail_off.html">商品详情（已下架）<span class="ver v3">V0.3</span></a>
     <a href="pages/my_reviews.html">我的评价</a>
     <a href="pages/account_cancel.html">账号注销</a>
   </div>
@@ -166,5 +226,6 @@
   </div>
 </div>
 
+<script src="js/theme-switcher.js"></script>
 </body>
 </html>

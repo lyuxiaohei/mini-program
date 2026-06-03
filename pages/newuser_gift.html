@@ -8,10 +8,10 @@
 <style>
   /* Header */
   .newuser-header {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    padding: 24px 16px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    padding: var(--space-xl) var(--space-lg);
     text-align: center;
-    color: #fff;
+    color: var(--card-bg);
     position: relative;
     overflow: hidden;
   }
@@ -38,23 +38,23 @@
   .header-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
     background: rgba(255,255,255,0.2);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    margin-bottom: 12px;
+    padding: var(--space-sm) 14px;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-sm);
+    margin-bottom: var(--space-md);
   }
   .header-badge svg { width: 16px; height: 16px; }
   .header-title {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     position: relative;
     z-index: 1;
   }
   .header-subtitle {
-    font-size: 14px;
+    font-size: var(--font-base);
     opacity: 0.9;
     position: relative;
     z-index: 1;
@@ -62,180 +62,180 @@
 
   /* Gift pack card */
   .gift-card {
-    background: #fff;
-    margin: -20px 12px 12px;
-    border-radius: 16px;
+    background: var(--card-bg);
+    margin: -20px var(--space-md) var(--space-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     position: relative;
     z-index: 1;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-lg);
   }
   .gift-header {
-    background: linear-gradient(135deg, #fff5f0, #ffe8db);
-    padding: 16px;
+    background: linear-gradient(135deg, var(--selected-bg), var(--selected-bg));
+    padding: var(--space-lg);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--space-lg);
   }
   .gift-icon {
     width: 64px;
     height: 64px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(238, 10, 36, 0.3);
   }
-  .gift-icon svg { width: 36px; height: 36px; color: #fff; }
+  .gift-icon svg { width: 36px; height: 36px; color: var(--card-bg); }
   .gift-info { flex: 1; }
   .gift-title {
-    font-size: 18px;
+    font-size: var(--font-lg);
     font-weight: 700;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
   }
   .gift-value {
-    font-size: 14px;
-    color: #ff6034;
+    font-size: var(--font-base);
+    color: var(--primary-start);
     font-weight: 600;
   }
   .gift-status {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     border: none;
-    padding: 10px 24px;
-    border-radius: 20px;
-    font-size: 14px;
+    padding: var(--space-md) 24px;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
     font-weight: 600;
     cursor: pointer;
   }
   .gift-status:active { opacity: 0.85; }
   .gift-status.received {
-    background: #f5f5f5;
-    color: #999;
+    background: var(--bg-color);
+    color: var(--text-tertiary);
   }
 
   .gift-content {
-    padding: 16px;
+    padding: var(--space-lg);
   }
   .gift-items {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
   }
   .gift-item {
     flex: 1;
     text-align: center;
-    padding: 16px 8px;
-    background: #fafafa;
-    border-radius: 12px;
+    padding: var(--space-lg) var(--space-sm);
+    background: var(--hover-bg);
+    border-radius: var(--radius-md);
   }
   .gift-item-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #fff5f0, #ffe8db);
+    background: linear-gradient(135deg, var(--selected-bg), var(--selected-bg));
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 8px;
+    margin: 0 auto var(--space-sm);
   }
-  .gift-item-icon svg { width: 20px; height: 20px; color: #ff6034; }
+  .gift-item-icon svg { width: 20px; height: 20px; color: var(--primary-start); }
   .gift-item-name {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
   }
   .gift-item-value {
-    font-size: 18px;
+    font-size: var(--font-lg);
     font-weight: 700;
-    color: #ff6034;
+    color: var(--primary-start);
   }
 
   /* Tasks section */
   .tasks-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .section-title {
-    font-size: 16px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 16px;
+    color: var(--text-color);
+    margin-bottom: var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .section-title svg { width: 18px; height: 18px; color: #ff6034; }
+  .section-title svg { width: 18px; height: 18px; color: var(--primary-start); }
 
   .task-item {
     display: flex;
     align-items: center;
-    padding: 14px;
-    background: #fafafa;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    padding: var(--space-lg);
+    background: var(--hover-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
   }
   .task-item:last-child { margin-bottom: 0; }
   .task-icon {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 12px;
+    margin-right: var(--space-md);
   }
-  .task-icon svg { width: 22px; height: 22px; color: #fff; }
+  .task-icon svg { width: 22px; height: 22px; color: var(--card-bg); }
   .task-info { flex: 1; }
   .task-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
   }
   .task-desc {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .task-reward {
-    font-size: 14px;
-    color: #ff6034;
+    font-size: var(--font-base);
+    color: var(--primary-start);
     font-weight: 600;
-    margin-right: 12px;
+    margin-right: var(--space-md);
   }
   .task-btn {
-    padding: 6px 16px;
-    border-radius: 14px;
-    font-size: 12px;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
     cursor: pointer;
     border: none;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
   }
   .task-btn:active { opacity: 0.85; }
   .task-btn.done {
-    background: #f5f5f5;
-    color: #999;
+    background: var(--bg-color);
+    color: var(--text-tertiary);
   }
 
   /* Exclusive products */
   .products-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .product-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: var(--space-md);
   }
   .product-item {
-    background: #fafafa;
-    border-radius: 12px;
+    background: var(--hover-bg);
+    border-radius: var(--radius-md);
     overflow: hidden;
     cursor: pointer;
   }
@@ -254,18 +254,18 @@
     position: absolute;
     top: 8px;
     left: 8px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    font-size: var(--font-xs);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-md);
   }
   .product-info {
-    padding: 10px;
+    padding: var(--space-md);
   }
   .product-name {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -277,74 +277,74 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-top: 8px;
+    margin-top: var(--space-sm);
   }
   .product-price {
-    font-size: 16px;
+    font-size: var(--font-md);
     font-weight: 700;
-    color: #ff6034;
+    color: var(--primary-start);
   }
-  .product-price small { font-size: 12px; }
+  .product-price small { font-size: var(--font-sm); }
   .product-original {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     text-decoration: line-through;
   }
 
   /* Tips */
   .tips-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .tip-item {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
-    padding: 8px 0;
-    font-size: 12px;
-    color: #666;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.6;
   }
   .tip-item::before {
-    content: '•';
-    color: #ff6034;
+    content: '*';
+    color: var(--primary-start);
     font-weight: 700;
   }
 
   /* Progress bar */
   .progress-section {
-    background: #fff;
-    margin: 0 12px 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
   }
   .progress-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .progress-title {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     font-weight: 600;
   }
   .progress-text {
-    font-size: 12px;
-    color: #ff6034;
+    font-size: var(--font-sm);
+    color: var(--primary-start);
   }
   .progress-bar {
     height: 8px;
-    background: #f5f5f5;
-    border-radius: 4px;
+    background: var(--bg-color);
+    border-radius: var(--radius-xs);
     overflow: hidden;
   }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
-    border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
+    border-radius: var(--radius-xs);
     transition: width 0.3s;
   }
 </style>
@@ -426,10 +426,10 @@
     <div class="tasks-section">
       <div class="section-title">
         <span>新人任务</span>
-        <span style="font-size:12px;color:#999;">完成任务享更多福利</span>
+        <span style="font-size:var(--font-sm);color:var(--text-tertiary);">完成任务享更多福利</span>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--success-color), var(--success-dark));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div class="task-info">
@@ -440,7 +440,7 @@
         <button class="task-btn" onclick="location.href='profile_edit.html'">去完成</button>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #2196f3, #1565c0);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--info-color), var(--info-color));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
         </div>
         <div class="task-info">
@@ -451,7 +451,7 @@
         <button class="task-btn" onclick="location.href='home_page.html'">去购物</button>
       </div>
       <div class="task-item">
-        <div class="task-icon" style="background: linear-gradient(135deg, #ff9800, #f57c00);">
+        <div class="task-icon" style="background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
         </div>
         <div class="task-info">
@@ -478,7 +478,7 @@
     <div class="products-section">
       <div class="section-title">
         <span>新人专享价</span>
-        <span style="font-size:12px;color:#999;">仅限新用户购买</span>
+        <span style="font-size:var(--font-sm);color:var(--text-tertiary);">仅限新用户购买</span>
       </div>
       <div class="product-grid" id="productGrid"></div>
     </div>
@@ -534,5 +534,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

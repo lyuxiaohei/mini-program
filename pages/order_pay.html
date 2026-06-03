@@ -8,9 +8,9 @@
 <style>
   /* Order header */
   .order-header {
-    background: #fff;
-    padding: 14px 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-lg) 12px;
+    margin-bottom: var(--space-sm);
   }
   .order-header-row {
     display: flex;
@@ -18,25 +18,25 @@
     justify-content: space-between;
   }
   .order-header .order-no {
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
   }
   .order-header .order-time {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .order-header .countdown {
-    font-size: 12px;
-    color: #ee0a24;
-    margin-top: 6px;
+    font-size: var(--font-sm);
+    color: var(--price-color);
+    margin-top: var(--space-sm);
     font-weight: 500;
   }
 
   /* Address section - display only */
   .address-section {
-    background: #fff;
-    padding: 14px 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-lg) 12px;
+    margin-bottom: var(--space-sm);
     position: relative;
   }
   .address-section::after {
@@ -46,47 +46,47 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: repeating-linear-gradient(90deg, #ff6034 0, #ff6034 8px, #ee0a24 8px, #ee0a24 16px, #ff9800 16px, #ff9800 24px);
+    background: repeating-linear-gradient(90deg, var(--primary-start) 0, var(--primary-start) 8px, var(--price-color) 8px, var(--price-color) 16px, var(--warning-color) 16px, var(--warning-color) 24px);
   }
   .address-row {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: var(--space-sm);
   }
-  .address-row svg { width: 20px; height: 20px; color: #ff6034; flex-shrink: 0; margin-top: 2px; }
+  .address-row svg { width: 20px; height: 20px; color: var(--primary-start); flex-shrink: 0; margin-top: 2px; }
   .address-info { flex: 1; }
   .address-name-phone {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
   }
   .address-detail {
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.5;
   }
 
   /* Product items - display only */
   .order-products {
-    background: #fff;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
   .order-product-item {
     display: flex;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f5f5f5;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--bg-color);
   }
   .order-product-item:last-child { border-bottom: none; }
   .order-product-item .prod-img {
     width: 72px;
     height: 72px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex-shrink: 0;
-    background: #f8f8f8;
+    background: var(--bg-input);
   }
   .order-product-item .prod-img img { width: 100%; height: 100%; object-fit: cover; }
   .order-product-item .prod-info {
@@ -97,8 +97,8 @@
     min-width: 0;
   }
   .order-product-item .prod-name {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -106,8 +106,8 @@
     overflow: hidden;
   }
   .order-product-item .prod-spec {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .order-product-item .prod-price-row {
     display: flex;
@@ -115,90 +115,90 @@
     justify-content: space-between;
   }
   .order-product-item .prod-price {
-    color: #333;
-    font-size: 14px;
+    color: var(--text-color);
+    font-size: var(--font-base);
     font-weight: 600;
   }
   .order-product-item .prod-qty {
-    font-size: 13px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
 
   /* Payment info - locked */
   .payment-info-section {
-    background: #fff;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    margin-bottom: var(--space-sm);
   }
   .payment-info-title {
-    padding: 12px 12px 0;
-    font-size: 14px;
+    padding: var(--space-md) 12px 0;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
   .payment-info-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--bg-color);
   }
   .payment-info-row:last-child { border-bottom: none; }
-  .payment-info-row .pi-label { font-size: 13px; color: #666; }
-  .payment-info-row .pi-value { font-size: 13px; color: #333; font-weight: 500; }
-  .payment-info-row .pi-value.beans { color: #ff9800; }
-  .payment-info-row .pi-value.cash { color: #ee0a24; }
+  .payment-info-row .pi-label { font-size: var(--font-sm); color: var(--text-secondary); }
+  .payment-info-row .pi-value { font-size: var(--font-sm); color: var(--text-color); font-weight: 500; }
+  .payment-info-row .pi-value.beans { color: var(--warning-color); }
+  .payment-info-row .pi-value.cash { color: var(--price-color); }
   .payment-info-row .pi-icon {
     width: 24px;
     height: 24px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 8px;
+    margin-right: var(--space-sm);
     flex-shrink: 0;
   }
-  .payment-info-row .pi-icon svg { width: 14px; height: 14px; color: #fff; }
-  .payment-info-row .pi-icon.beans { background: linear-gradient(135deg, #ff9800, #ff6034); }
+  .payment-info-row .pi-icon svg { width: 14px; height: 14px; color: var(--card-bg); }
+  .payment-info-row .pi-icon.beans { background: linear-gradient(135deg, var(--warning-color), var(--primary-start)); }
   .payment-info-row .pi-left { display: flex; align-items: center; }
 
   /* Pay channel selection */
   .pay-channel-section {
-    background: #fff;
-    margin-bottom: 8px;
-    padding: 0 12px 8px;
+    background: var(--card-bg);
+    margin-bottom: var(--space-sm);
+    padding: 0 var(--space-md) var(--space-sm);
   }
   .pay-channel-title {
-    padding: 12px 0 4px;
-    font-size: 14px;
+    padding: var(--space-md) 0 4px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
   .pay-channel-item {
     display: flex;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--bg-color);
     cursor: pointer;
   }
   .pay-channel-item:last-child { border-bottom: none; }
   .pay-channel-item .ch-icon {
     width: 28px;
     height: 28px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 8px;
+    margin-right: var(--space-sm);
   }
-  .pay-channel-item .ch-icon svg { width: 18px; height: 18px; color: #fff; }
-  .pay-channel-item .ch-icon.wechat { background: #07c160; }
-  .pay-channel-item .ch-icon.alipay { background: #1677ff; }
-  .pay-channel-item .ch-name { flex: 1; font-size: 13px; color: #333; }
+  .pay-channel-item .ch-icon svg { width: 18px; height: 18px; color: var(--card-bg); }
+  .pay-channel-item .ch-icon.wechat { background: var(--wechat-green); }
+  .pay-channel-item .ch-icon.alipay { background: var(--info-light); }
+  .pay-channel-item .ch-name { flex: 1; font-size: var(--font-sm); color: var(--text-color); }
   .pay-channel-item .ch-radio {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    border: 2px solid #ddd;
+    border: 2px solid var(--text-disabled);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -206,14 +206,14 @@
     transition: all 0.2s;
   }
   .pay-channel-item .ch-radio.checked {
-    background: #ff6034;
-    border-color: #ff6034;
+    background: var(--primary-start);
+    border-color: var(--primary-start);
   }
   .pay-channel-item .ch-radio.checked::after {
     content: '';
     width: 5px;
     height: 9px;
-    border: 2px solid #fff;
+    border: 2px solid var(--card-bg);
     border-top: none;
     border-left: none;
     transform: rotate(45deg) translateY(-1px);
@@ -221,44 +221,44 @@
 
   /* Delivery info */
   .delivery-row {
-    background: #fff;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 13px;
-    color: #666;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
   }
 
   /* Price summary */
   .price-summary {
-    background: #fff;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
   .summary-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px 0;
-    font-size: 13px;
-    color: #666;
+    padding: var(--space-xs) 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
   }
   .summary-row.total {
-    padding-top: 8px;
-    margin-top: 4px;
-    border-top: 1px solid #f5f5f5;
-    font-size: 15px;
-    color: #333;
+    padding-top: var(--space-sm);
+    margin-top: var(--space-xs);
+    border-top: 1px solid var(--bg-color);
+    font-size: var(--font-md);
+    color: var(--text-color);
     font-weight: 600;
   }
   .summary-row .total-price {
-    color: #ee0a24;
-    font-size: 18px;
+    color: var(--price-color);
+    font-size: var(--font-lg);
     font-weight: 700;
   }
-  .summary-row .total-price .symbol { font-size: 12px; }
+  .summary-row .total-price .symbol { font-size: var(--font-sm); }
 
   /* Submit bar */
   .submit-bar {
@@ -266,33 +266,33 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #fff;
+    background: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 56px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     z-index: 200;
-    padding: 0 12px 8px;
+    padding: 0 var(--space-md) var(--space-sm);
   }
   .submit-bar .total-area {
     display: flex;
     align-items: baseline;
-    gap: 4px;
+    gap: var(--space-xs);
   }
-  .submit-bar .total-label { font-size: 14px; color: #333; }
-  .submit-bar .total-num { font-size: 20px; color: #ee0a24; font-weight: 700; }
-  .submit-bar .total-num .symbol { font-size: 12px; }
+  .submit-bar .total-label { font-size: var(--font-base); color: var(--text-color); }
+  .submit-bar .total-num { font-size: var(--font-xl); color: var(--price-color); font-weight: 700; }
+  .submit-bar .total-num .symbol { font-size: var(--font-sm); }
   .submit-bar .btn-submit {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     border: none;
-    padding: 0 32px;
+    padding: 0 var(--space-2xl);
     height: 42px;
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
     cursor: pointer;
-    border-radius: 21px;
+    border-radius: var(--radius-xl);
   }
   .submit-bar .btn-submit:active { opacity: 0.85; }
 
@@ -311,8 +311,8 @@
     position: relative;
     width: calc(100% - 48px);
     max-width: 320px;
-    background: #fff;
-    border-radius: 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
     z-index: 301;
     overflow: hidden;
     animation: popupFadeIn 0.2s ease;
@@ -328,13 +328,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 16px 0;
+    padding: var(--space-xl) 16px 0;
     position: relative;
   }
   .pay-popup-header .popup-title {
-    font-size: 17px;
+    font-size: var(--font-lg);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
   .pay-popup-header .popup-close {
     position: absolute;
@@ -347,61 +347,61 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #999;
+    color: var(--text-tertiary);
   }
   .pay-popup-header .popup-close svg { width: 18px; height: 18px; }
   .pay-popup-amount {
     text-align: center;
-    padding: 20px 16px 12px;
+    padding: var(--space-xl) 16px 12px;
   }
   .pay-popup-amount .amount {
     font-size: 36px;
     font-weight: 700;
-    color: #333;
+    color: var(--text-color);
   }
-  .pay-popup-amount .amount .symbol { font-size: 20px; }
+  .pay-popup-amount .amount .symbol { font-size: var(--font-xl); }
   .pay-popup-channel {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 8px 16px 0;
-    padding: 12px 14px;
-    background: #f8f8f8;
-    border-radius: 10px;
+    gap: var(--space-md);
+    margin: var(--space-sm) 16px 0;
+    padding: var(--space-md) 14px;
+    background: var(--bg-input);
+    border-radius: var(--radius-md);
   }
   .pay-popup-channel .ch-icon {
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .pay-popup-channel .ch-icon svg { width: 20px; height: 20px; color: #fff; }
-  .pay-popup-channel .ch-name { flex: 1; font-size: 14px; color: #333; font-weight: 500; }
+  .pay-popup-channel .ch-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
+  .pay-popup-channel .ch-name { flex: 1; font-size: var(--font-base); color: var(--text-color); font-weight: 500; }
   .pay-popup-beans {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 8px 16px 0;
-    padding: 10px 14px;
-    background: #fff9f5;
-    border-radius: 8px;
-    font-size: 12px;
-    color: #666;
+    margin: var(--space-sm) 16px 0;
+    padding: var(--space-md) 14px;
+    background: var(--card-bg)9f5;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
   }
-  .pay-popup-beans .val { color: #ff6034; font-weight: 600; }
+  .pay-popup-beans .val { color: var(--primary-start); font-weight: 600; }
   .pay-popup-btn {
     display: block;
     width: calc(100% - 32px);
-    margin: 20px 16px 24px;
+    margin: var(--space-xl) 16px 24px;
     height: 44px;
-    background: #07c160;
-    color: #fff;
+    background: var(--wechat-green);
+    color: var(--card-bg);
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-md);
     font-weight: 600;
     cursor: pointer;
   }
@@ -410,7 +410,7 @@
   /* Step 2: password */
   .pwd-header {
     text-align: center;
-    padding: 20px 16px 4px;
+    padding: var(--space-xl) 16px 4px;
     position: relative;
   }
   .pwd-header .pwd-back {
@@ -424,53 +424,53 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #999;
+    color: var(--text-tertiary);
   }
   .pwd-header .pwd-back svg { width: 18px; height: 18px; }
   .pwd-header .pwd-title {
-    font-size: 17px;
+    font-size: var(--font-lg);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
   .pwd-body {
     text-align: center;
-    padding: 16px 16px 0;
+    padding: var(--space-lg) 16px 0;
   }
   .pwd-body .pwd-channel-name {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .pwd-body .pwd-amount {
     font-size: 28px;
     font-weight: 700;
-    color: #333;
-    margin-bottom: 20px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xl);
   }
-  .pwd-body .pwd-amount .symbol { font-size: 16px; }
+  .pwd-body .pwd-amount .symbol { font-size: var(--font-md); }
   .pwd-grid {
     display: flex;
     justify-content: center;
-    gap: 8px;
-    padding: 0 20px;
+    gap: var(--space-sm);
+    padding: 0 var(--space-xl);
   }
   .pwd-dot {
     width: 40px;
     height: 44px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid var(--text-disabled);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: var(--card-bg);
   }
   .pwd-dot::after {
     content: '';
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: #333;
+    background: var(--text-color);
     display: none;
   }
   .pwd-dot.filled::after { display: block; }
@@ -486,10 +486,10 @@
     cursor: pointer;
   }
   .pwd-hint {
-    font-size: 12px;
-    color: #999;
-    margin-top: 16px;
-    padding-bottom: 24px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-lg);
+    padding-bottom: var(--space-xl);
     text-align: center;
   }
 </style>
@@ -622,7 +622,7 @@
     <div class="price-summary">
       <div class="summary-row"><span>商品金额</span><span>&yen;196.90</span></div>
       <div class="summary-row"><span>运费</span><span>&yen;0.00</span></div>
-      <div class="summary-row"><span>苏银豆抵扣</span><span style="color:#ff6034;">-&yen;100.00（100苏银豆）</span></div>
+      <div class="summary-row"><span>苏银豆抵扣</span><span style="color:var(--primary-start);">-&yen;100.00（100苏银豆）</span></div>
       <div class="summary-row"><span>现金支付</span><span>&yen;96.90</span></div>
       <div class="summary-row total"><span>实付金额</span><span class="total-price"><span class="symbol">&yen;</span>196.90</span></div>
     </div>
@@ -654,7 +654,7 @@
           <div class="amount" id="popupAmount"><span class="symbol">&yen;</span>96.90</div>
         </div>
         <div class="pay-popup-channel">
-          <div class="ch-icon" id="popupChIcon" style="background:#07c160;">
+          <div class="ch-icon" id="popupChIcon" style="background:var(--wechat-green);">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.133 0 .241-.11.241-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 01-.023-.156.49.49 0 01.201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.952-7.062-6.122zM14.033 13.4c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z"/></svg>
           </div>
           <span class="ch-name" id="popupChName">微信支付</span>
@@ -703,8 +703,8 @@
 (function() {
   var currentChannel = 'wechat';
   var channelData = {
-    wechat: { name: '微信支付', color: '#07c160' },
-    alipay: { name: '支付宝', color: '#1677ff' }
+    wechat: { name: '微信支付', color: 'var(--wechat-green)' },
+    alipay: { name: '支付宝', color: 'var(--info-light)' }
   };
 
   window.selectChannel = function(el) {
@@ -725,7 +725,7 @@
       // Buffer period: order still alive on backend
       if (!inBuffer) {
         inBuffer = true;
-        countdownEl.style.color = '#ee0a24';
+        countdownEl.style.color = 'var(--price-color)';
         countdownEl.style.fontWeight = '700';
       }
       var bufRemain = -remaining;
@@ -737,7 +737,7 @@
     } else if (remaining <= -BUFFER) {
       // Truly expired
       countdownEl.textContent = '订单已关闭';
-      countdownEl.style.color = '#999';
+      countdownEl.style.color = 'var(--text-tertiary)';
       countdownEl.style.fontWeight = '500';
       btnSubmit.disabled = true;
       btnSubmit.style.opacity = '0.5';
@@ -804,5 +804,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

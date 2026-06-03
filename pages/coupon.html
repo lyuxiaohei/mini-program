@@ -9,8 +9,8 @@
   /* Tab bar */
   .coupon-tabs {
     display: flex;
-    background: #fff;
-    border-bottom: 1px solid #f0f0f0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-divider);
     position: sticky;
     top: 88px;
     z-index: 50;
@@ -18,15 +18,15 @@
   .coupon-tab {
     flex: 1;
     text-align: center;
-    padding: 12px 0;
-    font-size: 14px;
-    color: #666;
+    padding: var(--space-md) 0;
+    font-size: var(--font-base);
+    color: var(--text-secondary);
     cursor: pointer;
     position: relative;
     transition: color 0.2s;
   }
   .coupon-tab.active {
-    color: #ff6034;
+    color: var(--primary-start);
     font-weight: 600;
   }
   .coupon-tab.active::after {
@@ -37,14 +37,14 @@
     transform: translateX(-50%);
     width: 24px;
     height: 3px;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
-    border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
+    border-radius: var(--radius-xs);
   }
 
   /* Tab content */
   .tab-content {
     display: none;
-    padding: 12px;
+    padding: var(--space-md);
   }
   .tab-content.active {
     display: block;
@@ -52,9 +52,9 @@
 
   /* ===== Card Pack (卡包) ===== */
   .card-item {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s;
@@ -62,18 +62,18 @@
   .card-item:active { transform: scale(0.98); }
 
   .card-top {
-    padding: 16px;
+    padding: var(--space-lg);
     position: relative;
     overflow: hidden;
   }
   .card-top.membership {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
   }
   .card-top.gift {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
   }
   .card-top.vip {
-    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    background: linear-gradient(135deg, var(--text-dark), var(--text-dark));
   }
   .card-top::after {
     content: '';
@@ -89,8 +89,8 @@
   .card-top-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
     position: relative;
     z-index: 1;
   }
@@ -98,23 +98,23 @@
     width: 36px;
     height: 36px;
     background: rgba(255,255,255,0.2);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .card-icon svg { width: 20px; height: 20px; color: #fff; }
+  .card-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
   .card-top-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #fff;
+    color: var(--card-bg);
   }
   .card-top-tag {
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: var(--font-xs);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-xs);
     background: rgba(255,255,255,0.2);
-    color: #fff;
+    color: var(--card-bg);
     margin-left: auto;
   }
 
@@ -123,48 +123,48 @@
     z-index: 1;
   }
   .card-balance-label {
-    font-size: 11px;
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.7);
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
   }
   .card-balance-value {
-    font-size: 24px;
+    font-size: var(--font-2xl);
     font-weight: 700;
-    color: #fff;
+    color: var(--card-bg);
   }
-  .card-balance-value .symbol { font-size: 14px; }
+  .card-balance-value .symbol { font-size: var(--font-base); }
 
   .card-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
-    border-top: 1px dashed #eee;
+    padding: var(--space-md) 16px;
+    border-top: 1px dashed var(--border-color);
   }
   .card-no {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .card-expire {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
 
   /* ===== Coupon Pack (优惠券包) ===== */
   .coupon-item {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
     overflow: hidden;
     transition: transform 0.2s;
   }
   .coupon-item:active { transform: scale(0.98); }
 
   .coupon-top {
-    padding: 16px;
+    padding: var(--space-lg);
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: var(--space-lg);
   }
 
   .coupon-amount-box {
@@ -175,15 +175,15 @@
   .coupon-amount {
     font-size: 28px;
     font-weight: 700;
-    color: #ee0a24;
+    color: var(--price-color);
     line-height: 1;
   }
-  .coupon-amount .symbol { font-size: 14px; }
-  .coupon-amount .unit { font-size: 11px; color: #ee0a24; }
+  .coupon-amount .symbol { font-size: var(--font-base); }
+  .coupon-amount .unit { font-size: var(--font-sm); color: var(--price-color); }
   .coupon-condition {
-    font-size: 10px;
-    color: #999;
-    margin-top: 4px;
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
   }
 
   .coupon-info {
@@ -199,34 +199,34 @@
     transform: translateY(-50%);
     width: 1px;
     height: 40px;
-    border-left: 1px dashed #eee;
+    border-left: 1px dashed var(--border-color);
   }
 
   .coupon-name {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
   }
   .coupon-scope {
-    font-size: 11px;
-    color: #999;
-    margin-bottom: 6px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-sm);
   }
   .coupon-date {
-    font-size: 10px;
-    color: #bbb;
+    font-size: var(--font-xs);
+    color: var(--text-muted);
   }
 
   .coupon-use-btn {
     flex-shrink: 0;
-    padding: 6px 14px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    font-size: 12px;
+    padding: var(--space-sm) 14px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    font-size: var(--font-sm);
     font-weight: 500;
     border: none;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     cursor: pointer;
   }
   .coupon-use-btn:active { opacity: 0.85; }
@@ -234,43 +234,43 @@
   /* Expired / Used coupon */
   .coupon-item.used .coupon-amount,
   .coupon-item.expired .coupon-amount {
-    color: #bbb;
+    color: var(--text-muted);
   }
   .coupon-item.used .coupon-use-btn,
   .coupon-item.expired .coupon-use-btn {
-    background: #ddd;
-    color: #999;
+    background: var(--text-disabled);
+    color: var(--text-tertiary);
   }
   .coupon-item.used .coupon-name,
   .coupon-item.expired .coupon-name {
-    color: #999;
+    color: var(--text-tertiary);
   }
 
   /* Empty state */
   .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 60px var(--space-xl);
     display: none;
   }
   .empty-state.show { display: block; }
   .empty-icon {
     width: 64px;
     height: 64px;
-    margin: 0 auto 12px;
-    color: #ddd;
+    margin: 0 auto var(--space-md);
+    color: var(--text-disabled);
   }
   .empty-text {
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 20px;
+    font-size: var(--font-base);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xl);
   }
   .empty-btn {
     display: inline-block;
-    padding: 8px 24px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    font-size: 13px;
-    border-radius: 20px;
+    padding: var(--space-sm) 24px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    font-size: var(--font-sm);
+    border-radius: var(--radius-xl);
     cursor: pointer;
   }
   .empty-btn:active { opacity: 0.85; }
@@ -457,5 +457,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

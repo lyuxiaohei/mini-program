@@ -12,42 +12,42 @@
   .expire-sub-nav .status-bar,
   .expire-sub-nav .nav-title,
   .expire-sub-nav .back-btn svg {
-    color: #fff;
+    color: var(--card-bg);
   }
   .expire-sub-nav .status-bar .icons svg {
-    fill: #fff;
+    fill: var(--card-bg);
   }
   .title-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .title-wrap .bean {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+    background: linear-gradient(135deg, var(--vip-gold-light), var(--primary-start));
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.35);
   }
   .expire-page {
-    background: #f5f6f8;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .hero-wrap {
-    padding: 0 12px 12px;
+    padding: 0 var(--space-md) var(--space-md);
     background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
   }
   .hero-card {
-    padding: 16px;
-    border-radius: 16px;
-    color: #fff;
-    background: linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    color: var(--card-bg);
+    background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-start) 42%, var(--price-color) 100%);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.12);
   }
   .hero-label {
-    font-size: 12px;
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.82);
-    margin-bottom: 6px;
+    margin-bottom: var(--space-sm);
   }
   .hero-value {
     font-size: 34px;
@@ -56,60 +56,60 @@
     margin-bottom: 0;
   }
   .main {
-    padding: 0 12px 16px;
+    padding: 0 var(--space-md) var(--space-lg);
   }
   .section {
-    background: #fff;
-    border-radius: 16px;
-    padding: 14px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .section-title {
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
   }
   .section-title h3 {
-    font-size: 16px;
-    color: #222;
+    font-size: var(--font-md);
+    color: var(--text-dark);
   }
   .expire-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-md);
   }
   .expire-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 14px 12px;
-    border-radius: 14px;
-    background: #fff7f2;
+    gap: var(--space-md);
+    padding: var(--space-lg) 12px;
+    border-radius: var(--radius-lg);
+    background: var(--card-bg)7f2;
   }
   .expire-item-main {
     min-width: 0;
   }
   .expire-item-main strong {
     display: block;
-    font-size: 14px;
-    color: #222;
-    margin-bottom: 4px;
+    font-size: var(--font-base);
+    color: var(--text-dark);
+    margin-bottom: var(--space-xs);
   }
   .expire-item-main span {
     display: block;
-    font-size: 12px;
-    color: #8a8f99;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     line-height: 1.6;
   }
   .expire-points {
     white-space: nowrap;
-    font-size: 20px;
+    font-size: var(--font-xl);
     font-weight: 700;
-    color: #ee0a24;
+    color: var(--price-color);
   }
   .expire-note {
-    margin-top: 6px;
-    font-size: 12px;
-    color: #667085;
+    margin-top: var(--space-sm);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.6;
   }
 </style>
@@ -204,5 +204,6 @@
 <script src="../js/auth.js"></script>
 <script src="../js/auth-guard.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

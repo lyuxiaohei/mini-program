@@ -12,46 +12,46 @@
   .types-sub-nav .status-bar,
   .types-sub-nav .nav-title,
   .types-sub-nav .back-btn svg {
-    color: #fff;
+    color: var(--card-bg);
   }
   .types-sub-nav .status-bar .icons svg {
-    fill: #fff;
+    fill: var(--card-bg);
   }
   .title-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .title-wrap .bean {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ffd56a, #ff9b3d);
+    background: linear-gradient(135deg, var(--vip-gold-light), var(--primary-start));
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.35);
   }
   .types-page {
-    background: #f5f6f8;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .hero-wrap {
-    padding: 0 12px 12px;
+    padding: 0 var(--space-md) var(--space-md);
     background: linear-gradient(180deg, rgba(86, 83, 77, 0.92) 0%, rgba(86, 83, 77, 0) 100%);
   }
   .hero-card {
     position: relative;
     overflow: hidden;
-    padding: 18px 16px 16px;
-    border-radius: 16px;
-    color: #fff;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    border-radius: var(--radius-lg);
+    color: var(--card-bg);
     background:
       radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 28%),
-      linear-gradient(135deg, #ff8d53 0%, #ff6034 42%, #ee0a24 100%);
+      linear-gradient(135deg, var(--primary-start) 0%, var(--primary-start) 42%, var(--price-color) 100%);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.12);
   }
   .hero-label {
-    font-size: 12px;
+    font-size: var(--font-sm);
     color: rgba(255,255,255,0.82);
-    margin-bottom: 6px;
+    margin-bottom: var(--space-sm);
   }
   .hero-value {
     font-size: 40px;
@@ -59,20 +59,20 @@
     line-height: 1;
   }
   .main {
-    padding: 12px 12px 16px;
+    padding: var(--space-md) 12px 16px;
   }
   .type-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .type-card-head {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
   }
   .type-dot {
     width: 10px;
@@ -80,49 +80,49 @@
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .type-dot.tongdui { background: #faad14; }
-  .type-dot.pinpai { background: #1677ff; }
-  .type-dot.zhiding { background: #16a34a; }
-  .type-dot.teshu { background: #722ed1; }
-  .type-dot.leimu { background: #ea580c; }
+  .type-dot.tongdui { background: var(--vip-gold); }
+  .type-dot.pinpai { background: var(--info-light); }
+  .type-dot.zhiding { background: var(--success-color); }
+  .type-dot.teshu { background: var(--info-color); }
+  .type-dot.leimu { background: var(--primary-start); }
   .type-card-name {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #222;
+    color: var(--text-dark);
   }
   .type-card-balance {
     font-size: 28px;
     font-weight: 700;
-    color: #222;
+    color: var(--text-dark);
     line-height: 1;
   }
   .type-card-balance small {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 400;
-    color: #999;
-    margin-left: 4px;
+    color: var(--text-tertiary);
+    margin-left: var(--space-xs);
   }
   .type-detail-list {
-    margin-top: 14px;
-    border-top: 1px dashed #f2f3f5;
-    padding-top: 12px;
+    margin-top: var(--space-lg);
+    border-top: 1px dashed var(--bg-color);
+    padding-top: var(--space-md);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-md);
   }
   .type-detail-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    background: #f9f9f9;
-    border-radius: 8px;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 10px;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
   }
   .type-detail-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     min-width: 0;
   }
   .type-detail-dot {
@@ -131,28 +131,28 @@
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .type-detail-dot.shopping { background: #12a150; }
-  .type-detail-dot.activity { background: #1677ff; }
-  .type-detail-dot.checkin { background: #faad14; }
-  .type-detail-dot.other { background: #999; }
+  .type-detail-dot.shopping { background: var(--success-color); }
+  .type-detail-dot.activity { background: var(--info-light); }
+  .type-detail-dot.checkin { background: var(--vip-gold); }
+  .type-detail-dot.other { background: var(--text-tertiary); }
   .type-detail-name {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
   }
   .type-detail-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-md);
     flex-shrink: 0;
   }
   .type-detail-points {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #12a150;
+    color: var(--success-color);
   }
   .type-detail-time {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
 </style>
 </head>
@@ -363,5 +363,6 @@
 <script src="../js/auth.js"></script>
 <script src="../js/auth-guard.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

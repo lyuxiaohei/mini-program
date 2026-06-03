@@ -9,8 +9,8 @@
   /* Tab bar */
   .refund-tabs-bar {
     display: flex;
-    background: #fff;
-    border-bottom: 1px solid #f0f0f0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-divider);
     position: sticky;
     top: 88px;
     z-index: 50;
@@ -18,15 +18,15 @@
   .refund-tab {
     flex: 1;
     text-align: center;
-    padding: 12px 0;
-    font-size: 14px;
-    color: #666;
+    padding: var(--space-md) 0;
+    font-size: var(--font-base);
+    color: var(--text-secondary);
     cursor: pointer;
     position: relative;
   }
-  .refund-tab:active { background: #f8f8f8; }
+  .refund-tab:active { background: var(--bg-input); }
   .refund-tab.active {
-    color: #333;
+    color: var(--text-color);
     font-weight: 600;
   }
   .refund-tab.active::after {
@@ -37,82 +37,82 @@
     transform: translateX(-50%);
     width: 24px;
     height: 2px;
-    background: linear-gradient(90deg, #ff6034, #ee0a24);
-    border-radius: 1px;
+    background: linear-gradient(90deg, var(--primary-start), var(--price-color));
+    border-radius: var(--radius-xs);
   }
   .after-sale-search {
-    padding: 12px;
-    background: #fff;
+    padding: var(--space-md);
+    background: var(--card-bg);
   }
   .after-sale-search input {
     width: 100%;
     height: 36px;
-    border: 1px solid #eee;
-    border-radius: 18px;
-    padding: 0 14px;
-    font-size: 13px;
-    color: #333;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 0 var(--space-lg);
+    font-size: var(--font-sm);
+    color: var(--text-color);
     outline: none;
-    background: #fafafa;
+    background: var(--hover-bg);
     box-sizing: border-box;
   }
   .after-sale-search input:focus {
-    border-color: #ff8a65;
-    background: #fff;
+    border-color: var(--warning-light);
+    background: var(--card-bg);
   }
 
   /* Refund card */
   .refund-list {
-    padding: 12px;
+    padding: var(--space-md);
   }
   .refund-card {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
     overflow: hidden;
   }
   .refund-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid #f5f5f5;
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--bg-color);
   }
   .refund-card-header .order-no {
-    font-size: 12px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .refund-card-header .status {
-    font-size: 12px;
+    font-size: var(--font-sm);
     font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 10px;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-md);
   }
   .status.processing {
-    background: #fff3e0;
-    color: #ff9800;
+    background: var(--warning-bg);
+    color: var(--warning-color);
   }
   .status.completed {
-    background: #e8f5e9;
-    color: #4caf50;
+    background: var(--success-bg);
+    color: var(--success-color);
   }
   .status.rejected {
-    background: #ffebee;
-    color: #f44336;
+    background: var(--selected-bg);
+    color: var(--error-light);
   }
 
   .refund-card-body {
-    padding: 12px;
+    padding: var(--space-md);
     display: flex;
-    gap: 10px;
+    gap: var(--space-md);
   }
   .refund-card .item-img {
     width: 72px;
     height: 72px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex-shrink: 0;
-    background: #f8f8f8;
+    background: var(--bg-input);
   }
   .refund-card .item-img img { width: 100%; height: 100%; object-fit: cover; }
   .refund-card .item-info {
@@ -123,8 +123,8 @@
     justify-content: space-between;
   }
   .refund-card .item-name {
-    font-size: 13px;
-    color: #333;
+    font-size: var(--font-sm);
+    color: var(--text-color);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -132,48 +132,48 @@
     overflow: hidden;
   }
   .refund-card .item-spec {
-    font-size: 11px;
-    color: #999;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
   }
 
   .refund-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 6px;
+    margin-top: var(--space-sm);
   }
   .refund-type {
-    font-size: 11px;
-    color: #666;
-    background: #f5f5f5;
-    padding: 2px 6px;
-    border-radius: 3px;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    background: var(--bg-color);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-xs);
   }
   .refund-amount {
-    font-size: 14px;
-    color: #ee0a24;
+    font-size: var(--font-base);
+    color: var(--price-color);
     font-weight: 600;
   }
   .refund-amount-stack {
     text-align: right;
-    font-size: 12px;
+    font-size: var(--font-sm);
     line-height: 1.5;
   }
   .refund-amount-stack .refund-amount-line {
     display: block;
     font-weight: 600;
-    color: #ee0a24;
+    color: var(--price-color);
   }
   .refund-amount-stack .refund-amount-line.refund-beans {
-    color: #ff6034;
+    color: var(--primary-start);
   }
   .refund-amount-stack .refund-amount-line.refund-cash {
-    color: #ee0a24;
+    color: var(--price-color);
   }
   .refund-amount-note {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     font-weight: 500;
     text-align: right;
     line-height: 1.4;
@@ -181,15 +181,15 @@
 
   /* Timeline mini */
   .timeline-mini {
-    background: #fafafa;
-    padding: 10px 12px;
-    margin: 0 12px 12px;
-    border-radius: 8px;
+    background: var(--hover-bg);
+    padding: var(--space-md) 12px;
+    margin: 0 var(--space-md) var(--space-md);
+    border-radius: var(--radius-sm);
   }
   .timeline-mini-title {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 6px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-sm);
   }
   .timeline-mini-steps {
     display: flex;
@@ -207,16 +207,16 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #ddd;
+    background: var(--text-disabled);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
     z-index: 1;
   }
-  .timeline-step .step-dot svg { width: 12px; height: 12px; color: #fff; }
-  .timeline-step.done .step-dot { background: #4caf50; }
-  .timeline-step.active .step-dot { background: #ff6034; }
+  .timeline-step .step-dot svg { width: 12px; height: 12px; color: var(--card-bg); }
+  .timeline-step.done .step-dot { background: var(--success-color); }
+  .timeline-step.active .step-dot { background: var(--primary-start); }
   .timeline-step::after {
     content: '';
     position: absolute;
@@ -224,73 +224,73 @@
     left: 50%;
     width: 100%;
     height: 2px;
-    background: #ddd;
+    background: var(--text-disabled);
   }
   .timeline-step:last-child::after { display: none; }
-  .timeline-step.done::after { background: #4caf50; }
+  .timeline-step.done::after { background: var(--success-color); }
   .timeline-step .step-text {
-    font-size: 10px;
-    color: #999;
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
     text-align: center;
   }
   .timeline-step.done .step-text,
-  .timeline-step.active .step-text { color: #333; }
+  .timeline-step.active .step-text { color: var(--text-color); }
 
   .refund-card-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 10px 12px;
-    border-top: 1px solid #f5f5f5;
-    gap: 8px;
+    padding: var(--space-md) 12px;
+    border-top: 1px solid var(--bg-color);
+    gap: var(--space-sm);
   }
   .btn-sm {
-    padding: 5px 14px;
-    border-radius: 14px;
-    font-size: 12px;
+    padding: var(--space-xs) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
     cursor: pointer;
-    border: 1px solid #ddd;
-    background: #fff;
-    color: #666;
+    border: 1px solid var(--text-disabled);
+    background: var(--card-bg);
+    color: var(--text-secondary);
   }
   .btn-sm:active { opacity: 0.7; }
   .btn-sm.primary {
-    border-color: #ff6034;
-    color: #ff6034;
+    border-color: var(--primary-start);
+    color: var(--primary-start);
   }
 
   /* Product & Customer info */
   .card-detail-row {
-    padding: 0 12px 10px;
+    padding: 0 var(--space-md) var(--space-md);
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 16px;
-    font-size: 11px;
-    color: #999;
+    gap: var(--space-sm) 16px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
   .card-detail-row span {
     white-space: nowrap;
   }
   .card-detail-row .label {
-    color: #bbb;
+    color: var(--text-muted);
   }
   .card-customer-row {
-    padding: 8px 12px;
-    margin: 0 12px 10px;
-    background: #fafafa;
-    border-radius: 8px;
-    font-size: 11px;
-    color: #666;
+    padding: var(--space-sm) 12px;
+    margin: 0 var(--space-md) var(--space-md);
+    background: var(--hover-bg);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
     line-height: 1.7;
   }
   .card-customer-row svg {
     width: 13px;
     height: 13px;
     flex-shrink: 0;
-    color: #bbb;
+    color: var(--text-muted);
   }
   .card-customer-row .customer-info {
     flex: 1;
@@ -298,7 +298,7 @@
   }
   .customer-name-phone {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
   }
   .customer-address {
     white-space: nowrap;
@@ -308,41 +308,41 @@
 
   /* Apply section */
   .apply-section {
-    background: #fff;
-    margin: 12px;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    margin: var(--space-md);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
     text-align: center;
   }
   .apply-section .apply-icon {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 12px;
+    margin: 0 auto var(--space-md);
   }
-  .apply-section .apply-icon svg { width: 28px; height: 28px; color: #fff; }
+  .apply-section .apply-icon svg { width: 28px; height: 28px; color: var(--card-bg); }
   .apply-section .apply-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 6px;
+    color: var(--text-color);
+    margin-bottom: var(--space-sm);
   }
   .apply-section .apply-desc {
-    font-size: 13px;
-    color: #999;
-    margin-bottom: 16px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-lg);
   }
   .apply-section .btn-apply {
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
     border: none;
-    padding: 10px 32px;
-    border-radius: 20px;
-    font-size: 14px;
+    padding: var(--space-md) 32px;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
     font-weight: 500;
     cursor: pointer;
   }
@@ -354,16 +354,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
-    color: #999;
+    padding: 60px var(--space-xl);
+    color: var(--text-tertiary);
   }
   .empty-state svg {
     width: 64px;
     height: 64px;
-    color: #ddd;
-    margin-bottom: 12px;
+    color: var(--text-disabled);
+    margin-bottom: var(--space-md);
   }
-  .empty-state .empty-text { font-size: 14px; }
+  .empty-state .empty-text { font-size: var(--font-base); }
 </style>
 </head>
 <body>
@@ -782,5 +782,6 @@
   render();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

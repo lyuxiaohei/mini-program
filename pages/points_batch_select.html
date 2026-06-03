@@ -6,102 +6,102 @@
 <title>选择积分批次 - 苏银豆商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
-  .sub-nav { background: #fff; }
+  .sub-nav { background: var(--card-bg); }
   .page-body {
-    background: #f5f5f5;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
     padding-bottom: 70px;
   }
 
   /* Product summary */
   .product-summary {
-    background: #fff;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
   .product-summary-title {
-    font-size: 13px;
-    color: #999;
-    margin-bottom: 8px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-sm);
   }
   .product-summary-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 0;
-    font-size: 13px;
-    color: #333;
+    padding: var(--space-sm) 0;
+    font-size: var(--font-sm);
+    color: var(--text-color);
   }
   .product-summary-item + .product-summary-item {
-    border-top: 1px solid #f5f5f5;
+    border-top: 1px solid var(--bg-color);
   }
   .product-summary-item .ps-name {
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-right: 8px;
+    margin-right: var(--space-sm);
   }
   .product-summary-item .ps-price {
-    color: #ee0a24;
+    color: var(--price-color);
     font-weight: 500;
     white-space: nowrap;
   }
   .product-summary-item .ps-match {
-    font-size: 10px;
-    padding: 1px 5px;
-    border-radius: 3px;
-    margin-left: 6px;
+    font-size: var(--font-xs);
+    padding: 1px var(--space-xs);
+    border-radius: var(--radius-xs);
+    margin-left: var(--space-sm);
     white-space: nowrap;
   }
-  .ps-match.matched { background: #e8f5e9; color: #4caf50; }
-  .ps-match.unmatched { background: #f5f5f5; color: #bbb; }
+  .ps-match.matched { background: var(--success-bg); color: var(--success-color); }
+  .ps-match.unmatched { background: var(--bg-color); color: var(--text-muted); }
 
   /* Batch selector */
   .batch-section {
-    background: #fff;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
   .batch-section-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 500;
-    color: #333;
-    margin-bottom: 10px;
+    color: var(--text-color);
+    margin-bottom: var(--space-md);
   }
   .batch-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .batch-card {
     position: relative;
     display: flex;
     align-items: flex-start;
-    border: 2px solid #eee;
-    border-radius: 10px;
-    padding: 10px 10px 10px 6px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) 10px 10px 6px;
     cursor: pointer;
     transition: all .15s;
   }
   .batch-card:active { transform: scale(.97); }
   .batch-card.active {
-    border-color: #ff6034;
-    background: #fff8f5;
+    border-color: var(--primary-start);
+    background: var(--card-bg)8f5;
   }
   .batch-card .bc-radio {
     flex-shrink: 0;
     width: 18px; height: 18px;
-    border: 2px solid #ccc;
+    border: 2px solid var(--text-light);
     border-radius: 50%;
-    margin: 2px 8px 0 4px;
+    margin: 2px var(--space-sm) 0 var(--space-xs);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all .15s;
   }
   .batch-card.active .bc-radio {
-    border-color: #ff6034;
+    border-color: var(--primary-start);
   }
   .batch-card .bc-radio::after {
     content: '';
@@ -111,7 +111,7 @@
     transition: all .15s;
   }
   .batch-card.active .bc-radio::after {
-    background: #ff6034;
+    background: var(--primary-start);
   }
   .batch-card .bc-body {
     flex: 1;
@@ -120,42 +120,42 @@
   .batch-card .bc-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
   }
   .batch-card .bc-name {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
   }
-  .batch-card.active .bc-name { color: #ff6034; }
+  .batch-card.active .bc-name { color: var(--primary-start); }
   .batch-card .bc-balance {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
   }
-  .batch-card .bc-balance b { color: #333; }
-  .batch-card.active .bc-balance b { color: #ff6034; }
+  .batch-card .bc-balance b { color: var(--text-color); }
+  .batch-card.active .bc-balance b { color: var(--primary-start); }
   .batch-card .bc-badge {
-    font-size: 9px;
-    padding: 1px 5px;
-    border-radius: 3px;
-    background: #eee;
-    color: #999;
+    font-size: var(--font-xs);
+    padding: 1px var(--space-xs);
+    border-radius: var(--radius-xs);
+    background: var(--border-color);
+    color: var(--text-tertiary);
   }
   .batch-card.active .bc-badge {
-    background: #ff6034;
-    color: #fff;
+    background: var(--primary-start);
+    color: var(--card-bg);
   }
   .batch-card .bc-sublabel {
-    font-size: 11px;
-    color: #999;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
     margin-top: 1px;
   }
   .batch-card .bc-help {
     width: 16px; height: 16px;
     border-radius: 50%;
-    background: #eee;
-    color: #999;
-    font-size: 11px;
+    background: var(--border-color);
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -165,25 +165,25 @@
     line-height: 1;
   }
   .batch-card .bc-match {
-    font-size: 11px;
-    color: #999;
-    margin-top: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
   }
-  .batch-card .bc-match .match-yes { color: #4caf50; }
-  .batch-card .bc-match .match-no { color: #ccc; }
+  .batch-card .bc-match .match-yes { color: var(--success-color); }
+  .batch-card .bc-match .match-no { color: var(--text-light); }
   .batch-card .bc-expire-date {
-    margin-top: 4px;
-    font-size: 10px;
-    color: #bbb;
+    margin-top: var(--space-xs);
+    font-size: var(--font-xs);
+    color: var(--text-muted);
   }
   .batch-card .bc-expire-date.expiring-soon {
-    color: #e65100;
+    color: var(--warning-dark);
   }
   .batch-card.unavailable {
     opacity: .5;
     pointer-events: none;
   }
-  .batch-card.unavailable .bc-radio { border-color: #ddd; }
+  .batch-card.unavailable .bc-radio { border-color: var(--text-disabled); }
 
   /* Popup */
   .batch-popup-overlay {
@@ -199,35 +199,35 @@
   .batch-popup {
     width: calc(100% - 48px);
     max-width: 300px;
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
     max-height: 60%;
     overflow-y: auto;
   }
   .batch-popup-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
   }
   .batch-popup-match {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 8px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-sm);
   }
   .batch-popup-item {
-    font-size: 12px;
-    color: #333;
-    padding: 6px 0;
-    border-bottom: 1px solid #f5f5f5;
+    font-size: var(--font-sm);
+    color: var(--text-color);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--bg-color);
   }
   .batch-popup-item:last-child { border-bottom: none; }
   .batch-popup-close {
     text-align: center;
-    padding-top: 12px;
-    font-size: 13px;
-    color: #ff6034;
+    padding-top: var(--space-md);
+    font-size: var(--font-sm);
+    color: var(--primary-start);
     cursor: pointer;
   }
 
@@ -237,25 +237,25 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #fff;
-    padding: 8px 12px 12px;
-    border-top: 1px solid #eee;
+    background: var(--card-bg);
+    padding: var(--space-sm) 12px 12px;
+    border-top: 1px solid var(--border-color);
     z-index: 200;
   }
   .confirm-bar .btn-confirm {
     width: 100%;
     height: 44px;
     border: none;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #ff6034, #ee0a24);
-    color: #fff;
-    font-size: 16px;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    font-size: var(--font-md);
     font-weight: 600;
     cursor: pointer;
   }
   .confirm-bar .btn-confirm:active { opacity: .85; }
   .confirm-bar .btn-confirm:disabled {
-    background: #ccc;
+    background: var(--text-light);
     cursor: not-allowed;
   }
 </style>
@@ -412,7 +412,7 @@
     html += '<div class="batch-card' + (selectedBatch === null ? ' active' : '') + '" data-batch="" onclick="selectBatch(this)">';
     html += '<div class="bc-radio"></div>';
     html += '<div class="bc-body"><div class="bc-header"><span class="bc-name">不使用积分</span></div>';
-    html += '<div class="bc-sublabel" style="color:#999">不使用积分抵扣</div>';
+    html += '<div class="bc-sublabel" style="color:var(--text-tertiary)">不使用积分抵扣</div>';
     html += '</div></div>';
 
     sorted.forEach(function(b) {
@@ -433,7 +433,7 @@
       if (b.scopeList) scopeText = b.scopeList[0] + '等';
       else scopeText = b.subLabel;
       var disabledLabel = orderType === 'cake' ? '不支持蛋糕订单' : '不支持电影票';
-      html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:#bbb;margin-left:6px;">' + disabledLabel + '</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
+      html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:var(--text-muted);margin-left:6px;">' + disabledLabel + '</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
       html += '<div class="bc-match">';
       if (matched.length > 0) {
         html += '<span class="match-yes">匹配' + matched.length + '件商品</span>，可消耗' + maxCons + '积分';
@@ -486,7 +486,7 @@
     popup += '<div class="batch-popup" onclick="event.stopPropagation()">';
     popup += '<div class="batch-popup-title">' + b.name + '</div>';
     popup += '<div class="batch-popup-match">' + matchInfo + '</div>';
-    popup += '<div style="font-size:12px;color:#999;margin:8px 0 4px;">匹配商品：</div>';
+    popup += '<div style="font-size:var(--font-sm);color:var(--text-tertiary);margin:var(--space-sm) 0 var(--space-xs);">匹配商品：</div>';
     popup += items;
     popup += '<div class="batch-popup-close" onclick="closeHelp()">关闭</div>';
     popup += '</div></div>';
@@ -521,5 +521,6 @@
   renderProductSummary();
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>

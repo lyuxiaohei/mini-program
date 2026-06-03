@@ -7,49 +7,49 @@
 <link rel="stylesheet" href="../css/common.css">
 <style>
   .movie-browser-page {
-    background: #f4f6fb;
+    background: var(--bg-color);
     min-height: calc(100vh - 88px);
   }
   .movie-browser-header {
-    background: #fff;
+    background: var(--card-bg);
   }
   .search-panel {
-    background: #fff;
-    padding: 10px 12px 0;
+    background: var(--card-bg);
+    padding: var(--space-md) 12px 0;
   }
   .search-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-md);
   }
   .city-select {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
     flex-shrink: 0;
-    font-size: 15px;
-    color: #333;
+    font-size: var(--font-md);
+    color: var(--text-color);
     cursor: pointer;
   }
   .city-select svg {
     width: 14px;
     height: 14px;
-    color: #667085;
+    color: var(--text-secondary);
   }
   .search-box {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     height: 38px;
-    border-radius: 19px;
-    background: #f1f4f8;
-    padding: 0 12px;
+    border-radius: var(--radius-xl);
+    background: var(--bg-color);
+    padding: 0 var(--space-md);
   }
   .search-box svg {
     width: 16px;
     height: 16px;
-    color: #b2b8c2;
+    color: var(--text-muted);
     flex-shrink: 0;
   }
   .search-box input {
@@ -57,29 +57,29 @@
     border: none;
     background: transparent;
     outline: none;
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-base);
+    color: var(--text-color);
   }
   .search-box input::placeholder {
-    color: #c0c5ce;
+    color: var(--text-light);
   }
   .movie-tabs {
-    background: #fff;
+    background: var(--card-bg);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    padding: 12px 12px 0;
-    border-bottom: 1px solid #eef0f4;
+    padding: var(--space-md) 12px 0;
+    border-bottom: 1px solid var(--bg-color);
   }
   .movie-tab {
     position: relative;
     text-align: center;
-    padding-bottom: 12px;
-    font-size: 16px;
-    color: #777f8e;
+    padding-bottom: var(--space-md);
+    font-size: var(--font-md);
+    color: var(--text-tertiary);
     cursor: pointer;
   }
   .movie-tab.active {
-    color: #222;
+    color: var(--text-dark);
     font-weight: 600;
   }
   .movie-tab.active::after {
@@ -90,32 +90,32 @@
     width: 20px;
     height: 3px;
     border-radius: 999px;
-    background: #2f6fff;
+    background: var(--info-light);
     transform: translateX(-50%);
   }
   .movie-list-wrap {
-    padding: 14px 12px 20px;
+    padding: var(--space-lg) 12px 20px;
   }
   .movie-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-md);
   }
   .movie-item {
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-md);
     box-shadow: 0 12px 30px rgba(18, 32, 56, 0.08);
   }
   .movie-poster {
     width: 70px;
     height: 96px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     overflow: hidden;
-    background: #edf0f4;
+    background: var(--bg-color);
     flex-shrink: 0;
   }
   .movie-poster img {
@@ -128,25 +128,25 @@
     min-width: 0;
   }
   .movie-name {
-    font-size: 16px;
+    font-size: var(--font-md);
     font-weight: 700;
-    color: #222;
+    color: var(--text-dark);
     line-height: 1.45;
-    margin-bottom: 6px;
+    margin-bottom: var(--space-sm);
   }
   .movie-score {
-    font-size: 13px;
-    color: #8a8f99;
-    margin-bottom: 4px;
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xs);
   }
   .movie-score strong {
-    color: #ff9f1c;
-    font-size: 14px;
-    margin-left: 4px;
+    color: var(--warning-color);
+    font-size: var(--font-base);
+    margin-left: var(--space-xs);
   }
   .movie-meta {
-    font-size: 12px;
-    color: #667085;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
     line-height: 1.7;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -159,19 +159,19 @@
   .movie-action-btn {
     min-width: 66px;
     height: 34px;
-    padding: 0 16px;
+    padding: 0 var(--space-lg);
     border: none;
-    border-radius: 17px;
-    font-size: 14px;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
     font-weight: 600;
-    color: #fff;
+    color: var(--card-bg);
     cursor: pointer;
   }
   .movie-action-btn.buy {
-    background: linear-gradient(135deg, #2f87ff, #2073ff);
+    background: linear-gradient(135deg, var(--info-light), var(--info-light));
   }
   .movie-action-btn.presale {
-    background: linear-gradient(135deg, #ffbe45, #ff9f1c);
+    background: linear-gradient(135deg, var(--vip-gold-light), var(--warning-color));
   }
   .movie-action-btn:active {
     opacity: 0.88;
@@ -317,5 +317,6 @@
   });
 })();
 </script>
+<script src="../js/theme-switcher.js"></script>
 </body>
 </html>
