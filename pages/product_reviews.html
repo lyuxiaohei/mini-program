@@ -237,7 +237,7 @@
     <div class="rating-score">
       <div class="score-num">4.9</div>
       <div class="rating-stars-row">
-        <span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span><span class="star">&var(--primary-start);</span>
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
       </div>
       <div class="score-label">好评率 98%</div>
     </div>
@@ -371,7 +371,7 @@
   function renderStars(count) {
     var html = '';
     for (var i = 0; i < 5; i++) {
-      html += '<span class="star ' + (i < count ? '' : 'empty') + '">&var(--primary-start);</span>';
+      html += '<span class="star ' + (i < count ? '' : 'empty') + '">★</span>';
     }
     return html;
   }

@@ -443,3 +443,238 @@ a { text-decoration: none; color: inherit; }
 .theme-switcher .theme-btn.active { border-color: var(--text-color); }
 .theme-switcher .theme-btn[data-theme="red"] { background: linear-gradient(135deg, #ff6034, #ee0a24); }
 .theme-switcher .theme-btn[data-theme="green"] { background: linear-gradient(135deg, #07c160, #059c4e); }
+
+/* ===== Shared UI Components ===== */
+
+/* ----- Empty State (14 pages) ----- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px var(--space-xl);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+.empty-state svg {
+  width: 80px;
+  height: 80px;
+  color: var(--text-disabled);
+  margin-bottom: var(--space-lg);
+}
+.empty-state .empty-text {
+  font-size: var(--font-base);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-lg);
+}
+.empty-state .empty-btn {
+  margin-top: var(--space-sm);
+}
+
+/* ----- Modal / Dialog (6 pages) ----- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  width: 300px;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.modal-title {
+  padding: var(--space-lg);
+  font-size: var(--font-md);
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-color);
+}
+.modal-body {
+  padding: 0 var(--space-lg) var(--space-lg);
+  font-size: var(--font-base);
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.5;
+}
+.modal-actions {
+  display: flex;
+  border-top: 1px solid var(--border-color);
+}
+.modal-btn {
+  flex: 1;
+  padding: var(--space-md);
+  font-size: var(--font-base);
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+}
+.modal-btn:active { background: var(--hover-bg); }
+.modal-btn.cancel { border-right: 1px solid var(--border-color); }
+.modal-btn.confirm {
+  color: var(--primary-start);
+  font-weight: 600;
+}
+
+/* ----- Small Button (4+ pages) ----- */
+.btn-sm {
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-sm);
+  cursor: pointer;
+  border: 1px solid var(--text-disabled);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+}
+.btn-sm:active { opacity: 0.7; }
+.btn-sm.primary {
+  border-color: var(--primary-start);
+  color: var(--primary-start);
+}
+.btn-sm.danger {
+  border-color: var(--price-color);
+  color: var(--price-color);
+}
+
+/* ----- Bottom Submit Bar (11 pages) ----- */
+.submit-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--tab-bar-height);
+  border-top: 1px solid var(--border-color);
+  z-index: 200;
+  padding: 0 var(--space-md);
+}
+.submit-bar .total-area {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+/* ----- Outline & Cancel Buttons (6 pages) ----- */
+.btn-outline {
+  flex: 1;
+  height: 42px;
+  border: 1px solid var(--primary-start);
+  color: var(--primary-start);
+  background: var(--card-bg);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-base);
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-outline:active { background: var(--selected-bg); }
+.btn-cancel {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--text-disabled);
+  border-radius: var(--radius-xl);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: var(--font-md);
+  cursor: pointer;
+}
+.btn-cancel:active { background: var(--bg-color); }
+
+/* ----- Address Section (7 pages) ----- */
+.address-section {
+  background: var(--card-bg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  position: relative;
+  cursor: pointer;
+}
+.address-section:active { background: var(--hover-bg); }
+.address-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--primary-start) 0, var(--primary-start) 8px, var(--card-bg) 8px, var(--card-bg) 12px);
+}
+.address-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+.address-row svg {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-start);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.address-info { flex: 1; }
+.address-name-phone {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--space-xs);
+}
+.address-detail {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ----- Menu / Settings Row (6 pages) ----- */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--space-lg) var(--space-md);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-divider);
+  background: var(--card-bg);
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item:active { background: var(--hover-bg); }
+.menu-item .menu-label {
+  flex: 1;
+  font-size: var(--font-base);
+  color: var(--text-color);
+}
+.menu-item .menu-arrow {
+  color: var(--text-light);
+  font-size: var(--font-sm);
+}
+.menu-item .menu-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: var(--space-sm);
+  color: var(--text-secondary);
+}
+
+/* ----- Chip / Filter Tag (3 pages) ----- */
+.chip {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  background: var(--bg-color);
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip:active { opacity: 0.7; }
+.chip.active {
+  color: var(--primary-start);
+  border-color: var(--primary-start);
+  background: var(--selected-bg);
+}
