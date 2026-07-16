@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>我的订单 - 苏银豆商城</title>
+<title>我的订单 - 福利商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
   /* Tab bar */
@@ -707,6 +707,19 @@
         { name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: '48.00', qty: 1, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg' }
       ],
       actions: ['再次购买', '评价']
+    },
+    {
+      id: 'JS2026042805013',
+      status: 'completed',
+      statusText: '已完成',
+      total: '99.00',
+      payMode: 'beans',
+      beansUsed: 9900,
+      virtual: true,
+      products: [
+        { name: '100元话费充值', spec: '卡密 官方直充', price: '99.00', qty: 1, img: '../images/unsplash/虚拟商品主图.jpg' }
+      ],
+      actions: ['查看详情']
     }
   ];
 
@@ -727,6 +740,7 @@
    * @returns {boolean}
    */
   function isShippedReturnPhase(order) {
+    if (order.virtual) return false;
     return ['delivered', 'partial-ship', 'partial-received', 'completed', 'reviewed'].indexOf(order.status) !== -1;
   }
 
@@ -1181,7 +1195,7 @@
         var cls = i === listForActions.length - 1 ? ' primary' : '';
         if (a === '去支付') cls = ' danger';
         var href = '#';
-        if (a === '查看详情') href = 'order_detail.html';
+        if (a === '查看详情') href = order.virtual ? 'order_detail_virtual.html' : 'order_detail.html';
         if (a === '确认收货') href = 'order_detail.html';
         if (a === '查看物流') href = 'logistics.html';
         if (a === '去支付') href = 'order_pay.html';
@@ -1196,9 +1210,9 @@
 
       var totalHtml = '共' + order.products.reduce(function(s, p) { return s + p.qty; }, 0) + '件 合计 ';
       if (order.payMode === 'beans') {
-        totalHtml += '<b>' + order.beansUsed + '苏银豆</b>';
+        totalHtml += '<b>' + order.beansUsed + '积分</b>';
       } else if (order.payMode === 'combo') {
-        totalHtml += '<b>' + order.beansUsed + '苏银豆+&yen;' + order.cashPaid + '</b>';
+        totalHtml += '<b>' + order.beansUsed + '积分+&yen;' + order.cashPaid + '</b>';
       } else {
         totalHtml += '<b>&yen;' + order.total + '</b>';
       }
@@ -1219,7 +1233,7 @@
           '<span class="order-no">' + order.id + '</span>' +
           '<span class="' + headerStatusClass + '">' + headerStatusText + '</span>' +
         '</div>' +
-        '<div class="order-card-body" onclick="location.href=\'order_detail.html\'">' + prodsHtml + '</div>' +
+        '<div class="order-card-body" onclick="location.href=\'' + (order.virtual ? 'order_detail_virtual.html' : 'order_detail.html') + '\'">' + prodsHtml + '</div>' +
         pkgHtml +
         '<div class="order-card-footer">' +
           '<span class="total-text">' + totalHtml + '</span>' +

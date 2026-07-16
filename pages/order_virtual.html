@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>确认订单（虚拟商品）- 福利商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  /* Recharge Account Section */
+  .account-section {
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+  .account-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-base);
+    color: var(--text-color);
+  }
+  .account-section-title {
+    font-weight: 600;
+  }
+  .account-input-wrap {
+    position: relative;
+  }
+  .account-input-wrap input {
+    width: 100%;
+    height: 44px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-md);
+    font-size: var(--font-base);
+    color: var(--text-color);
+    box-sizing: border-box;
+  }
+  .account-input-wrap input:focus {
+    border-color: var(--primary-start);
+    outline: none;
+  }
+  .account-input-wrap input::placeholder {
+    color: var(--text-light);
+  }
+  .account-tip {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-sm);
+  }
+
+  /* Saved Accounts */
+  .saved-accounts {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .account-card {
+    flex-shrink: 0;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-color);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    font-size: var(--font-sm);
+    color: var(--text-color);
+    cursor: pointer;
+  }
+  .account-card.selected {
+    border-color: var(--primary-start);
+    background: rgba(255, 111, 0, 0.05);
+  }
+  .account-card .account-mask {
+    color: var(--text-secondary);
+  }
+
+  /* Product items */
+  .order-products {
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+  .order-product-item {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--bg-color);
+  }
+  .order-product-item:last-child { border-bottom: none; }
+  .order-product-item .prod-img {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg-input);
+  }
+  .order-product-item .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+  .order-product-item .prod-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .order-product-item .prod-name {
+    font-size: var(--font-sm);
+    color: var(--text-color);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .order-product-item .prod-spec {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+  }
+  .order-product-item .prod-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .order-product-item .prod-price {
+    color: var(--text-color);
+    font-size: var(--font-base);
+    font-weight: 600;
+  }
+  .order-product-item .prod-qty {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+  }
+
+  /* Quantity Control */
+  .qty-control {
+    display: flex;
+    align-items: center;
+  }
+  .qty-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--text-disabled);
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+  .qty-btn:first-child { border-radius: var(--radius-xs) 0 0 4px; }
+  .qty-btn:last-child { border-radius: 0 var(--radius-xs) var(--radius-xs) 0; }
+  .qty-btn:active { background: var(--bg-color); }
+  .qty-btn.disabled { color: var(--text-disabled); pointer-events: none; }
+  .qty-num {
+    width: 32px;
+    height: 24px;
+    border-top: 1px solid var(--text-disabled);
+    border-bottom: 1px solid var(--text-disabled);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-sm);
+    color: var(--text-color);
+  }
+
+  /* Remark */
+  .remark-row {
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    cursor: pointer;
+  }
+  .remark-row:active { background: var(--hover-bg); }
+  .remark-row .rr-label { font-size: var(--font-base); color: var(--text-color); }
+  .remark-row .rr-value {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .remark-row .rr-value svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .combined-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .combined-row .row-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .combined-row .rr-label {
+    font-size: var(--font-base);
+    color: var(--text-color);
+  }
+  .combined-row .rr-value {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .combined-row .rr-value svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .combined-row .type-desc {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    text-align: left;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+  .combined-row .row-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--bg-color);
+    margin: var(--space-sm) 0;
+  }
+
+  .remark-drawer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+  }
+  .remark-drawer-overlay.show { display: flex; }
+  .remark-drawer {
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg) 16px 0 0;
+    padding: 0 var(--space-lg) var(--space-xl);
+    animation: drawerUp .25s ease;
+  }
+  @keyframes drawerUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .remark-drawer-handle { width: 36px; height: 4px; border-radius: var(--radius-xs); background: var(--text-disabled); margin: var(--space-md) auto 14px; }
+  .remark-drawer-title { font-size: var(--font-md); font-weight: 600; color: var(--text-color); margin-bottom: var(--space-md); }
+  .remark-drawer textarea {
+    width: 100%; height: 80px;
+    border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--space-md);
+    font-size: var(--font-base); color: var(--text-color); resize: none; outline: none; box-sizing: border-box;
+  }
+  .remark-drawer textarea:focus { border-color: var(--primary-start); }
+  .remark-drawer textarea::placeholder { color: var(--text-light); }
+  .remark-drawer-counter { text-align: right; font-size: var(--font-sm); color: var(--text-light); margin-top: var(--space-xs); }
+  .remark-drawer-counter .current { color: var(--text-tertiary); }
+  .remark-drawer .drawer-btn {
+    width: 100%; height: 44px; border: none; border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg); font-size: var(--font-md); font-weight: 600; cursor: pointer; margin-top: var(--space-md);
+  }
+  .remark-drawer .drawer-btn:active { opacity: .85; }
+
+  /* Payment mode */
+  .pay-mode-section {
+    background: var(--card-bg);
+    margin-bottom: var(--space-sm);
+  }
+  .pay-mode-title {
+    padding: var(--space-md) 12px 8px;
+    font-size: var(--font-base);
+    font-weight: 600;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .pay-mode-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) 12px;
+    border-bottom: 1px solid var(--bg-color);
+    cursor: pointer;
+  }
+  .pay-mode-item:last-child { border-bottom: none; }
+  .pay-mode-item:active { background: var(--hover-bg); }
+  .pay-mode-item .pm-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--space-md);
+    flex-shrink: 0;
+  }
+  .pay-mode-item .pm-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
+  .pay-mode-item .pm-icon.beans { background: linear-gradient(135deg, var(--warning-color), var(--primary-start)); }
+  .pay-mode-item .pm-icon.cash { background: linear-gradient(135deg, var(--success-color), var(--info-color)); }
+  .pay-mode-item .pm-icon.combo { background: linear-gradient(135deg, var(--primary-start), var(--price-color)); }
+  .pay-mode-item .pm-info { flex: 1; }
+  .pay-mode-item .pm-name { font-size: var(--font-sm); color: var(--text-color); font-weight: 500; }
+  .pay-mode-item .pm-desc { font-size: var(--font-sm); color: var(--text-tertiary); margin-top: 2px; }
+  .pay-mode-item .pm-desc .hl { color: var(--primary-start); }
+  .pay-mode-item .pm-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--text-disabled);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .pay-mode-item .pm-radio.checked {
+    background: var(--primary-start);
+    border-color: var(--primary-start);
+  }
+  .pay-mode-item .pm-radio.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid var(--card-bg);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  /* Pay Channel (WeChat/Alipay) */
+  .pay-channel-section {
+    display: none;
+    background: var(--card-bg);
+    margin-bottom: var(--space-sm);
+    padding: 0 var(--space-md) var(--space-sm);
+  }
+  .pay-channel-section.show { display: block; }
+  .pay-channel-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--bg-color);
+    cursor: pointer;
+  }
+  .pay-channel-item:last-child { border-bottom: none; }
+  .pay-channel-item .ch-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--space-sm);
+  }
+  .pay-channel-item .ch-icon svg { width: 18px; height: 18px; color: var(--card-bg); }
+  .pay-channel-item .ch-icon.wechat { background: var(--wechat-green); }
+  .pay-channel-item .ch-icon.alipay { background: var(--info-light); }
+  .pay-channel-item .ch-name { flex: 1; font-size: var(--font-sm); color: var(--text-color); }
+  .pay-channel-item .ch-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--text-disabled);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .pay-channel-item .ch-radio.checked {
+    background: var(--primary-start);
+    border-color: var(--primary-start);
+  }
+  .pay-channel-item .ch-radio.checked::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--card-bg);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  /* Combo points input */
+  .combo-input-section {
+    display: none;
+    background: var(--card-bg);
+    margin-bottom: var(--space-sm);
+    padding: var(--space-md);
+  }
+  .combo-input-section.show { display: block; }
+  .combo-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .combo-input-row label {
+    font-size: var(--font-sm);
+    color: var(--text-color);
+    white-space: nowrap;
+  }
+  .combo-input-row input {
+    flex: 1;
+    height: 28px;
+    border: 1px solid var(--text-disabled);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-md);
+    font-size: var(--font-sm);
+    color: var(--text-color);
+    text-align: center;
+    outline: none;
+  }
+  .combo-input-row input:focus { border-color: var(--primary-start); }
+  .combo-input-row .unit {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    white-space: nowrap;
+  }
+  .combo-input-row .max-btn {
+    font-size: var(--font-sm);
+    color: var(--primary-start);
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-light);
+    border-radius: var(--radius-xs);
+    padding: var(--space-xs) 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .combo-input-row .max-btn:active { background: var(--warning-bg); }
+  .combo-input-hint {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-sm);
+  }
+  .combo-input-hint .hl { color: var(--primary-start); }
+  .combo-input-error {
+    font-size: var(--font-sm);
+    color: var(--price-color);
+    margin-top: var(--space-xs);
+    display: none;
+  }
+  .combo-input-error.show { display: block; }
+
+  /* Summary row clickable */
+  .summary-row.clickable {
+    cursor: pointer;
+    padding: var(--space-sm) 0;
+  }
+  .summary-row.clickable:active { opacity: .7; }
+  .summary-row.clickable .sr-arrow { width: 14px; height: 14px; color: var(--text-light); flex-shrink: 0; margin-left: var(--space-xs); }
+
+  /* Product allocation inline */
+  .prod-alloc {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-xs);
+    padding-top: var(--space-xs);
+    border-top: 1px dashed var(--border-divider);
+  }
+  .prod-alloc.show { display: flex; }
+  .prod-alloc .alloc-tag {
+    font-size: var(--font-xs);
+    padding: 1px var(--space-xs);
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+  }
+  .alloc-tag.matched { background: var(--success-bg); color: var(--success-color); }
+  .alloc-tag.unmatched { background: var(--bg-color); color: var(--text-muted); }
+  .prod-alloc .alloc-detail {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .alloc-detail .alloc-points { color: var(--primary-start); font-weight: 500; }
+  .alloc-detail .alloc-cash { color: var(--text-color); }
+
+  /* Price summary */
+  .price-summary {
+    background: var(--card-bg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+  .summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-xs) 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+  }
+  .summary-row.total {
+    padding-top: var(--space-sm);
+    margin-top: var(--space-xs);
+    border-top: 1px solid var(--bg-color);
+    font-size: var(--font-base);
+    color: var(--text-color);
+    font-weight: 600;
+  }
+  .summary-row .total-price {
+    color: var(--price-color);
+    font-size: var(--font-lg);
+    font-weight: 700;
+  }
+  .summary-row .total-price .symbol { font-size: var(--font-sm); }
+
+  /* Submit bar */
+  .submit-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    border-top: 1px solid var(--border-color);
+    z-index: 200;
+    padding: 0 var(--space-md) var(--space-sm);
+  }
+  .submit-bar .total-area {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+  }
+  .submit-bar .total-label { font-size: var(--font-base); color: var(--text-color); }
+  .submit-bar .total-num { font-size: var(--font-xl); color: var(--price-color); font-weight: 700; }
+  .submit-bar .total-num .symbol { font-size: var(--font-sm); }
+  .submit-bar .btn-submit {
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    border: none;
+    padding: 0 var(--space-2xl);
+    height: 44px;
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-xl);
+  }
+  .submit-bar .btn-submit:active { opacity: 0.85; }
+
+  /* Pay popup - centered dialog */
+  .pay-popup-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .pay-popup-overlay.show { display: flex; }
+  .pay-popup {
+    position: relative;
+    width: calc(100% - 48px);
+    max-width: 320px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    z-index: 301;
+    overflow: hidden;
+    animation: popupFadeIn 0.2s ease;
+  }
+  @keyframes popupFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+  /* Step 1: confirm */
+  .pay-step { display: none; }
+  .pay-step.active { display: block; }
+  .pay-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl) 16px 0;
+    position: relative;
+  }
+  .pay-popup-header .popup-title {
+    font-size: var(--font-lg);
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  .pay-popup-header .popup-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-tertiary);
+  }
+  .pay-popup-header .popup-close svg { width: 18px; height: 18px; }
+  .pay-popup-amount {
+    text-align: center;
+    padding: var(--space-xl) 16px 12px;
+  }
+  .pay-popup-amount .amount {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+  .pay-popup-amount .amount .symbol { font-size: var(--font-lg); }
+  .pay-popup-channel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin: var(--space-sm) 16px 0;
+    padding: var(--space-md) 14px;
+    background: var(--bg-input);
+    border-radius: var(--radius-sm);
+  }
+  .pay-popup-channel .ch-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pay-popup-channel .ch-icon svg { width: 20px; height: 20px; color: var(--card-bg); }
+  .pay-popup-channel .ch-name { flex: 1; font-size: var(--font-base); color: var(--text-color); font-weight: 500; }
+  .pay-popup-points {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--space-sm) 16px 0;
+    padding: var(--space-md) 14px;
+    background: var(--warning-bg);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+  }
+  .pay-popup-points .val { color: var(--primary-start); font-weight: 600; }
+  .pay-popup-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: var(--space-xl) 16px 24px;
+    height: 44px;
+    background: var(--wechat-green);
+    color: var(--card-bg);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pay-popup-btn:active { opacity: 0.85; }
+
+  /* Step 2: password */
+  .pwd-header {
+    text-align: center;
+    padding: var(--space-xl) 16px 4px;
+    position: relative;
+  }
+  .pwd-header .pwd-back {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-tertiary);
+  }
+  .pwd-header .pwd-back svg { width: 18px; height: 18px; }
+  .pwd-header .pwd-title {
+    font-size: var(--font-lg);
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  .pwd-body {
+    text-align: center;
+    padding: var(--space-lg) 16px 0;
+  }
+  .pwd-body .pwd-channel-name {
+    font-size: var(--font-base);
+    color: var(--text-color);
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+  }
+  .pwd-body .pwd-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: var(--space-xl);
+  }
+  .pwd-body .pwd-amount .symbol { font-size: var(--font-md); }
+  .pwd-grid {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: 0 var(--space-xl);
+  }
+  .pwd-dot {
+    width: 40px;
+    height: 44px;
+    border: 1px solid var(--text-disabled);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+  }
+  .pwd-dot::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-color);
+    display: none;
+  }
+  .pwd-dot.filled::after { display: block; }
+  .pwd-grid-wrap {
+    position: relative;
+  }
+  .pwd-hidden-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .pwd-hint {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-lg);
+    padding-bottom: var(--space-xl);
+    text-align: center;
+  }
+
+  /* Warm Tips Popup */
+  .warm-tip-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .warm-tip-overlay.show { display: flex; }
+  .warm-tip-popup {
+    width: calc(100% - 64px);
+    max-width: 320px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    animation: popupFadeIn 0.2s ease;
+  }
+  .warm-tip-title {
+    padding: var(--space-lg) var(--space-lg) var(--space-md);
+    font-size: var(--font-md);
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .warm-tip-content {
+    padding: var(--space-lg);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .warm-tip-content ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .warm-tip-content li {
+    margin-bottom: var(--space-sm);
+  }
+  .warm-tip-content li:last-child {
+    margin-bottom: 0;
+  }
+  .warm-tip-btn {
+    display: block;
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-top: 1px solid var(--border-divider);
+    background: var(--card-bg);
+    color: var(--primary-start);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .warm-tip-btn:active { background: var(--hover-bg); }
+
+  .type-desc {
+    display: block;
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- Sub-page Navigation -->
+  <div class="sub-nav">
+    <div class="status-bar dark">
+      <span class="time">09:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"></path></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"></path></svg>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </div>
+      <span class="nav-title">确认订单</span>
+      <div class="capsule-btn"><img src="../images/icons/小程序按钮.svg" alt=""></div>
+    </div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="page-scroll" style="padding-bottom: 70px;">
+
+    <!-- Products -->
+    <div class="order-products" id="orderProducts">
+      <div class="order-product-item" data-price="99" data-qty="1" data-sku="VIRTUAL001" data-category="virtual" data-brand="recharge" data-tags="">
+        <div class="prod-img"><img src="../images/unsplash/虚拟商品主图.jpg" alt=""></div>
+        <div class="prod-info">
+          <div class="prod-name">100元话费充值</div>
+          <div class="prod-spec" id="productSpec">卡密，官方直充</div>
+          <div class="prod-price-row">
+            <span class="prod-price">¥99.00</span>
+            <div class="qty-control">
+              <div class="qty-btn disabled" data-action="minus">-</div>
+              <div class="qty-num">1</div>
+              <div class="qty-btn" data-action="plus">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recharge Info Combined Card -->
+    <div class="remark-row combined-row">
+      <div class="row-section">
+        <span class="rr-label">充值方式</span>
+        <span class="rr-value" id="productTypeValue">卡密</span>
+      </div>
+      <span class="type-desc" id="productTypeDesc">购买后将通过短信将卡密发送到填写的手机号，请注意查收</span>
+      <div class="row-divider"></div>
+      <div class="row-section" onclick="openAccountInput()">
+        <span class="rr-label">充值账号</span>
+        <div class="rr-value">
+          <span id="accountValue">请输入充值账号</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Input Drawer -->
+    <div class="remark-drawer-overlay" id="accountInputDrawer" onclick="closeAccountInputDrawer(event)">
+      <div class="remark-drawer" onclick="event.stopPropagation()">
+        <div class="remark-drawer-handle"></div>
+        <div class="remark-drawer-title">充值账号</div>
+        <div class="saved-accounts" id="savedAccounts">
+          <div class="account-card" data-account="13800001111" onclick="selectAccount(this)">
+            <span class="account-mask">138****1111</span>
+          </div>
+        </div>
+        <div class="account-input-wrap">
+          <input type="text" id="accountInput" placeholder="请输入充值账号" maxlength="20">
+        </div>
+        <div class="account-tip">请仔细核对充值账号，充值成功后无法退款</div>
+        <button class="drawer-btn" onclick="confirmAccount()">确定</button>
+      </div>
+    </div>
+
+    <!-- Remark -->
+    <div class="remark-row" onclick="openRemarkDrawer()">
+      <span class="rr-label">备注</span>
+      <div class="rr-value">
+        <span id="remarkPreview">选填</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+    </div>
+
+    <!-- Remark Drawer -->
+    <div class="remark-drawer-overlay" id="remarkDrawer" onclick="closeRemarkDrawer(event)">
+      <div class="remark-drawer" onclick="event.stopPropagation()">
+        <div class="remark-drawer-handle"></div>
+        <div class="remark-drawer-title">备注</div>
+        <textarea id="remarkInput" maxlength="200" placeholder="请输入备注信息（选填）"></textarea>
+        <div class="remark-drawer-counter"><span class="current" id="remarkCount">0</span>/200</div>
+        <button class="drawer-btn" onclick="confirmRemark()">确定</button>
+      </div>
+    </div>
+
+    <!-- Price Summary -->
+    <div class="price-summary" id="priceSummary">
+      <!-- Dynamically rendered by JS -->
+    </div>
+
+    <!-- Payment Mode -->
+    <div class="pay-mode-section">
+      <div class="pay-mode-title">支付方式</div>
+      <div id="payModeList"></div>
+    </div>
+
+    <!-- Combo Points Input -->
+    <div class="combo-input-section show" id="comboInput">
+      <div class="combo-input-row">
+        <label>使用积分</label>
+        <input type="number" id="comboPointsInput" value="0" min="0" max="9900" step="1">
+        <span class="unit">积分</span>
+        <button class="max-btn" onclick="useMaxPoints()">全部</button>
+      </div>
+      <div class="combo-input-hint">可用积分 <span class="hl" id="balanceHint">9,900</span>，最多可抵扣 <span class="hl" id="maxDeductHint">¥99.00</span></div>
+      <div class="combo-input-error" id="comboError">积分数量不能超过可用余额</div>
+    </div>
+
+    <!-- Pay Channel (WeChat/Alipay) -->
+    <div class="pay-channel-section show" id="payChannel">
+      <div class="pay-channel-item" data-channel="wechat" onclick="selectChannel(this)">
+        <div class="ch-icon wechat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.133 0 .241-.11.241-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 01-.023-.156.49.49 0 01.201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.952-7.062-6.122zM14.033 13.4c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z"></path></svg>
+        </div>
+        <div class="ch-name">微信支付</div>
+        <div class="ch-radio checked"></div>
+      </div>
+      <div class="pay-channel-item" data-channel="alipay" onclick="selectChannel(this)">
+        <div class="ch-icon alipay">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.422 15.358c-3.32-1.326-6.092-3.014-6.092-3.014s1.439-3.667 1.853-5.943H13.01V4.79h5.16V3.478h-5.16V.296h-2.384s-.036.017-.036.048v3.134H5.454V4.79h5.136v1.612H6.16v1.21h9.136c-.318 1.448-1.06 3.498-1.06 3.498s-3.714-1.614-6.282-1.96c-3.918-.528-6.092 1.612-6.282 3.926-.226 2.758 2.206 4.744 5.236 4.744 3.03 0 5.53-1.714 7.528-4.132 3.176 1.678 9.322 3.94 9.322 3.94s-.336-.436-2.338-.77zM8.002 16.688c-3.254 0-4.494-1.954-4.33-3.726.132-1.414 1.424-3.196 4.078-3.196 2.344 0 4.908 1.068 6.894 2.356-1.74 2.358-3.876 4.566-6.642 4.566z"></path></svg>
+        </div>
+        <div class="ch-name">支付宝</div>
+        <div class="ch-radio"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Submit Bar -->
+  <div class="submit-bar">
+    <div class="total-area">
+      <span class="total-label">合计：</span>
+      <span class="total-num" id="bottomTotal"><span class="symbol">¥</span>99.00</span>
+    </div>
+    <button class="btn-submit" id="btnSubmit" onclick="handleSubmit()">立即支付</button>
+  </div>
+
+  <!-- Pay Popup -->
+  <div class="pay-popup-overlay" id="payPopupOverlay">
+    <div class="pay-popup" id="payPopup" onclick="event.stopPropagation()">
+
+      <!-- Step 1: Confirm Info -->
+      <div class="pay-step active" id="payStep1">
+        <div class="pay-popup-header">
+          <span class="popup-title">收银台</span>
+          <div class="popup-close" onclick="closePayPopup()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+        <div class="pay-popup-amount">
+          <div class="amount" id="popupAmount"><span class="symbol">¥</span>99.00</div>
+        </div>
+        <div class="pay-popup-channel" id="popupChannel">
+          <div class="ch-icon" id="popupChIcon" style="background:var(--wechat-green);">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.133 0 .241-.11.241-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 01-.023-.156.49.49 0 01.201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.952-7.062-6.122zM14.033 13.4c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z"></path></svg>
+          </div>
+          <span class="ch-name" id="popupChName">微信支付</span>
+        </div>
+        <div class="pay-popup-points" id="popupPoints" style="display:none;">
+          <span>积分已抵扣</span>
+          <span class="val" id="popupPointsVal">-0积分（¥0.00）</span>
+        </div>
+        <button class="pay-popup-btn" onclick="showPwdStep()">确认支付</button>
+      </div>
+
+      <!-- Step 2: Password -->
+      <div class="pay-step" id="payStep2">
+        <div class="pwd-header">
+          <div class="pwd-back" onclick="showConfirmStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </div>
+          <span class="pwd-title">请输入支付密码</span>
+        </div>
+        <div class="pwd-body">
+          <div class="pwd-channel-name" id="pwdChannelName">微信支付</div>
+          <div class="pwd-amount" id="pwdAmount"><span class="symbol">¥</span>99.00</div>
+          <div class="pwd-grid-wrap">
+            <input type="tel" maxlength="6" class="pwd-hidden-input" id="pwdInput" inputmode="numeric" autocomplete="off">
+            <div class="pwd-grid" id="pwdGrid">
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+              <div class="pwd-dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="pwd-hint">请输入6位支付密码</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Warm Tip Popup -->
+  <div class="warm-tip-overlay show" id="warmTipOverlay">
+    <div class="warm-tip-popup">
+      <div class="warm-tip-title">温馨提示</div>
+      <div class="warm-tip-content">
+        <ul>
+          <li>1、充值类商品交易成功后不支持退换货，请确认充值账号是否正确。</li>
+          <li>2、刷单返利做兼职等均为常见骗术，切勿相信任何诱骗下单行为，请不要将卡密给到他人。</li>
+          <li>3、警惕第三方链接跳转购买或线下交易，以防财务损失。</li>
+        </ul>
+      </div>
+      <button class="warm-tip-btn" onclick="closeWarmTip()">知道了</button>
+    </div>
+  </div>
+
+</div>
+<script src="../js/auth.js"></script>
+<script src="../js/auth-guard.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var POINTS_BALANCE = 9900; // 99元积分余额
+
+  window.closeWarmTip = function() {
+    document.getElementById('warmTipOverlay').classList.remove('show');
+  };
+
+  var pointsActive = false;
+  var currentMode = 'cash';
+  var currentChannel = 'wechat';
+  var comboPoints = 0;
+  var selectedAccount = '';
+  var currentProductType = 'card'; // 'direct' or 'card'
+
+  function getGoodsTotal() {
+    var total = 0;
+    document.querySelectorAll('.order-product-item').forEach(function(item) {
+      total += parseFloat(item.dataset.price) * parseInt(item.dataset.qty);
+    });
+    return total;
+  }
+
+  function getProducts() {
+    var items = [];
+    document.querySelectorAll('.order-product-item').forEach(function(el) {
+      items.push({
+        el: el,
+        sku: el.dataset.sku,
+        category: el.dataset.category,
+        brand: el.dataset.brand,
+        tags: (el.dataset.tags || '').split(','),
+        price: parseFloat(el.dataset.price),
+        qty: parseInt(el.dataset.qty)
+      });
+    });
+    return items;
+  }
+
+  function usesCash(mode) {
+    return mode === 'cash' || mode === 'combo';
+  }
+
+  function usesPoints(mode) {
+    return mode === 'beans' || mode === 'combo';
+  }
+
+  // Account Input Drawer
+  window.openAccountInput = function() {
+    document.getElementById('accountInputDrawer').classList.add('show');
+  };
+  window.closeAccountInputDrawer = function(e) {
+    if (e.target === document.getElementById('accountInputDrawer')) {
+      document.getElementById('accountInputDrawer').classList.remove('show');
+    }
+  };
+  window.selectAccount = function(el) {
+    document.querySelectorAll('#savedAccounts .account-card').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    document.getElementById('accountInput').value = el.dataset.account;
+  };
+  window.confirmAccount = function() {
+    var input = document.getElementById('accountInput');
+    var val = input.value.trim();
+    if (val) {
+      selectedAccount = val;
+      document.getElementById('accountValue').textContent = val.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+    } else {
+      document.getElementById('accountValue').textContent = '请输入充值账号';
+    }
+    document.getElementById('accountInputDrawer').classList.remove('show');
+  };
+
+  // Render Payment Modes
+  function renderPayModes() {
+    var html = '';
+    var goodsTotal = Math.round(getGoodsTotal() * 100);
+    
+    if (!pointsActive) {
+      html += '<div class="pay-mode-item" data-mode="cash" onclick="selectPayMode(this)">' +
+        '<div class="pm-info"><div class="pm-name">现金支付</div></div>' +
+        '<div class="pm-radio"></div>' +
+        '</div>';
+      currentMode = 'cash';
+    } else {
+      html += '<div class="pay-mode-item" data-mode="beans" onclick="selectPayMode(this)">' +
+        '<div class="pm-info"><div class="pm-name">积分支付</div></div>' +
+        '<div class="pm-radio"></div>' +
+        '</div>';
+      html += '<div class="pay-mode-item" data-mode="combo" onclick="selectPayMode(this)">' +
+        '<div class="pm-info"><div class="pm-name">组合支付</div></div>' +
+        '<div class="pm-radio"></div>' +
+        '</div>';
+      currentMode = 'beans';
+    }
+    
+    document.getElementById('payModeList').innerHTML = html;
+    var firstItem = document.querySelector('#payModeList .pay-mode-item[data-mode="' + currentMode + '"]') || document.querySelector('#payModeList .pay-mode-item');
+    if (firstItem) {
+      firstItem.querySelector('.pm-radio').classList.add('checked');
+      currentMode = firstItem.dataset.mode;
+    }
+    renderSummary();
+  }
+
+  // Render Price Summary
+  function renderSummary() {
+    var goods = getGoodsTotal();
+    var goodsCents = Math.round(goods * 100);
+    var html = '<div class="summary-row"><span>商品金额</span><span>¥' + goods.toFixed(2) + '</span></div>';
+
+    if (POINTS_BALANCE > 0) {
+      if (pointsActive) {
+        var maxCons = Math.min(POINTS_BALANCE, goodsCents);
+        html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + maxCons + '积分（¥' + (maxCons / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+      } else {
+        html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--text-tertiary);">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+      }
+    }
+
+    var pointsUsed = 0;
+    if (pointsActive) {
+      if (currentMode === 'beans') {
+        pointsUsed = Math.min(POINTS_BALANCE, goodsCents);
+      } else if (currentMode === 'combo') {
+        var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
+        pointsUsed = Math.min(comboPoints, maxDeduct);
+      }
+    }
+
+    var cashAmount = goodsCents - pointsUsed;
+    if (cashAmount < 0) cashAmount = 0;
+
+    if (usesCash(currentMode) && cashAmount > 0) {
+      html += '<div class="summary-row"><span>现金支付</span><span>¥' + (cashAmount / 100).toFixed(2) + '</span></div>';
+    }
+    
+    var finalTotal = currentMode === 'beans' ? pointsUsed : cashAmount;
+    var totalText = currentMode === 'beans' ? pointsUsed + '积分' : (cashAmount / 100).toFixed(2);
+    html += '<div class="summary-row total"><span>实付金额</span><span class="total-price">' + (currentMode === 'beans' ? '' : '<span class="symbol">¥</span>') + totalText + '</span></div>';
+    document.getElementById('priceSummary').innerHTML = html;
+
+    var bottomTotal = document.getElementById('bottomTotal');
+    bottomTotal.innerHTML = (currentMode === 'beans' ? '' : '<span class="symbol">¥</span>') + totalText;
+
+    document.getElementById('comboInput').classList.toggle('show', currentMode === 'combo');
+    document.getElementById('payChannel').classList.toggle('show', usesCash(currentMode));
+
+    if (currentMode === 'combo') {
+      var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
+      document.getElementById('balanceHint').textContent = POINTS_BALANCE.toLocaleString();
+      document.getElementById('maxDeductHint').textContent = '¥' + (maxDeduct / 100).toFixed(2);
+    }
+  }
+
+  // Go to Batch Select
+  window.goToBatchSelect = function() {
+    localStorage.setItem('order_products', JSON.stringify(getProductsForStorage()));
+    localStorage.setItem('nav_source', 'batch');
+    localStorage.setItem('order_type', 'virtual');
+    localStorage.setItem('return_page', 'order_virtual.html');
+    if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
+    location.href = 'points_batch_select.html';
+  };
+
+  // Get Products for Storage
+  function getProductsForStorage() {
+    var items = [];
+    document.querySelectorAll('.order-product-item').forEach(function(el) {
+      items.push({
+        productId: el.dataset.productid || el.dataset.sku || 'virtual_001',
+        skuId: el.dataset.sku || 'sku_001',
+        name: el.querySelector('.prod-name').textContent,
+        spec: el.querySelector('.prod-spec').textContent,
+        price: parseFloat(el.dataset.price),
+        quantity: parseInt(el.dataset.qty),
+        image: el.querySelector('.prod-img img').src
+      });
+    });
+    return items;
+  }
+
+  // Handle Batch Selection Return
+  function handleBatchReturn() {
+    var batchId = localStorage.getItem('selected_batch_id');
+    if (batchId) {
+      pointsActive = true;
+      selectedBatch = batchId;
+    } else {
+      pointsActive = false;
+      selectedBatch = null;
+    }
+    localStorage.removeItem('selected_batch_id');
+    renderPayModes();
+    renderSummary();
+  }
+
+  // Select Payment Mode
+  window.selectPayMode = function(el) {
+    document.querySelectorAll('#payModeList .pay-mode-item .pm-radio').forEach(function(r) { r.classList.remove('checked'); });
+    el.querySelector('.pm-radio').classList.add('checked');
+    currentMode = el.dataset.mode;
+    if (currentMode === 'combo') {
+      comboPoints = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+      document.getElementById('comboPointsInput').value = comboPoints;
+    } else if (currentMode === 'beans') {
+      comboPoints = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+    }
+    renderSummary();
+  };
+
+  // Select Channel
+  window.selectChannel = function(el) {
+    document.querySelectorAll('.pay-channel-item .ch-radio').forEach(function(r) { r.classList.remove('checked'); });
+    el.querySelector('.ch-radio').classList.add('checked');
+    currentChannel = el.dataset.channel;
+    renderSummary();
+  };
+
+  // Use Max Points
+  window.useMaxPoints = function() {
+    var max = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+    comboPoints = max;
+    document.getElementById('comboPointsInput').value = comboPoints;
+    renderSummary();
+  };
+
+  // Combo Points Input
+  document.getElementById('comboPointsInput').addEventListener('input', function() {
+    var val = parseInt(this.value) || 0;
+    var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+    var errorEl = document.getElementById('comboError');
+    if (val > POINTS_BALANCE) {
+      errorEl.textContent = '积分数量不能超过可用余额（' + POINTS_BALANCE + '）';
+      errorEl.classList.add('show');
+      comboPoints = POINTS_BALANCE;
+    } else if (val > maxDeduct) {
+      errorEl.textContent = '积分数量不能超过商品金额（' + maxDeduct + '）';
+      errorEl.classList.add('show');
+      comboPoints = maxDeduct;
+    } else {
+      errorEl.classList.remove('show');
+      comboPoints = val;
+    }
+    renderSummary();
+  });
+
+  document.getElementById('comboPointsInput').addEventListener('blur', function() {
+    var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+    comboPoints = Math.max(0, Math.min(comboPoints, maxDeduct));
+    document.getElementById('comboPointsInput').value = comboPoints;
+    renderSummary();
+  });
+
+  // Quantity Control
+  document.querySelectorAll('.qty-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var item = this.closest('.order-product-item');
+      var qty = parseInt(item.dataset.qty);
+      if (this.dataset.action === 'plus') qty++;
+      else if (this.dataset.action === 'minus' && qty > 1) qty--;
+      item.dataset.qty = qty;
+      item.querySelector('.qty-num').textContent = qty;
+      item.querySelector('[data-action="minus"]').classList.toggle('disabled', qty <= 1);
+      if (currentMode === 'combo') {
+        var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+        comboPoints = Math.min(comboPoints, maxDeduct);
+        document.getElementById('comboPointsInput').value = comboPoints;
+      }
+      renderSummary();
+    });
+  });
+
+  // Select Account
+  window.selectAccount = function(el) {
+    document.querySelectorAll('.account-card').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedAccount = el.dataset.account;
+    document.getElementById('accountInput').value = selectedAccount;
+  };
+
+  // Remark Drawer
+  document.getElementById('remarkInput').addEventListener('input', function() {
+    document.getElementById('remarkCount').textContent = this.value.length;
+  });
+
+  window.openRemarkDrawer = function() {
+    document.getElementById('remarkDrawer').classList.add('show');
+  };
+
+  window.closeRemarkDrawer = function(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('remarkDrawer').classList.remove('show');
+  };
+
+  window.confirmRemark = function() {
+    var val = document.getElementById('remarkInput').value.trim();
+    document.getElementById('remarkPreview').textContent = val || '选填';
+    document.getElementById('remarkDrawer').classList.remove('show');
+  };
+
+  // Payment Popup
+  var channelData = {
+    wechat: { name: '微信支付', color: 'var(--wechat-green)' },
+    alipay: { name: '支付宝', color: 'var(--info-light)' }
+  };
+
+  function getCashInfo() {
+    var goodsCents = Math.round(getGoodsTotal() * 100);
+    var pointsUsed = 0;
+    if (currentMode === 'beans') {
+      pointsUsed = Math.min(POINTS_BALANCE, goodsCents);
+    } else if (currentMode === 'combo') {
+      var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
+      pointsUsed = Math.min(comboPoints, maxDeduct);
+    }
+    var cashAmount = goodsCents - pointsUsed;
+    if (cashAmount < 0) cashAmount = 0;
+    return { goods: goodsCents, pointsUsed: pointsUsed, cashAmount: cashAmount };
+  }
+
+  window.handleSubmit = function() {
+    if (!selectedAccount) {
+      alert('请输入充值账号');
+      return;
+    }
+
+    if (!/^1\d{10}$/.test(selectedAccount)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+
+    var info = getCashInfo();
+    var popupChannel = document.getElementById('popupChannel');
+    var popupPoints = document.getElementById('popupPoints');
+    var popupAmount = document.getElementById('popupAmount');
+
+    if (currentMode === 'beans') {
+      popupChannel.style.display = 'none';
+      popupPoints.style.display = 'flex';
+      document.getElementById('popupPointsVal').textContent = '-' + info.pointsUsed + '积分（¥' + (info.pointsUsed / 100).toFixed(2) + '）';
+      popupAmount.innerHTML = info.pointsUsed + '积分';
+    } else {
+      popupChannel.style.display = 'flex';
+      var ch = channelData[currentChannel] || channelData.wechat;
+      document.getElementById('popupChIcon').style.background = ch.color;
+      document.getElementById('popupChName').textContent = ch.name;
+      popupAmount.innerHTML = '<span class="symbol">¥</span>' + (info.cashAmount / 100).toFixed(2);
+      if (info.pointsUsed > 0) {
+        popupPoints.style.display = 'flex';
+        document.getElementById('popupPointsVal').textContent = '-' + info.pointsUsed + '积分（¥' + (info.pointsUsed / 100).toFixed(2) + '）';
+      } else {
+        popupPoints.style.display = 'none';
+      }
+    }
+
+    document.getElementById('payStep1').classList.add('active');
+    document.getElementById('payStep2').classList.remove('active');
+    document.getElementById('pwdInput').value = '';
+    updatePwdDots();
+    document.getElementById('payPopupOverlay').classList.add('show');
+    document.getElementById('payPopupOverlay').onclick = function(e) { if (e.target === this) closePayPopup(); };
+  };
+
+  window.closePayPopup = function() {
+    document.getElementById('payPopupOverlay').classList.remove('show');
+  };
+
+  window.showPwdStep = function() {
+    var info = getCashInfo();
+    if (currentMode === 'beans') {
+      document.getElementById('pwdChannelName').textContent = '积分支付';
+      document.getElementById('pwdAmount').innerHTML = info.pointsUsed + '积分';
+    } else {
+      var ch = channelData[currentChannel] || channelData.wechat;
+      document.getElementById('pwdChannelName').textContent = ch.name;
+      document.getElementById('pwdAmount').innerHTML = '<span class="symbol">¥</span>' + (info.cashAmount / 100).toFixed(2);
+    }
+    document.getElementById('payStep1').classList.remove('active');
+    document.getElementById('payStep2').classList.add('active');
+    document.getElementById('pwdInput').value = '';
+    updatePwdDots();
+    setTimeout(function() { document.getElementById('pwdInput').focus(); }, 100);
+  };
+
+  window.showConfirmStep = function() {
+    document.getElementById('payStep2').classList.remove('active');
+    document.getElementById('payStep1').classList.add('active');
+  };
+
+  function updatePwdDots() {
+    var val = document.getElementById('pwdInput').value;
+    document.querySelectorAll('.pwd-dot').forEach(function(dot, i) {
+      dot.classList.toggle('filled', i < val.length);
+    });
+  }
+
+  document.getElementById('pwdInput').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    updatePwdDots();
+    if (this.value.length === 6) {
+      setTimeout(function() { location.href = 'pay_success.html?from=virtual'; }, 300);
+    }
+  });
+
+  // Initialize
+  handleBatchReturn();
+})();
+</script>
+
+<script src="../js/theme-switcher.js"></script>
+</body>
+</html>

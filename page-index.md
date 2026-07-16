@@ -1,4 +1,4 @@
-# 苏银豆商城 - 页面导航
+# 福利商城 - 页面导航
 
 > 原型演示页面，直接点击链接打开
 > 一级：底部Tab常驻入口｜二级：从一级进入的功能页｜三级：从二级进入的操作页
@@ -15,6 +15,7 @@
 - [搜索](pages/search.html) `V0.1`
 - [搜索结果](pages/search_filter.html) `V0.1`
 - [商品详情](pages/product_detail.html) `V0.3`
+- [虚拟商品详情](pages/product_detail_virtual.html) `V0.6`
 - [商品列表](pages/product_list.html)
 - [浏览记录](pages/browse_history.html) `V0.1`
 - [我的订单](pages/order_list.html)
@@ -41,6 +42,8 @@
 - [确认订单（商品）](pages/order_product.html) `V0.3 NEW`
 - [确认订单（蛋糕）](pages/order_cake.html) `V0.5`
 - [确认订单（电影票）](pages/order_movie.html) `V0.5`
+- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6`
+- [订单详情（虚拟商品）](pages/order_detail_virtual.html) `V0.6`
 - [订单支付](pages/order_pay.html)
 - [支付成功](pages/pay_success.html)
 - [订单详情](pages/order_detail.html)

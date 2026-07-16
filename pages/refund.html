@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>退款/售后 - 苏银豆商城</title>
+<title>退款/售后 - 福利商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
   /* Tab bar */
@@ -615,11 +615,11 @@
     var mode = item.refundPayMode || 'cash-only';
     var rec = context === 'records';
     if (mode === 'none') {
-      return '<div class="refund-amount-note">' + (rec ? '换货完成 · 无现金/苏银豆退款' : '换货处理中 · 无现金/苏银豆退款') + '</div>';
+      return '<div class="refund-amount-note">' + (rec ? '换货完成 · 无现金/积分退款' : '换货处理中 · 无现金/积分退款') + '</div>';
     }
     if (mode === 'beans-only') {
       var beans = item.beansRefund != null ? item.beansRefund : 0;
-      var beanLabel = rec ? ('已退 <b>' + beans + '</b> 苏银豆') : (' 苏银豆 <b>' + beans + '</b> ');
+      var beanLabel = rec ? ('已退 <b>' + beans + '</b> 积分') : (' 积分 <b>' + beans + '</b> ');
       return '<div class="refund-amount-stack">' +
         '<span class="refund-amount-line refund-beans">' + beanLabel + '</span>' +
         '</div>';
@@ -628,7 +628,7 @@
       var b2 = item.beansRefund != null ? item.beansRefund : 0;
       var cash2 = item.cashRefund != null ? item.cashRefund : (item.amount || '0.00');
       return '<div class="refund-amount-stack">' +
-        '<span class="refund-amount-line refund-beans">苏银豆 <b>' + b2 + '</b></span>' +
+        '<span class="refund-amount-line refund-beans">积分 <b>' + b2 + '</b></span>' +
         '<span class="refund-amount-line refund-cash">现金 <b>&yen;' + cash2 + '</b></span>' +
         '</div>';
     }

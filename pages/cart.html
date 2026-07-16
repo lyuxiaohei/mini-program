@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>购物车 - 苏银豆商城</title>
+<title>购物车 - 福利商城</title>
 <link rel="stylesheet" href="../css/common.css">
 <style>
   /* Cart edit bar */
@@ -105,6 +105,17 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  .cart-item .virtual-tag {
+    font-size: var(--font-xs);
+    color: var(--primary-start);
+    background: rgba(255, 111, 0, 0.1);
+    padding: 1px 4px;
+    border-radius: var(--radius-xs);
+    flex-shrink: 0;
   }
   .cart-item .item-stock-low {
     font-size: var(--font-sm);
@@ -402,7 +413,7 @@
       <span class="total-label">合计：</span>
       <span class="total-price"><span class="symbol">&yen;</span><span id="totalAmount">195.90</span></span>
     </div>
-    <button class="btn-checkout" onclick="location.href='order_product.html'">结算(<span id="checkoutCount">3</span>)</button>
+    <button class="btn-checkout" onclick="handleCheckout()">结算(<span id="checkoutCount">3</span>)</button>
   </div>
 
   <!-- Bottom Tab Bar -->
@@ -442,7 +453,9 @@
     { id: 3, name: '纯棉短袖T恤男女款 夏季宽松百搭潮流', spec: '白色 L码', price: 39.9, qty: 2, checked: true, img: '../images/unsplash/1521572163474-6864f9cf17ab.jpg', stockLow: 2 },
     { id: 4, name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: 59, qty: 1, checked: false, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', offshelf: true },
     { id: 5, name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: 128, qty: 1, checked: false, img: '../images/unsplash/1572635196237-14b3f281503f.jpg', soldout: true },
-    { id: 6, name: '智能运动手环 心率血氧监测防水', spec: '黑色 标准版', price: 199, qty: 1, checked: false, img: '../images/unsplash/1575311373937-040b8e1fd5b6.jpg', noship: true }
+    { id: 6, name: '智能运动手环 心率血氧监测防水', spec: '黑色 标准版', price: 199, qty: 1, checked: false, img: '../images/unsplash/1575311373937-040b8e1fd5b6.jpg', noship: true },
+    { id: 7, name: '100元话费充值', spec: '直充 全国通用', price: 98, qty: 1, checked: false, img: '../images/unsplash/虚拟商品主图.jpg', virtual: true },
+    { id: 8, name: '视频会员月卡', spec: '卡密 官方直充', price: 19, qty: 2, checked: false, img: '../images/unsplash/虚拟商品详情图1.jpg', virtual: true }
   ];
 
   function renderCart() {
@@ -500,11 +513,11 @@
       } else {
         html += '<div class="cart-item-wrapper" data-id="' + item.id + '">' +
           '<div class="delete-btn" data-id="' + item.id + '">删除</div>' +
-          '<div class="cart-item">' +
+          '<div class="cart-item' + (item.virtual ? ' virtual' : '') + '">' +
             '<div class="checkbox' + (item.checked ? ' checked' : '') + '" data-id="' + item.id + '"></div>' +
-            '<a href="product_detail.html" class="item-img"><img src="' + item.img + '" alt=""></a>' +
+            '<a href="' + (item.virtual ? 'product_detail_virtual.html' : 'product_detail.html') + '" class="item-img"><img src="' + item.img + '" alt=""></a>' +
             '<div class="item-info">' +
-              '<div class="item-name">' + item.name + '</div>' +
+              '<div class="item-name">' + item.name + (item.virtual ? '<span class="virtual-tag">虚拟</span>' : '') + '</div>' +
               '<div class="item-spec">' + item.spec + '</div>' +
               (item.stockLow ? '<div class="item-stock-low">库存仅剩' + item.stockLow + '件</div>' : '') +
               '<div class="item-bottom">' +
@@ -683,6 +696,33 @@
     activeItems.forEach(function(item) { item.checked = !allChecked; });
     renderCart();
   });
+
+  // Checkout handler
+  window.handleCheckout = function() {
+    var checkedItems = cartItems.filter(function(i) { return i.checked && !i.offshelf && !i.soldout && !i.noship; });
+    if (checkedItems.length === 0) {
+      alert('请选择商品');
+      return;
+    }
+
+    var virtualItems = checkedItems.filter(function(i) { return i.virtual; });
+    var physicalItems = checkedItems.filter(function(i) { return !i.virtual; });
+
+    if (virtualItems.length > 0 && physicalItems.length > 0) {
+      alert('虚拟商品和实物商品需要分开下单');
+      return;
+    }
+
+    if (virtualItems.length > 0) {
+      if (virtualItems.length > 1) {
+        alert('虚拟商品一次只能下单一个SKU，请取消多余商品的勾选');
+        return;
+      }
+      location.href = 'order_virtual.html';
+    } else {
+      location.href = 'order_product.html';
+    }
+  };
 
   // Address switch popup for noship items
   window.showAddressPopup = function() {

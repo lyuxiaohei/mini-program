@@ -1,4 +1,4 @@
-flowchart TB
+﻿flowchart TB
     subgraph 商品详情页配送校验
         PDEnter([进入商品详情页]) --> PDAddr[选择/切换收货地址]
         PDAddr --> PDCheck{根据所选地址\n校验配送区域}
@@ -27,7 +27,7 @@ flowchart TB
         CheckArea -->|支持| ShowProducts[显示商品列表\n调整数量/选择支付方式]
 
         ShowProducts --> PayMode{选择支付方式}
-        PayMode -->|纯苏银豆| BeansValidate[积分适用校验]
+        PayMode -->|纯积分| BeansValidate[积分适用校验]
         PayMode -->|现金支付| CashMode[选择微信/支付宝\n隐藏积分抵扣]
         PayMode -->|组合支付| ComboValidate[积分适用校验]
 
@@ -36,7 +36,7 @@ flowchart TB
         BeansExpire -->|有效| BeansTypeMatch{按优先级匹配\n单品→标签→品牌\n→分类→通兑}
         BeansTypeMatch -->|匹配成功| BeansAvailable[可抵扣\n计算所需积分]
         BeansTypeMatch -->|无匹配| ErrBeansNotSupport[该商品不支持\n积分抵扣\n引导现金支付]
-        BeansAvailable -->|单个商品| BeansMode[苏银豆全额抵扣\n显示需消耗积分]
+        BeansAvailable -->|单个商品| BeansMode[积分全额抵扣\n显示需消耗积分]
         BeansAvailable -->|多个商品| BeansMultiResult[汇总可抵扣商品\n计算积分上限]
         BeansMultiResult -->|全部可抵扣| BeansMode
         BeansMultiResult -->|部分可抵扣| BeansPartial[显示部分可抵扣\n提示不可抵扣商品]
@@ -47,7 +47,7 @@ flowchart TB
         ComboExpire -->|有效| ComboTypeMatch{按优先级匹配\n单品→标签→品牌\n→分类→通兑}
         ComboTypeMatch -->|匹配成功| ComboAvailable[可抵扣\n输入积分数量]
         ComboTypeMatch -->|无匹配| ErrComboNotSupport[该商品不支持\n积分抵扣\n引导现金支付]
-        ComboAvailable -->|单个商品| ComboMode[输入苏银豆数量\n+选择微信/支付宝]
+        ComboAvailable -->|单个商品| ComboMode[输入积分数量\n+选择微信/支付宝]
         ComboAvailable -->|多个商品| ComboMultiResult[汇总可抵扣商品\n计算积分上限]
         ComboMultiResult --> ComboPartialMode[输入积分数量\n仅抵扣可用商品]
 
@@ -79,7 +79,7 @@ flowchart TB
         SplitPoints --> CreateOrder[创建订单\n生成订单号]
         CreateOrder --> PayBranch{支付方式}
 
-        PayBranch -->|纯苏银豆| DirectPay[扣减积分余额\n直接扣减库存\n订单状态=待发货]
+        PayBranch -->|纯积分| DirectPay[扣减积分余额\n直接扣减库存\n订单状态=待发货]
         DirectPay --> PayOK[支付成功]
         PayBranch -->|现金/组合| WaitPay[订单状态=待付款\n启动15分钟超时倒计时]
         WaitPay --> ShowPopup[弹出收银台弹窗]

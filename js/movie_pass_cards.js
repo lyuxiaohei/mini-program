@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 电影票次卡静态演示数据（对接接口后可改为请求结果）。
  * @typedef {{ time: string, desc: string, deductLabel: string }} MoviePassUsage
  */
@@ -31,11 +31,11 @@
 var MOVIE_PASS_CARDS = [
   {
     id: 'mv1',
-    listSubtitle: '苏银豆联名 · 尾号 8810',
+    listSubtitle: '积分联名 · 尾号 8810',
     listMeta: '剩余 7 次 · 有效期至 2027-04-17',
     status: 'normal',
-    name: '苏银豆联名·全国观影次卡',
-    batchCardName: '批次 A-2026Q2 苏银豆联名观影卡',
+    name: '积分联名·全国观影次卡',
+    batchCardName: '批次 A-2026Q2 积分联名观影卡',
     cardNo: 'MV-2026-04-8810****',
     total: 10,
     used: 3,
@@ -44,7 +44,7 @@ var MOVIE_PASS_CARDS = [
     creditedAt: '2026-04-18 10:26',
     scope: '合作影院在线选座（以购票页为准）',
     statusDetail: '正常 · C端已到账',
-    desc: '当前持有「苏银豆联名·全国观影次卡」，可在合作影院在线选座扣次；有效期至 2027-04-17。',
+    desc: '当前持有「积分联名·全国观影次卡」，可在合作影院在线选座扣次；有效期至 2027-04-17。',
     usageRule: '限合作影院在线选座使用；须在有效期内使用完毕；不可转让、不可提现；退票成功后次数按平台规则退回。',
     maxSingleUseSpec: '单笔订单最多扣 2 次（按实际出票张数折算，2 张票即扣 2 次）',
     maxSingleUseAmountText: '¥200/单（单笔订单票面合计上限，含服务费以结算页为准）',
