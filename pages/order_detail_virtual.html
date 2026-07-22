@@ -9,21 +9,17 @@
   .phone-frame { height: 100vh; overflow: hidden; }
   .page-scroll { height: 100%; overflow-y: auto; }
 
-  /* Status header */
-  .detail-status-header {
-    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
-    padding: var(--space-lg) 12px 20px;
-    color: var(--card-bg);
+  /* 发货提示 */
+  .virtual-tip {
+    margin: var(--space-sm) 12px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
   }
-  .status-main {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-sm);
-  }
-  .status-main svg { width: 24px; height: 24px; }
-  .status-main .text { font-size: var(--font-lg); font-weight: 700; }
-  .status-desc { font-size: var(--font-sm); opacity: 0.85; margin-left: 34px; }
 
   /* Product card */
   .package-card {
@@ -70,19 +66,54 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    gap: var(--space-md);
     margin-bottom: var(--space-sm);
   }
   .vi-row:last-child { margin-bottom: 0; }
   .vi-row .vi-label { font-size: var(--font-sm); color: var(--text-tertiary); flex-shrink: 0; }
   .vi-row .vi-value { font-size: var(--font-sm); color: var(--text-color); text-align: right; word-break: break-all; }
   .vi-row .vi-value.mono { font-family: monospace; letter-spacing: 1px; }
-  .vi-row .vi-value.link { color: var(--info-color); text-decoration: underline; }
+  .vi-row > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    flex: 1;
+    min-width: 0;
+  }
+  .vi-row > div .vi-value.mono {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .vi-row .vi-value.copy-btn {
     color: var(--primary-start);
     cursor: pointer;
     font-size: var(--font-xs);
-    margin-left: var(--space-sm);
+    flex-shrink: 0;
   }
+  .vi-card-title {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px dashed var(--border-divider);
+  }
+  .vi-section.toggle-cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    color: var(--primary-start);
+    font-size: var(--font-sm);
+    cursor: pointer;
+  }
+  .vi-section.toggle-cards:active { opacity: 0.7; }
+  .vi-section.toggle-cards svg { width: 14px; height: 14px; transition: transform 0.2s; }
+  .vi-section.toggle-cards.expanded svg { transform: rotate(180deg); }
 
   /* Info section */
   .detail-info {
@@ -159,69 +190,16 @@
   <!-- Scrollable Content -->
   <div class="page-scroll" style="padding-bottom: 64px;">
 
-    <!-- Status Header -->
-    <div class="detail-status-header">
-      <div class="status-main">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <span class="text">已完成</span>
-      </div>
-      <div class="status-desc">卡密已发送至充值账号，请注意查收</div>
-    </div>
+    <!-- 发货提示 -->
+    <div class="virtual-tip">卡密已发送至充值账号，请注意查收</div>
 
     <!-- Product Card -->
     <div class="package-card">
-      <div class="detail-products">
-        <div class="detail-prod-row">
-          <div class="dp-img"><img src="../images/unsplash/虚拟商品主图.jpg" alt=""></div>
-          <div class="dp-info">
-            <div class="dp-name">100元话费充值</div>
-            <div class="dp-spec">卡密 官方直充</div>
-            <div class="dp-bottom">
-              <span class="dp-price">&yen;99.00</span>
-              <span class="dp-qty">x1</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="detail-products" id="productList"></div>
     </div>
 
     <!-- Virtual Card Info -->
-    <div class="virtual-info-card">
-      <div class="vi-section">
-        <div class="vi-row">
-          <span class="vi-label">充值方式</span>
-          <span class="vi-value">卡密</span>
-        </div>
-        <div class="vi-row">
-          <span class="vi-label">充值账号</span>
-          <span class="vi-value">138****1111</span>
-        </div>
-      </div>
-      <div class="vi-section">
-        <div class="vi-row">
-          <span class="vi-label">卡号</span>
-          <div>
-            <span class="vi-value mono" id="cardNo">CAM8XK-2026-0714-A8B3</span>
-            <span class="vi-value copy-btn" onclick="copyText('cardNo')">复制</span>
-          </div>
-        </div>
-        <div class="vi-row">
-          <span class="vi-label">密钥</span>
-          <div>
-            <span class="vi-value mono" id="cardKey">7Q9W2E4R6T8Y</span>
-            <span class="vi-value copy-btn" onclick="copyText('cardKey')">复制</span>
-          </div>
-        </div>
-        <div class="vi-row">
-          <span class="vi-label">兑换链接</span>
-          <div>
-            <a class="vi-value link" href="javascript:void(0)" onclick="openExchangeLink()">点击前往兑换</a>
-            <span class="vi-value copy-btn" onclick="copyText('exchangeLink')">复制</span>
-            <span class="vi-value mono" id="exchangeLink" style="display:none">https://vip.film.qq.com/exchange/?code=7Q9W2E4R6T8Y</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="virtual-info-card" id="virtualInfo"></div>
 
     <!-- Order Info -->
     <div class="detail-info">
@@ -239,11 +217,11 @@
       </div>
       <div class="info-item">
         <span class="lbl">积分抵扣</span>
-        <span class="val red">-9900积分（¥99.00）</span>
+        <span class="val red">-19800积分（¥198.00）</span>
       </div>
       <div class="info-item total-row">
         <span>实付金额</span>
-        <span class="val">9900积分</span>
+        <span class="val">19800积分</span>
       </div>
     </div>
 
@@ -256,15 +234,88 @@
 
 </div>
 <script>
-  function copyText(id) {
-    var text = document.getElementById(id).textContent;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text);
-    }
-    alert('已复制：' + text);
+  // 订单数据：多件虚拟商品时，每件对应一组独立卡密（卡密数量 = 商品数量）
+  var order = {
+    account: '13800001111',
+    products: [
+      {
+        name: '100元话费充值',
+        spec: '卡密 官方直充',
+        price: '99.00',
+        qty: 2,
+        img: '../images/unsplash/虚拟商品主图.jpg',
+        cards: [
+          { no: 'CAM8XK-2026-0714-A8B3', key: '7Q9W2E4R6T8Y', link: 'https://vip.film.qq.com/exchange/?code=7Q9W2E4R6T8Y' },
+          { no: 'CAM8XK-2026-0714-B9C4', key: 'P3Q4R5S6T7U8', link: 'https://vip.film.qq.com/exchange/?code=P3Q4R5S6T7U8' }
+        ]
+      }
+    ]
+  };
+
+  // 渲染商品行
+  var prodHtml = '';
+  order.products.forEach(function(p) {
+    prodHtml += '<div class="detail-prod-row">' +
+      '<div class="dp-img"><img src="' + p.img + '" alt="' + p.name + '"></div>' +
+      '<div class="dp-info">' +
+        '<div class="dp-name">' + p.name + '</div>' +
+        '<div class="dp-spec">' + p.spec + '</div>' +
+        '<div class="dp-bottom">' +
+          '<span class="dp-price">&yen;' + p.price + '</span>' +
+          '<span class="dp-qty">x' + p.qty + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('productList').innerHTML = prodHtml;
+
+  // 渲染卡密信息：充值方式/账号 + 每组卡密（多张时显示"卡密 N / 总数"序号）
+  var totalCards = order.products.reduce(function(sum, p) { return sum + (p.cards ? p.cards.length : 0); }, 0);
+  var showIndex = totalCards > 1;
+
+  var infoHtml = '<div class="vi-section">' +
+    '<div class="vi-row"><span class="vi-label">充值方式</span><span class="vi-value">卡密</span></div>' +
+    '<div class="vi-row"><span class="vi-label">充值账号</span><span class="vi-value">' + order.account + '</span></div>' +
+  '</div>';
+
+  var cardIndex = 0;
+  order.products.forEach(function(p) {
+    (p.cards || []).forEach(function(c) {
+      cardIndex++;
+      var hidden = cardIndex > 1; // 仅展示第一条，其余默认折叠
+      infoHtml += '<div class="vi-section' + (hidden ? ' card-more' : '') + '"' + (hidden ? ' style="display:none"' : '') + '>' +
+        (showIndex ? '<div class="vi-card-title">卡密 ' + cardIndex + ' / ' + totalCards + '</div>' : '') +
+        '<div class="vi-row"><span class="vi-label">卡号</span><div><span class="vi-value mono">' + c.no + '</span><span class="vi-value copy-btn" onclick="copyText(\'' + c.no + '\')">复制</span></div></div>' +
+        '<div class="vi-row"><span class="vi-label">密钥</span><div><span class="vi-value mono">' + c.key + '</span><span class="vi-value copy-btn" onclick="copyText(\'' + c.key + '\')">复制</span></div></div>' +
+        '<div class="vi-row"><span class="vi-label">兑换链接</span><div><span class="vi-value mono">' + c.link + '</span><span class="vi-value copy-btn" onclick="copyText(\'' + c.link + '\')">复制</span></div></div>' +
+      '</div>';
+    });
+  });
+  if (totalCards > 1) {
+    infoHtml += '<div class="vi-section toggle-cards" onclick="toggleCards()">' +
+      '<span id="toggleText">展开剩余 ' + (totalCards - 1) + ' 条卡密</span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>' +
+    '</div>';
   }
-  function openExchangeLink() {
-    alert('跳转第三方兑换页面');
+  document.getElementById('virtualInfo').innerHTML = infoHtml;
+
+  var cardsExpanded = false;
+  function toggleCards() {
+    cardsExpanded = !cardsExpanded;
+    var moreEls = document.querySelectorAll('.card-more');
+    for (var i = 0; i < moreEls.length; i++) {
+      moreEls[i].style.display = cardsExpanded ? 'block' : 'none';
+    }
+    var toggleEl = document.querySelector('.toggle-cards');
+    if (toggleEl) toggleEl.classList.toggle('expanded', cardsExpanded);
+    var toggleTextEl = document.getElementById('toggleText');
+    if (toggleTextEl) toggleTextEl.textContent = cardsExpanded ? '收起' : ('展开剩余 ' + (totalCards - 1) + ' 条卡密');
+  }
+
+  function copyText(text) {
+    var val = String(text);
+    if (navigator.clipboard) navigator.clipboard.writeText(val);
+    alert('已复制：' + val);
   }
 </script>
 <script src="../js/theme-switcher.js"></script>
