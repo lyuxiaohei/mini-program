@@ -716,14 +716,39 @@
       payMode: 'beans',
       beansUsed: 9900,
       virtual: true,
+      virtualType: 'card',
       products: [
         { name: '100元话费充值', spec: '卡密 官方直充', price: '99.00', qty: 1, img: '../images/unsplash/虚拟商品主图.jpg' }
+      ],
+      actions: ['查看详情']
+    },
+    {
+      id: 'JS2026072806001',
+      status: 'completed',
+      statusText: '已完成',
+      total: '98.00',
+      payMode: 'beans',
+      beansUsed: 9800,
+      virtual: true,
+      virtualType: 'direct',
+      products: [
+        { name: '100元话费充值', spec: '直充 全国通用', price: '98.00', qty: 2, img: '../images/unsplash/虚拟商品主图.jpg' }
       ],
       actions: ['查看详情']
     }
   ];
 
   var currentTab = 'all';
+
+  /**
+   * 虚拟订单按商品子类型（直充/卡密）返回对应订单详情页；实物订单返回实物详情页。
+   * @param {{ virtual?: boolean, virtualType?: string }} order 订单对象
+   * @returns {string}
+   */
+  function getVirtualDetailUrl(order) {
+    if (!order.virtual) return 'order_detail.html';
+    return order.virtualType === 'direct' ? 'order_detail_virtual_direct.html' : 'order_detail_virtual.html';
+  }
 
   /**
    * 判断订单是否处于「待发货」及之前（未发货），此类仅开放仅退款入口。
@@ -1195,7 +1220,7 @@
         var cls = i === listForActions.length - 1 ? ' primary' : '';
         if (a === '去支付') cls = ' danger';
         var href = '#';
-        if (a === '查看详情') href = order.virtual ? 'order_detail_virtual.html' : 'order_detail.html';
+        if (a === '查看详情') href = getVirtualDetailUrl(order);
         if (a === '确认收货') href = 'order_detail.html';
         if (a === '查看物流') href = 'logistics.html';
         if (a === '去支付') href = 'order_pay.html';
@@ -1233,7 +1258,7 @@
           '<span class="order-no">' + order.id + '</span>' +
           '<span class="' + headerStatusClass + '">' + headerStatusText + '</span>' +
         '</div>' +
-        '<div class="order-card-body" onclick="location.href=\'' + (order.virtual ? 'order_detail_virtual.html' : 'order_detail.html') + '\'">' + prodsHtml + '</div>' +
+        '<div class="order-card-body" onclick="location.href=\'' + getVirtualDetailUrl(order) + '\'">' + prodsHtml + '</div>' +
         pkgHtml +
         '<div class="order-card-footer">' +
           '<span class="total-text">' + totalHtml + '</span>' +

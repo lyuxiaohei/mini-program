@@ -880,7 +880,7 @@
         <div class="account-input-wrap">
           <input type="text" id="accountInput" placeholder="请输入充值账号" maxlength="20">
         </div>
-        <div class="account-tip">请仔细核对充值账号，充值成功后无法退款</div>
+        <div class="account-tip" id="accountTip">请仔细核对充值账号，充值成功后无法退款</div>
         <button class="drawer-btn" onclick="confirmAccount()">确定</button>
       </div>
     </div>
@@ -1021,7 +1021,7 @@
       <div class="warm-tip-content">
         <ul>
           <li>1、充值类商品交易成功后不支持退换货，请确认充值账号是否正确。</li>
-          <li>2、刷单返利做兼职等均为常见骗术，切勿相信任何诱骗下单行为，请不要将卡密给到他人。</li>
+          <li id="warmTipItem2">2、刷单返利做兼职等均为常见骗术，切勿相信任何诱骗下单行为，请不要将卡密给到他人。</li>
           <li>3、警惕第三方链接跳转购买或线下交易，以防财务损失。</li>
         </ul>
       </div>
@@ -1046,7 +1046,54 @@
   var currentChannel = 'wechat';
   var comboPoints = 0;
   var selectedAccount = '';
-  var currentProductType = 'card'; // 'direct' or 'card'
+  // 商品类型：优先 URL ?type=，其次 localStorage（兼容积分批次往返），默认 card（保持 V0.6 卡密行为）
+  var currentProductType = (function() {
+    var urlType = '';
+    try { urlType = new URLSearchParams(location.search).get('type') || ''; } catch (e) {}
+    if (urlType === 'direct' || urlType === 'card') {
+      try { localStorage.setItem('order_virtual_type', urlType); } catch (e) {}
+      return urlType;
+    }
+    var saved = '';
+    try { saved = localStorage.getItem('order_virtual_type') || ''; } catch (e) {}
+    return (saved === 'direct' || saved === 'card') ? saved : 'card';
+  })();
+
+  // 按类型驱动 4 处文案 + 商品规格
+  var TYPE_COPY = {
+    direct: {
+      label: '直充',
+      desc: '购买后将自动充值到填写的手机号账号，充值成功后无法撤销',
+      spec: '直充，全国通用',
+      tip2: '2、请仔细核对充值手机号，充值成功后无法撤销，请勿重复充值。',
+      placeholder: '请输入手机号',
+      accountTip: '请仔细核对充值手机号，充值成功后无法退款'
+    },
+    card: {
+      label: '卡密',
+      desc: '购买后将通过短信将卡密发送到填写的手机号，请注意查收',
+      spec: '卡密，官方直充',
+      tip2: '2、刷单返利做兼职等均为常见骗术，切勿相信任何诱骗下单行为，请不要将卡密给到他人。',
+      placeholder: '请输入充值账号',
+      accountTip: '请仔细核对充值账号，充值成功后无法退款'
+    }
+  };
+
+  function applyProductType() {
+    var copy = TYPE_COPY[currentProductType] || TYPE_COPY.card;
+    var setLabel = document.getElementById('productTypeValue');
+    if (setLabel) setLabel.textContent = copy.label;
+    var setDesc = document.getElementById('productTypeDesc');
+    if (setDesc) setDesc.textContent = copy.desc;
+    var setSpec = document.getElementById('productSpec');
+    if (setSpec) setSpec.textContent = copy.spec;
+    var setTip2 = document.getElementById('warmTipItem2');
+    if (setTip2) setTip2.textContent = copy.tip2;
+    var setPlaceholder = document.getElementById('accountInput');
+    if (setPlaceholder) setPlaceholder.placeholder = copy.placeholder;
+    var setAccountTip = document.getElementById('accountTip');
+    if (setAccountTip) setAccountTip.textContent = copy.accountTip;
+  }
 
   function getGoodsTotal() {
     var total = 0;
@@ -1434,11 +1481,12 @@
     this.value = this.value.replace(/\D/g, '').slice(0, 6);
     updatePwdDots();
     if (this.value.length === 6) {
-      setTimeout(function() { location.href = 'pay_success.html?from=virtual'; }, 300);
+      setTimeout(function() { location.href = 'pay_success.html?from=virtual&type=' + currentProductType; }, 300);
     }
   });
 
   // Initialize
+  applyProductType();
   handleBatchReturn();
 })();
 </script>

@@ -454,8 +454,8 @@
     { id: 4, name: '便携式迷你充电宝 20000mAh大容量', spec: '白色', price: 59, qty: 1, checked: false, img: '../images/unsplash/1609091839311-d5365f9ff1c5.jpg', offshelf: true },
     { id: 5, name: '潮流太阳眼镜 防紫外线偏光墨镜', spec: '黑色', price: 128, qty: 1, checked: false, img: '../images/unsplash/1572635196237-14b3f281503f.jpg', soldout: true },
     { id: 6, name: '智能运动手环 心率血氧监测防水', spec: '黑色 标准版', price: 199, qty: 1, checked: false, img: '../images/unsplash/1575311373937-040b8e1fd5b6.jpg', noship: true },
-    { id: 7, name: '100元话费充值', spec: '直充 全国通用', price: 98, qty: 1, checked: false, img: '../images/unsplash/虚拟商品主图.jpg', virtual: true },
-    { id: 8, name: '视频会员月卡', spec: '卡密 官方直充', price: 19, qty: 2, checked: false, img: '../images/unsplash/虚拟商品详情图1.jpg', virtual: true }
+    { id: 7, name: '100元话费充值', spec: '直充', price: 98, qty: 1, checked: false, img: '../images/unsplash/虚拟商品主图.jpg', virtual: true, type: 'direct' },
+    { id: 8, name: '视频会员月卡', spec: '卡密', price: 19, qty: 2, checked: false, img: '../images/unsplash/虚拟商品详情图1.jpg', virtual: true, type: 'card' }
   ];
 
   function renderCart() {
@@ -718,7 +718,8 @@
         alert('虚拟商品一次只能下单一个SKU，请取消多余商品的勾选');
         return;
       }
-      location.href = 'order_virtual.html';
+      var vType = virtualItems[0].type || 'card';
+      location.href = 'order_virtual.html?type=' + vType;
     } else {
       location.href = 'order_product.html';
     }
