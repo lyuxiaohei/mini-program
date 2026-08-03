@@ -222,9 +222,14 @@
 <script>
   var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
+  // 账号类型：来自支付成功页透传的 accountType（phone / qq），默认 phone
+  var accountType = 'phone';
+  try { accountType = new URLSearchParams(location.search).get('accountType') || 'phone'; } catch (e) {}
+  var accountTypeLabel = accountType === 'qq' ? 'QQ号' : '手机号';
+
   // 订单数据：直充商品按购买数量生成对应条到账记录
   var order = {
-    account: '13800001111',
+    account: accountType === 'qq' ? '123456789' : '13800001111',
     products: [
       {
         name: '100元话费充值',
@@ -263,7 +268,7 @@
 
   var infoHtml = '<div class="vi-section">' +
     '<div class="vi-row"><span class="vi-label">充值方式</span><span class="vi-value">直充</span></div>' +
-    '<div class="vi-row"><span class="vi-label">充值账号</span><span class="vi-value">' + order.account + '</span></div>' +
+    '<div class="vi-row"><span class="vi-label">充值账号</span><span class="vi-value">' + accountTypeLabel + '：' + order.account + '</span></div>' +
   '</div>';
 
   var rechargeIndex = 0;

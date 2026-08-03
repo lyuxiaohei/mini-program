@@ -75,6 +75,37 @@
     color: var(--text-secondary);
   }
 
+  /* Account type tabs (直充：手机号 / QQ号 切换，仅直充商品显示) */
+  .account-type-tabs {
+    display: flex;
+    margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .account-type-tab {
+    flex: 1;
+    text-align: center;
+    padding: var(--space-sm) 0;
+    font-size: var(--font-base);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    position: relative;
+  }
+  .account-type-tab.active {
+    color: var(--primary-start);
+    font-weight: 600;
+  }
+  .account-type-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--primary-start);
+    border-radius: var(--radius-xs);
+  }
+
   /* Product items */
   .order-products {
     background: var(--card-bg);
@@ -872,11 +903,11 @@
       <div class="remark-drawer" onclick="event.stopPropagation()">
         <div class="remark-drawer-handle"></div>
         <div class="remark-drawer-title">充值账号</div>
-        <div class="saved-accounts" id="savedAccounts">
-          <div class="account-card" data-account="13800001111" onclick="selectAccount(this)">
-            <span class="account-mask">138****1111</span>
-          </div>
+        <div class="account-type-tabs" id="accountTypeTabs" style="display:none;">
+          <div class="account-type-tab active" data-type="phone" onclick="switchAccountType('phone')">手机号</div>
+          <div class="account-type-tab" data-type="qq" onclick="switchAccountType('qq')">QQ号</div>
         </div>
+        <div class="saved-accounts" id="savedAccounts"></div>
         <div class="account-input-wrap">
           <input type="text" id="accountInput" placeholder="请输入充值账号" maxlength="20">
         </div>
@@ -1059,15 +1090,32 @@
     return (saved === 'direct' || saved === 'card') ? saved : 'card';
   })();
 
-  // 按类型驱动 4 处文案 + 商品规格
+  // 账号类型：仅直充商品区分「手机号 / QQ号」；卡密为 null（沿用 V0.6 通用充值账号）。
+  // 经 localStorage 持久化，保证积分批次往返后类型不丢失。
+  var currentAccountType = null;
+  if (currentProductType === 'direct') {
+    var savedAccountType = '';
+    try { savedAccountType = localStorage.getItem('order_virtual_account_type') || ''; } catch (e) {}
+    currentAccountType = (savedAccountType === 'phone' || savedAccountType === 'qq') ? savedAccountType : 'phone';
+  }
+
+  // 按类型驱动 4 处文案 + 商品规格（直充按账号类型再细分 phone / qq）
   var TYPE_COPY = {
-    direct: {
+    direct_phone: {
       label: '直充',
-      desc: '购买后将自动充值到填写的手机号账号，充值成功后无法撤销',
+      desc: '购买后将自动充值到填写的手机号，充值成功后无法撤销',
       spec: '直充，全国通用',
       tip2: '2、请仔细核对充值手机号，充值成功后无法撤销，请勿重复充值。',
       placeholder: '请输入手机号',
       accountTip: '请仔细核对充值手机号，充值成功后无法退款'
+    },
+    direct_qq: {
+      label: '直充',
+      desc: '购买后将自动充值到填写的QQ号，充值成功后无法撤销',
+      spec: '直充，全国通用',
+      tip2: '2、请仔细核对充值QQ号，充值成功后无法撤销，请勿重复充值。',
+      placeholder: '请输入QQ号',
+      accountTip: '请仔细核对充值QQ号，充值成功后无法退款'
     },
     card: {
       label: '卡密',
@@ -1080,7 +1128,12 @@
   };
 
   function applyProductType() {
-    var copy = TYPE_COPY[currentProductType] || TYPE_COPY.card;
+    // 直充按账号类型(手机号/QQ号)取细分文案；卡密直接取 card
+    var copyKey = currentProductType;
+    if (currentProductType === 'direct' && currentAccountType) {
+      copyKey = 'direct_' + currentAccountType;
+    }
+    var copy = TYPE_COPY[copyKey] || TYPE_COPY.card;
     var setLabel = document.getElementById('productTypeValue');
     if (setLabel) setLabel.textContent = copy.label;
     var setDesc = document.getElementById('productTypeDesc');
@@ -1093,6 +1146,16 @@
     if (setPlaceholder) setPlaceholder.placeholder = copy.placeholder;
     var setAccountTip = document.getElementById('accountTip');
     if (setAccountTip) setAccountTip.textContent = copy.accountTip;
+    // 账号类型切换 Tab：仅直充商品显示
+    var tabsEl = document.getElementById('accountTypeTabs');
+    if (tabsEl) {
+      tabsEl.style.display = (currentProductType === 'direct') ? 'flex' : 'none';
+    }
+    if (currentProductType === 'direct') {
+      document.querySelectorAll('.account-type-tab').forEach(function(tab) {
+        tab.classList.toggle('active', tab.dataset.type === currentAccountType);
+      });
+    }
   }
 
   function getGoodsTotal() {
@@ -1127,6 +1190,41 @@
     return mode === 'beans' || mode === 'combo';
   }
 
+  // 账号脱敏：手机号保留前 3 后 4；QQ号保留首尾各 1 位
+  function maskAccount(val, type) {
+    if (type === 'qq') {
+      return val.length >= 5 ? val.slice(0, 1) + '****' + val.slice(-1) : val;
+    }
+    return val.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+  }
+
+  // 渲染单个历史账号卡片
+  function accountCardHtml(val, type) {
+    return '<div class="account-card" data-account="' + val + '" onclick="selectAccount(this)">' +
+      '<span class="account-mask">' + maskAccount(val, type) + '</span>' +
+    '</div>';
+  }
+
+  // 按账号类型渲染历史账号；卡密链路保持 V0.6 演示账号（不区分类型）
+  function renderSavedAccounts() {
+    var container = document.getElementById('savedAccounts');
+    if (!container) return;
+    if (currentProductType !== 'direct') {
+      container.innerHTML = accountCardHtml('13800001111', 'phone');
+      return;
+    }
+    var saved = '';
+    try { saved = localStorage.getItem('virtual_account_' + currentAccountType) || ''; } catch (e) {}
+    if (saved) {
+      container.innerHTML = accountCardHtml(saved, currentAccountType);
+    } else if (currentAccountType === 'phone') {
+      // 手机号默认兜底演示账号
+      container.innerHTML = accountCardHtml('13800001111', 'phone');
+    } else {
+      container.innerHTML = '';
+    }
+  }
+
   // Account Input Drawer
   window.openAccountInput = function() {
     document.getElementById('accountInputDrawer').classList.add('show');
@@ -1139,17 +1237,41 @@
   window.selectAccount = function(el) {
     document.querySelectorAll('#savedAccounts .account-card').forEach(function(c) { c.classList.remove('selected'); });
     el.classList.add('selected');
-    document.getElementById('accountInput').value = el.dataset.account;
+    selectedAccount = el.dataset.account;
+    document.getElementById('accountInput').value = selectedAccount;
+  };
+  // 切换账号类型（仅直充）：手机号 <-> QQ号
+  window.switchAccountType = function(type) {
+    if (type !== 'phone' && type !== 'qq') return;
+    if (currentProductType !== 'direct' || currentAccountType === type) return;
+    currentAccountType = type;
+    try { localStorage.setItem('order_virtual_account_type', type); } catch (e) {}
+    applyProductType();
+    renderSavedAccounts();
+    var input = document.getElementById('accountInput');
+    if (input) input.value = '';
+    // 切换类型后原账号不再适用，重置已选账号，避免提交时按错误规则校验
+    selectedAccount = '';
+    var av = document.getElementById('accountValue');
+    if (av) av.textContent = '请输入充值账号';
   };
   window.confirmAccount = function() {
     var input = document.getElementById('accountInput');
     var val = input.value.trim();
+    var av = document.getElementById('accountValue');
     if (val) {
       selectedAccount = val;
-      document.getElementById('accountValue').textContent = val.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+      if (currentProductType === 'direct') {
+        try { localStorage.setItem('virtual_account_' + currentAccountType, val); } catch (e) {}
+        av.textContent = (currentAccountType === 'phone' ? '手机号：' : 'QQ号：') + maskAccount(val, currentAccountType);
+      } else {
+        // 卡密链路：保持 V0.6 脱敏展示，无类型前缀、不入库
+        av.textContent = maskAccount(val, 'phone');
+      }
     } else {
-      document.getElementById('accountValue').textContent = '请输入充值账号';
+      av.textContent = '请输入充值账号';
     }
+    renderSavedAccounts();
     document.getElementById('accountInputDrawer').classList.remove('show');
   };
 
@@ -1353,14 +1475,6 @@
     });
   });
 
-  // Select Account
-  window.selectAccount = function(el) {
-    document.querySelectorAll('.account-card').forEach(function(c) { c.classList.remove('selected'); });
-    el.classList.add('selected');
-    selectedAccount = el.dataset.account;
-    document.getElementById('accountInput').value = selectedAccount;
-  };
-
   // Remark Drawer
   document.getElementById('remarkInput').addEventListener('input', function() {
     document.getElementById('remarkCount').textContent = this.value.length;
@@ -1407,9 +1521,18 @@
       return;
     }
 
-    if (!/^1\d{10}$/.test(selectedAccount)) {
-      alert('请输入正确的手机号');
-      return;
+    // 账号校验：直充按手机号 / QQ号分别校验；卡密沿用手机号校验（保持 V0.6 行为）
+    var checkType = (currentProductType === 'direct') ? currentAccountType : 'phone';
+    if (checkType === 'qq') {
+      if (!/^[1-9]\d{4,10}$/.test(selectedAccount)) {
+        alert('请输入正确的QQ号（5-11位数字，首位不为0）');
+        return;
+      }
+    } else {
+      if (!/^1\d{10}$/.test(selectedAccount)) {
+        alert('请输入正确的手机号');
+        return;
+      }
     }
 
     var info = getCashInfo();
@@ -1481,12 +1604,16 @@
     this.value = this.value.replace(/\D/g, '').slice(0, 6);
     updatePwdDots();
     if (this.value.length === 6) {
-      setTimeout(function() { location.href = 'pay_success.html?from=virtual&type=' + currentProductType; }, 300);
+      setTimeout(function() {
+        var acctParam = (currentProductType === 'direct' && currentAccountType) ? '&accountType=' + currentAccountType : '';
+        location.href = 'pay_success.html?from=virtual&type=' + currentProductType + acctParam;
+      }, 300);
     }
   });
 
   // Initialize
   applyProductType();
+  renderSavedAccounts();
   handleBatchReturn();
 })();
 </script>

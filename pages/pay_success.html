@@ -187,7 +187,13 @@
   if (viewOrderBtn && location.search.indexOf('from=virtual') !== -1) {
     var vType = '';
     try { vType = new URLSearchParams(location.search).get('type') || ''; } catch (e) {}
-    viewOrderBtn.href = (vType === 'direct') ? 'order_detail_virtual_direct.html' : 'order_detail_virtual.html';
+    var vAccountType = '';
+    try { vAccountType = new URLSearchParams(location.search).get('accountType') || ''; } catch (e) {}
+    if (vType === 'direct') {
+      viewOrderBtn.href = 'order_detail_virtual_direct.html' + (vAccountType ? '?accountType=' + vAccountType : '');
+    } else {
+      viewOrderBtn.href = 'order_detail_virtual.html';
+    }
   }
 
   var recProducts = [
