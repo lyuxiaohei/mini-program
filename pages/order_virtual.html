@@ -1190,7 +1190,7 @@
     return mode === 'beans' || mode === 'combo';
   }
 
-  // 账号脱敏：手机号保留前 3 后 4；QQ号保留首尾各 1 位
+  // 账号脱敏（仅卡密链路沿用 V0.6）；直充链路历史账号改明文，见 accountCardHtml / confirmAccount
   function maskAccount(val, type) {
     if (type === 'qq') {
       return val.length >= 5 ? val.slice(0, 1) + '****' + val.slice(-1) : val;
@@ -1198,10 +1198,11 @@
     return val.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
   }
 
-  // 渲染单个历史账号卡片
+  // 渲染单个历史账号卡片（直充链路明文；卡密链路沿用 V0.6 脱敏）
   function accountCardHtml(val, type) {
+    var display = (currentProductType === 'direct') ? val : maskAccount(val, type);
     return '<div class="account-card" data-account="' + val + '" onclick="selectAccount(this)">' +
-      '<span class="account-mask">' + maskAccount(val, type) + '</span>' +
+      '<span class="account-mask">' + display + '</span>' +
     '</div>';
   }
 
@@ -1263,7 +1264,7 @@
       selectedAccount = val;
       if (currentProductType === 'direct') {
         try { localStorage.setItem('virtual_account_' + currentAccountType, val); } catch (e) {}
-        av.textContent = (currentAccountType === 'phone' ? '手机号：' : 'QQ号：') + maskAccount(val, currentAccountType);
+        av.textContent = (currentAccountType === 'phone' ? '手机号：' : 'QQ号：') + val;
       } else {
         // 卡密链路：保持 V0.6 脱敏展示，无类型前缀、不入库
         av.textContent = maskAccount(val, 'phone');
