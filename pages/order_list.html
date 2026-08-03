@@ -164,6 +164,15 @@
     gap: var(--space-sm);
     flex-shrink: 0;
   }
+  .op-account-row {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    padding: 6px 0 0;
+    line-height: 1.4;
+  }
+  .op-account-row .op-account-label {
+    color: var(--text-secondary);
+  }
   .order-product-row.aftersale-line-muted {
     opacity: 0.55;
   }
@@ -735,6 +744,22 @@
         { name: '100元话费充值', spec: '直充 全国通用', price: '98.00', qty: 2, img: '../images/unsplash/虚拟商品主图.jpg' }
       ],
       actions: ['查看详情']
+    },
+    {
+      id: 'JS2026073110001',
+      status: 'completed',
+      statusText: '已完成',
+      total: '9.80',
+      payMode: 'beans',
+      beansUsed: 980,
+      virtual: true,
+      virtualType: 'direct',
+      accountType: 'qq',
+      account: '123456789',
+      products: [
+        { name: 'Q币充值', spec: '直充 10Q币', price: '9.80', qty: 1, img: '../images/unsplash/虚拟商品主图.jpg' }
+      ],
+      actions: ['查看详情']
     }
   ];
 
@@ -747,7 +772,12 @@
    */
   function getVirtualDetailUrl(order) {
     if (!order.virtual) return 'order_detail.html';
-    return order.virtualType === 'direct' ? 'order_detail_virtual_direct.html' : 'order_detail_virtual.html';
+    var base = order.virtualType === 'direct' ? 'order_detail_virtual_direct.html' : 'order_detail_virtual.html';
+    // QQ 直充订单透传 accountType=qq，使详情页展示 QQ 号而非默认手机号
+    if (order.virtualType === 'direct' && order.accountType === 'qq') {
+      return base + '?accountType=qq';
+    }
+    return base;
   }
 
   /**
@@ -1176,6 +1206,12 @@
         pkgHtml += '</div>';
       }
 
+      var accountHtml = '';
+      if (order.account) {
+        var accountLabel = order.accountType === 'qq' ? 'QQ号' : '手机号';
+        accountHtml = '<div class="op-account-row"><span class="op-account-label">充值账号</span> ' + accountLabel + '：' + order.account + '</div>';
+      }
+
       var actionsHtml = '';
       var actionList = order.actions.slice();
       mergeAfterSaleActions(actionList, order);
@@ -1258,7 +1294,7 @@
           '<span class="order-no">' + order.id + '</span>' +
           '<span class="' + headerStatusClass + '">' + headerStatusText + '</span>' +
         '</div>' +
-        '<div class="order-card-body" onclick="location.href=\'' + getVirtualDetailUrl(order) + '\'">' + prodsHtml + '</div>' +
+        '<div class="order-card-body" onclick="location.href=\'' + getVirtualDetailUrl(order) + '\'">' + prodsHtml + accountHtml + '</div>' +
         pkgHtml +
         '<div class="order-card-footer">' +
           '<span class="total-text">' + totalHtml + '</span>' +
