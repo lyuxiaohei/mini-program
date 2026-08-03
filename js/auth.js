@@ -8,8 +8,19 @@
  *   13800003333 - 未注册 (auto-register on login)
  */
 (function(window) {
-  var STORAGE_KEY = 'syd_accounts';
-  var CURRENT_KEY = 'syd_current';
+  var STORAGE_KEY = 'mall_accounts';
+  var CURRENT_KEY = 'mall_current';
+
+  // 一次性迁移：历史 syd_* key（拼音遗留）→ mall_*
+  (function migrateKeys() {
+    [['syd_accounts', STORAGE_KEY], ['syd_current', CURRENT_KEY]].forEach(function (pair) {
+      var oldKey = pair[0], newKey = pair[1];
+      if (localStorage.getItem(oldKey) !== null && localStorage.getItem(newKey) === null) {
+        localStorage.setItem(newKey, localStorage.getItem(oldKey));
+      }
+      localStorage.removeItem(oldKey);
+    });
+  })();
 
   var DEFAULT_AVATAR = '../images/icons/default-avatar.svg';
 
