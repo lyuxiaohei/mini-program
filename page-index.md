@@ -7,7 +7,7 @@
 
 - [首页](pages/home_page.html) `V0`
 - [分类](pages/category.html) `V0`
-- [购物车](pages/cart.html)
+- [购物车](pages/cart.html) `V0.61`
 - [我的](pages/profile.html) `V0.1`
 
 ### 二级页面
@@ -15,10 +15,10 @@
 - [搜索](pages/search.html) `V0.1`
 - [搜索结果](pages/search_filter.html) `V0.1`
 - [商品详情](pages/product_detail.html) `V0.3`
-- [虚拟商品详情](pages/product_detail_virtual.html) `V0.6`
+- [虚拟商品详情](pages/product_detail_virtual.html) `V0.6` `V0.61`
 - [商品列表](pages/product_list.html)
 - [浏览记录](pages/browse_history.html) `V0.1`
-- [我的订单](pages/order_list.html)
+- [我的订单](pages/order_list.html) `V0.61`
 - [我的收藏](pages/favorites.html) `V0.1`
 - [卡券包](pages/coupon.html)
 - [我的积分](pages/points_center.html) `V0.2开发验收版本`
@@ -42,10 +42,11 @@
 - [确认订单（商品）](pages/order_product.html) `V0.3 NEW`
 - [确认订单（蛋糕）](pages/order_cake.html) `V0.5`
 - [确认订单（电影票）](pages/order_movie.html) `V0.5`
-- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6`
+- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6` `V0.61` `V0.62`
 - [订单详情（虚拟商品）](pages/order_detail_virtual.html) `V0.6`
+- [订单详情（虚拟-直充）](pages/order_detail_virtual_direct.html) `V0.61` `V0.62`
 - [订单支付](pages/order_pay.html)
-- [支付成功](pages/pay_success.html)
+- [支付成功](pages/pay_success.html) `V0.61` `V0.62`
 - [订单详情](pages/order_detail.html)
 - [取消订单](pages/order_cancel.html)
 - [订单投诉](pages/order_complaint.html)
