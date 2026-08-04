@@ -11,6 +11,7 @@
     --price-color: #ee0a24;
     --success-color: #52c41a;
     --warning-color: #ff9800;
+    --warning-dark: #d48806;
     --info-color: #1677ff;
     --info-light: #10aeee;
     --tag-blue: #1677ff;
@@ -94,8 +95,11 @@
   }
   .links a {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 68px;
     padding: var(--space-md);
     background: var(--bg-input);
     border-radius: var(--radius-sm);
@@ -105,17 +109,18 @@
     transition: background 0.15s;
   }
   .links a:hover {
-    background: var(--card-bg)0ed;
+    background: #fff0ed;
     color: var(--price-color);
+  }
+  .links a .title {
+    line-height: 1.4;
   }
   .links a .ver {
     display: inline-block;
-    margin-left: var(--space-xs);
     padding: 1px var(--space-xs);
     color: var(--card-bg);
     font-size: var(--font-xs);
     border-radius: var(--radius-xs);
-    vertical-align: middle;
   }
   .links a .ver.v01 { background: var(--text-secondary); }
   .links a .ver.v2 { background: var(--warning-color); }
@@ -124,22 +129,14 @@
   .links a .ver.v5 { background: var(--info-color); }
   .links a .ver.v6 { background: var(--tag-pink); }
   .links a .ver.v11 { background: var(--tag-purple); }
-  /* ≥2 个版本标签：标题一行、标签换行到第二行 */
-  .links a.multi-ver {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 4px;
-  }
+  /* 版本标签统一放在标题下方的第二行，与标题左对齐 */
   .links a .ver-group {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    align-self: flex-end;
   }
-  .links a.multi-ver .ver { margin-left: 0; }
   .tip {
-    background: var(--card-bg)be6;
+    background: #fffbe6;
     border: 1px solid var(--warning-color);
     border-radius: var(--radius-sm);
     padding: var(--space-md) var(--space-lg);
@@ -249,16 +246,24 @@
 
 <script src="js/theme-switcher.js"></script>
 <script>
-// ≥2 个版本标签的卡片：把标签包进 .ver-group 并标记 .multi-ver，由 CSS 换行到第二行
+// 统一卡片结构：标题文本包进 .title（第一行），版本标签包进 .ver-group（第二行）
 (function () {
   document.querySelectorAll('.links a').forEach(function (a) {
+    var title = document.createElement('span');
+    title.className = 'title';
+    Array.prototype.slice.call(a.childNodes).forEach(function (node) {
+      if (!node.classList || !node.classList.contains('ver')) {
+        title.appendChild(node);
+      }
+    });
+    title.textContent = title.textContent.trim();
+    a.appendChild(title);
     var vers = a.querySelectorAll('.ver');
-    if (vers.length >= 2) {
+    if (vers.length) {
       var group = document.createElement('span');
       group.className = 'ver-group';
       vers.forEach(function (v) { group.appendChild(v); });
       a.appendChild(group);
-      a.classList.add('multi-ver');
     }
   });
 })();
