@@ -126,6 +126,19 @@
   .links a .ver.v5 { background: var(--info-color); }
   .links a .ver.v6 { background: var(--tag-pink); }
   .links a .ver.v11 { background: var(--tag-purple); }
+  /* ≥2 个版本标签：标题一行、标签换行到第二行 */
+  .links a.multi-ver {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+  }
+  .links a .ver-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .links a.multi-ver .ver { margin-left: 0; }
   .tip {
     background: var(--card-bg)be6;
     border: 1px solid var(--warning-color);
@@ -237,5 +250,20 @@
 </div>
 
 <script src="js/theme-switcher.js"></script>
+<script>
+// ≥2 个版本标签的卡片：把标签包进 .ver-group 并标记 .multi-ver，由 CSS 换行到第二行
+(function () {
+  document.querySelectorAll('.links a').forEach(function (a) {
+    var vers = a.querySelectorAll('.ver');
+    if (vers.length >= 2) {
+      var group = document.createElement('span');
+      group.className = 'ver-group';
+      vers.forEach(function (v) { group.appendChild(v); });
+      a.appendChild(group);
+      a.classList.add('multi-ver');
+    }
+  });
+})();
+</script>
 </body>
 </html>
