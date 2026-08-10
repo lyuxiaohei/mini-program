@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>登录（小程序）- 福利商城</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .login-container {
+    min-height: 100vh;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--space-xl);
+  }
+
+  /* Logo area */
+  .logo-area {
+    padding-top: 60px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .logo-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-md);
+    box-shadow: 0 4px 16px rgba(238, 10, 36, 0.3);
+  }
+  .logo-icon svg { width: 36px; height: 36px; color: var(--card-bg); }
+  .logo-title {
+    font-size: var(--font-2xl);
+    font-weight: 700;
+    color: var(--text-color);
+  }
+  .logo-subtitle {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
+  }
+
+  /* Form area */
+  .form-area {
+    flex: 1;
+  }
+  .input-group {
+    margin-bottom: var(--space-xl);
+  }
+  .input-group label {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-sm) 0;
+  }
+  .input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: var(--font-md);
+    color: var(--text-color);
+    background: transparent;
+  }
+  .input-wrapper input::placeholder { color: var(--text-muted); }
+  .input-wrapper .input-suffix {
+    flex-shrink: 0;
+    margin-left: var(--space-md);
+  }
+  .btn-code {
+    font-size: var(--font-sm);
+    color: var(--primary-start);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-xs) 0;
+    white-space: nowrap;
+  }
+  .btn-code:disabled {
+    color: var(--text-light);
+    cursor: not-allowed;
+  }
+
+  /* Login button */
+  .btn-login {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    border: none;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: var(--space-2xl);
+  }
+  .btn-login:active { opacity: 0.85; }
+  .btn-login:disabled {
+    background: var(--text-light);
+    cursor: not-allowed;
+  }
+
+  /* One-tap phone login button */
+  .btn-quick-login {
+    width: 100%;
+    height: 48px;
+    background: var(--card-bg);
+    color: var(--primary-start);
+    border: 1px solid var(--primary-start);
+    border-radius: var(--radius-xl);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: var(--space-md);
+  }
+  .btn-quick-login:active { opacity: 0.7; }
+
+  /* Footer */
+  .login-footer {
+    padding: var(--space-xl) 0;
+    text-align: center;
+  }
+  .register-link {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+  }
+  .register-link a {
+    color: var(--primary-start);
+    font-weight: 500;
+  }
+
+  /* Agreement */
+  .agreement {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    line-height: 1.5;
+  }
+  .agreement input {
+    margin-top: 3px;
+  }
+  .agreement a { color: var(--primary-start); }
+
+  /* Phone auth bottom panel (simulates mini-program getPhoneNumber) */
+  .phone-auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .phone-auth-overlay.show { display: flex; }
+  .phone-auth-panel {
+    width: 100%;
+    max-width: 375px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: var(--space-xl) var(--space-xl) var(--space-2xl);
+    text-align: center;
+  }
+  .phone-auth-panel .phone-auth-title {
+    font-size: var(--font-md);
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
+  }
+  .phone-auth-panel .phone-auth-desc {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xl);
+  }
+  .phone-auth-panel .phone-auth-number {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg);
+    background: var(--bg-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-xl);
+  }
+  .phone-auth-panel .phone-auth-number .label {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+  }
+  .phone-auth-panel .phone-auth-number .number {
+    font-size: var(--font-md);
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  .phone-auth-panel .phone-auth-buttons {
+    display: flex;
+    gap: var(--space-md);
+  }
+  .phone-auth-panel .btn-reject {
+    flex: 1;
+    height: 40px;
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    border: none;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
+    cursor: pointer;
+  }
+  .phone-auth-panel .btn-allow {
+    flex: 1;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary-start), var(--price-color));
+    color: var(--card-bg);
+    border: none;
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .phone-auth-panel .btn-reject:active { background: var(--border-color); }
+  .phone-auth-panel .btn-allow:active { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <div class="login-container">
+    <!-- Logo -->
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <div class="logo-title">福利商城</div>
+      <div class="logo-subtitle">江苏银行专属积分商城</div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-area">
+      <div class="input-group">
+        <label>手机号</label>
+        <div class="input-wrapper">
+          <input type="tel" id="phone" placeholder="请输入手机号" maxlength="11">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>验证码</label>
+        <div class="input-wrapper">
+          <input type="text" id="code" placeholder="请输入验证码" maxlength="6">
+          <div class="input-suffix">
+            <button class="btn-code" id="sendCode">获取验证码</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="agreement">
+        <input type="checkbox" id="agree" checked>
+        <label for="agree">登录即表示同意 <a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></label>
+      </div>
+
+      <button class="btn-login" id="loginBtn">登 录</button>
+
+      <!-- 小程序：手机号一键登录（替代 H5 的微信登录） -->
+      <button class="btn-quick-login" id="quickLoginBtn">手机号一键登录</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <div class="register-link">
+        还没有账号？<a href="register.html">立即注册</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone Auth Bottom Panel (simulates getPhoneNumber) -->
+  <div class="phone-auth-overlay" id="phoneAuthOverlay">
+    <div class="phone-auth-panel">
+      <div class="phone-auth-title">福利商城 申请获取你的手机号</div>
+      <div class="phone-auth-desc">用于快速登录福利商城账号</div>
+      <div class="phone-auth-number">
+        <span class="label">微信绑定手机号</span>
+        <span class="number" id="quickPhone">138****1111</span>
+      </div>
+      <div class="phone-auth-buttons">
+        <button class="btn-reject" id="btnAuthReject">拒绝</button>
+        <button class="btn-allow" id="btnAuthAllow">允许</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../js/common.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+(function() {
+  // If already logged in, redirect to home
+  if (Auth.isLoggedIn()) {
+    location.href = 'home_page.html';
+    return;
+  }
+
+  var QUICK_LOGIN_PHONE = '13800001111'; // 模拟 getPhoneNumber 返回的微信绑定手机号
+
+  var phone = document.getElementById('phone');
+  var code = document.getElementById('code');
+  var sendCode = document.getElementById('sendCode');
+  var loginBtn = document.getElementById('loginBtn');
+  var agree = document.getElementById('agree');
+  var quickLoginBtn = document.getElementById('quickLoginBtn');
+  var phoneAuthOverlay = document.getElementById('phoneAuthOverlay');
+  var btnAuthReject = document.getElementById('btnAuthReject');
+  var btnAuthAllow = document.getElementById('btnAuthAllow');
+
+  var countdown = 0;
+  var timer = null;
+
+  // Show toast
+  function showToast(msg) {
+    var toast = document.createElement('div');
+    toast.textContent = msg;
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.7);color:var(--card-bg);padding:var(--space-sm) var(--space-xl);border-radius:var(--radius-sm);font-size:var(--font-base);z-index:9999;';
+    document.body.appendChild(toast);
+    setTimeout(function() { document.body.removeChild(toast); }, 1500);
+  }
+
+  // One-tap phone login: show auth panel
+  quickLoginBtn.addEventListener('click', function() {
+    if (!agree.checked) {
+      alert('请阅读并同意用户协议');
+      return;
+    }
+    document.getElementById('quickPhone').textContent = Auth.maskPhone(QUICK_LOGIN_PHONE);
+    phoneAuthOverlay.classList.add('show');
+  });
+
+  // Reject
+  btnAuthReject.addEventListener('click', function() {
+    phoneAuthOverlay.classList.remove('show');
+    showToast('已取消一键登录');
+  });
+
+  // Allow - login directly with the authorized phone number
+  btnAuthAllow.addEventListener('click', function() {
+    phoneAuthOverlay.classList.remove('show');
+    var result = Auth.loginWithPhone(QUICK_LOGIN_PHONE);
+    showToast(result.isNew ? '注册成功，正在登录...' : '登录成功');
+    setTimeout(function() {
+      location.href = 'home_page.html';
+    }, 1500);
+  });
+
+  // Close panel when clicking overlay
+  phoneAuthOverlay.addEventListener('click', function(e) {
+    if (e.target === phoneAuthOverlay) {
+      phoneAuthOverlay.classList.remove('show');
+    }
+  });
+
+  // Send code
+  sendCode.addEventListener('click', function() {
+    var phoneVal = phone.value.trim();
+    if (!phoneVal) {
+      alert('请输入手机号');
+      return;
+    }
+    if (!/^1\d{10}$/.test(phoneVal)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    if (countdown > 0) return;
+
+    countdown = 60;
+    sendCode.disabled = true;
+    sendCode.textContent = countdown + 's';
+
+    timer = setInterval(function() {
+      countdown--;
+      if (countdown <= 0) {
+        clearInterval(timer);
+        sendCode.disabled = false;
+        sendCode.textContent = '获取验证码';
+      } else {
+        sendCode.textContent = countdown + 's';
+      }
+    }, 1000);
+
+    alert('验证码已发送');
+  });
+
+  // Login
+  loginBtn.addEventListener('click', function() {
+    var phoneVal = phone.value.trim();
+    var codeVal = code.value.trim();
+
+    if (!phoneVal) {
+      alert('请输入手机号');
+      return;
+    }
+    if (!/^1\d{10}$/.test(phoneVal)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    if (!codeVal) {
+      alert('请输入验证码');
+      return;
+    }
+    if (!agree.checked) {
+      alert('请阅读并同意用户协议');
+      return;
+    }
+
+    var result = Auth.loginWithPhone(phoneVal);
+    if (result.isNew) {
+      alert('注册成功，已为您自动创建账号');
+    } else {
+      alert('登录成功');
+    }
+    location.href = 'home_page.html';
+  });
+})();
+</script>
+<script src="../js/theme-switcher.js"></script>
+</body>
+</html>

@@ -27,7 +27,8 @@
 
 ### 三级页面
 
-- [登录](pages/login.html) `V0.1`
+- [登录（H5）](pages/login.html) `V0.1`
+- [登录（小程序）](pages/login_mp.html) `V0.1 NEW`
 - [注册](pages/register.html) `V0.1`
 - [个人资料](pages/profile_edit.html) `V0.1`
 - [修改手机号](pages/change_phone.html) `V0.1`
@@ -39,14 +40,14 @@
 - [积分卡券兑换](pages/points_exchange.html) `V0.2开发验收版本`
 - [兑换电影票次卡](pages/points_movie.html) `V0.2开发验收版本`
 - [卡券绑定](pages/coupon_bind.html)
-- [确认订单（商品）](pages/order_product.html) `V0.3 NEW`
-- [确认订单（蛋糕）](pages/order_cake.html) `V0.5`
-- [确认订单（电影票）](pages/order_movie.html) `V0.5`
-- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6` `V0.61` `V0.62`
+- [确认订单（商品）](pages/order_product.html) `V0.3 NEW` `V0.7`
+- [确认订单（蛋糕）](pages/order_cake.html) `V0.5` `V0.7`
+- [确认订单（电影票）](pages/order_movie.html) `V0.5` `V0.7`
+- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6` `V0.61` `V0.62` `已废弃→V0.7` `V0.7`
 - [订单详情（虚拟商品）](pages/order_detail_virtual.html) `V0.6`
-- [订单详情（虚拟-直充）](pages/order_detail_virtual_direct.html) `V0.61` `V0.62`
+- [订单详情（虚拟-直充）](pages/order_detail_virtual_direct.html) `V0.61` `V0.62` `已废弃→V0.7`
 - [订单支付](pages/order_pay.html)
-- [支付成功](pages/pay_success.html) `V0.61` `V0.62`
+- [支付成功](pages/pay_success.html) `V0.61` `V0.62` `已废弃→V0.7`
 - [订单详情](pages/order_detail.html)
 - [取消订单](pages/order_cancel.html)
 - [订单投诉](pages/order_complaint.html)
