@@ -1066,13 +1066,17 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
-  var POINTS_BALANCE = 9900; // 99元积分余额
+  var POINTS_BATCHES = [
+    { id: 'B005', type: 'general', label: '通兑商品积分', name: '签到积分', subLabel: '全场通用', balance: 12000, matchAttr: null, matchValue: null, expireDate: '2027-01-01 00:00:00' },
+    { id: 'B006', type: 'general', label: '通兑商品积分', name: '活动积分', subLabel: '全场通用', balance: 50000, matchAttr: null, matchValue: null, expireDate: '2027-06-30 00:00:00' }
+  ];
 
   window.closeWarmTip = function() {
     document.getElementById('warmTipOverlay').classList.remove('show');
   };
 
   var pointsActive = false;
+  var selectedBatches = [];
   var currentMode = 'cash';
   var currentChannel = 'wechat';
   var comboPoints = 0;
@@ -1180,6 +1184,56 @@
       });
     });
     return items;
+  }
+
+  function getBatch(id) {
+    for (var i = 0; i < POINTS_BATCHES.length; i++) {
+      if (POINTS_BATCHES[i].id === id) return POINTS_BATCHES[i];
+    }
+    return null;
+  }
+
+  function getGoodsCents() {
+    return Math.round(getGoodsTotal() * 100);
+  }
+
+  function getMaxConsumable(batchId) {
+    var b = getBatch(batchId);
+    if (!b) return 0;
+    return Math.min(b.balance, getGoodsCents());
+  }
+
+  function getAggregateConsumable(batchIds, cap) {
+    var batches = (batchIds || []).map(getBatch).filter(Boolean);
+    if (!batches.length) return { total: 0, items: [] };
+    var sumBal = batches.reduce(function(s, b) { return s + b.balance; }, 0);
+    var total = Math.min(sumBal, cap);
+    var sorted = batches.slice().sort(function(a, b) {
+      return new Date(a.expireDate).getTime() - new Date(b.expireDate).getTime();
+    });
+    var remaining = total, items = [];
+    sorted.forEach(function(b) {
+      if (remaining <= 0) { items.push({ batch: b, consumed: 0 }); return; }
+      var c = Math.min(b.balance, remaining); remaining -= c;
+      items.push({ batch: b, consumed: c });
+    });
+    return { total: total, items: items };
+  }
+
+  function findBestGroup() {
+    var best = null, bestVal = 0;
+    POINTS_BATCHES.forEach(function(b) {
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b; }
+    });
+    if (!best) return [];
+    return POINTS_BATCHES.filter(function(b) {
+      return b.type === best.type && b.matchAttr === best.matchAttr && b.matchValue === best.matchValue;
+    }).map(function(b) { return b.id; });
+  }
+
+  function getSumBalance() {
+    return selectedBatches.map(getBatch).filter(Boolean).reduce(function(s, b) { return s + b.balance; }, 0);
   }
 
   function usesCash(mode) {
@@ -1311,25 +1365,25 @@
   // Render Price Summary
   function renderSummary() {
     var goods = getGoodsTotal();
-    var goodsCents = Math.round(goods * 100);
+    var goodsCents = getGoodsCents();
     var html = '<div class="summary-row"><span>商品金额</span><span>¥' + goods.toFixed(2) + '</span></div>';
 
-    if (POINTS_BALANCE > 0) {
-      if (pointsActive) {
-        var maxCons = Math.min(POINTS_BALANCE, goodsCents);
-        html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + maxCons + '积分（¥' + (maxCons / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
-      } else {
-        html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--text-tertiary);">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
-      }
+    if (pointsActive && selectedBatches.length) {
+      var agg = getAggregateConsumable(selectedBatches, goodsCents);
+      var firstBatch = getBatch(selectedBatches[0]);
+      var label = (selectedBatches.length === 1) ? (firstBatch.name + '抵扣') : (firstBatch.name + ' 等' + selectedBatches.length + '张抵扣');
+      html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + label + '</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + agg.total + '积分（¥' + (agg.total / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+    } else {
+      html += '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--text-tertiary);">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
     }
 
     var pointsUsed = 0;
     if (pointsActive) {
+      var aggCalc = getAggregateConsumable(selectedBatches, goodsCents);
       if (currentMode === 'beans') {
-        pointsUsed = Math.min(POINTS_BALANCE, goodsCents);
+        pointsUsed = aggCalc.total;
       } else if (currentMode === 'combo') {
-        var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
-        pointsUsed = Math.min(comboPoints, maxDeduct);
+        pointsUsed = Math.min(comboPoints, aggCalc.total);
       }
     }
 
@@ -1339,7 +1393,7 @@
     if (usesCash(currentMode) && cashAmount > 0) {
       html += '<div class="summary-row"><span>现金支付</span><span>¥' + (cashAmount / 100).toFixed(2) + '</span></div>';
     }
-    
+
     var finalTotal = currentMode === 'beans' ? pointsUsed : cashAmount;
     var totalText = currentMode === 'beans' ? pointsUsed + '积分' : (cashAmount / 100).toFixed(2);
     html += '<div class="summary-row total"><span>实付金额</span><span class="total-price">' + (currentMode === 'beans' ? '' : '<span class="symbol">¥</span>') + totalText + '</span></div>';
@@ -1352,9 +1406,9 @@
     document.getElementById('payChannel').classList.toggle('show', usesCash(currentMode));
 
     if (currentMode === 'combo') {
-      var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
-      document.getElementById('balanceHint').textContent = POINTS_BALANCE.toLocaleString();
-      document.getElementById('maxDeductHint').textContent = '¥' + (maxDeduct / 100).toFixed(2);
+      var aggHint = getAggregateConsumable(selectedBatches, goodsCents);
+      document.getElementById('balanceHint').textContent = getSumBalance().toLocaleString();
+      document.getElementById('maxDeductHint').textContent = '¥' + (aggHint.total / 100).toFixed(2);
     }
   }
 
@@ -1364,7 +1418,13 @@
     localStorage.setItem('nav_source', 'batch');
     localStorage.setItem('order_type', 'virtual');
     localStorage.setItem('return_page', 'order_virtual.html');
-    if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
+    if (selectedBatches.length) {
+      localStorage.setItem('selected_batch_ids', JSON.stringify(selectedBatches));
+      localStorage.setItem('selected_batch_id', selectedBatches[0]);
+    } else {
+      localStorage.removeItem('selected_batch_ids');
+      localStorage.removeItem('selected_batch_id');
+    }
     location.href = 'points_batch_select.html';
   };
 
@@ -1387,14 +1447,16 @@
 
   // Handle Batch Selection Return
   function handleBatchReturn() {
-    var batchId = localStorage.getItem('selected_batch_id');
-    if (batchId) {
-      pointsActive = true;
-      selectedBatch = batchId;
-    } else {
-      pointsActive = false;
-      selectedBatch = null;
+    var rawIds = localStorage.getItem('selected_batch_ids');
+    selectedBatches = [];
+    if (rawIds) { try { selectedBatches = JSON.parse(rawIds) || []; } catch(e) { selectedBatches = []; } }
+    if (!selectedBatches.length) {
+      var singleId = localStorage.getItem('selected_batch_id');
+      if (singleId) selectedBatches = [singleId];
     }
+    pointsActive = selectedBatches.length > 0;
+    // 读后即删
+    localStorage.removeItem('selected_batch_ids');
     localStorage.removeItem('selected_batch_id');
     renderPayModes();
     renderSummary();
@@ -1405,11 +1467,12 @@
     document.querySelectorAll('#payModeList .pay-mode-item .pm-radio').forEach(function(r) { r.classList.remove('checked'); });
     el.querySelector('.pm-radio').classList.add('checked');
     currentMode = el.dataset.mode;
+    var aggMax = getAggregateConsumable(selectedBatches, getGoodsCents()).total;
     if (currentMode === 'combo') {
-      comboPoints = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+      comboPoints = aggMax;
       document.getElementById('comboPointsInput').value = comboPoints;
     } else if (currentMode === 'beans') {
-      comboPoints = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+      comboPoints = aggMax;
     }
     renderSummary();
   };
@@ -1424,8 +1487,7 @@
 
   // Use Max Points
   window.useMaxPoints = function() {
-    var max = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
-    comboPoints = max;
+    comboPoints = getAggregateConsumable(selectedBatches, getGoodsCents()).total;
     document.getElementById('comboPointsInput').value = comboPoints;
     renderSummary();
   };
@@ -1433,16 +1495,17 @@
   // Combo Points Input
   document.getElementById('comboPointsInput').addEventListener('input', function() {
     var val = parseInt(this.value) || 0;
-    var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+    var sumBalance = getSumBalance();
+    var aggMax = getAggregateConsumable(selectedBatches, getGoodsCents()).total;
     var errorEl = document.getElementById('comboError');
-    if (val > POINTS_BALANCE) {
-      errorEl.textContent = '积分数量不能超过可用余额（' + POINTS_BALANCE + '）';
+    if (val > sumBalance) {
+      errorEl.textContent = '积分数量不能超过合计可用余额（' + sumBalance + '）';
       errorEl.classList.add('show');
-      comboPoints = POINTS_BALANCE;
-    } else if (val > maxDeduct) {
-      errorEl.textContent = '积分数量不能超过商品金额（' + maxDeduct + '）';
+      comboPoints = aggMax;
+    } else if (val > aggMax) {
+      errorEl.textContent = '积分数量不能超过合计可抵扣金额（' + aggMax + '）';
       errorEl.classList.add('show');
-      comboPoints = maxDeduct;
+      comboPoints = aggMax;
     } else {
       errorEl.classList.remove('show');
       comboPoints = val;
@@ -1451,8 +1514,8 @@
   });
 
   document.getElementById('comboPointsInput').addEventListener('blur', function() {
-    var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
-    comboPoints = Math.max(0, Math.min(comboPoints, maxDeduct));
+    var aggMax = getAggregateConsumable(selectedBatches, getGoodsCents()).total;
+    comboPoints = Math.max(0, Math.min(comboPoints, aggMax));
     document.getElementById('comboPointsInput').value = comboPoints;
     renderSummary();
   });
@@ -1462,13 +1525,13 @@
     btn.addEventListener('click', function() {
       var item = this.closest('.order-product-item');
       var qty = parseInt(item.dataset.qty);
-      if (this.dataset.action === 'plus') qty++;
+      if (this.dataset.action === 'plus' && qty < 99) qty++;
       else if (this.dataset.action === 'minus' && qty > 1) qty--;
       item.dataset.qty = qty;
       item.querySelector('.qty-num').textContent = qty;
       item.querySelector('[data-action="minus"]').classList.toggle('disabled', qty <= 1);
       if (currentMode === 'combo') {
-        var maxDeduct = Math.min(POINTS_BALANCE, Math.round(getGoodsTotal() * 100));
+        var maxDeduct = getAggregateConsumable(selectedBatches, getGoodsCents()).total;
         comboPoints = Math.min(comboPoints, maxDeduct);
         document.getElementById('comboPointsInput').value = comboPoints;
       }
@@ -1503,12 +1566,12 @@
   };
 
   function getCashInfo() {
-    var goodsCents = Math.round(getGoodsTotal() * 100);
+    var goodsCents = getGoodsCents();
     var pointsUsed = 0;
     if (currentMode === 'beans') {
-      pointsUsed = Math.min(POINTS_BALANCE, goodsCents);
+      pointsUsed = getAggregateConsumable(selectedBatches, goodsCents).total;
     } else if (currentMode === 'combo') {
-      var maxDeduct = Math.min(POINTS_BALANCE, goodsCents);
+      var maxDeduct = getAggregateConsumable(selectedBatches, goodsCents).total;
       pointsUsed = Math.min(comboPoints, maxDeduct);
     }
     var cashAmount = goodsCents - pointsUsed;
@@ -1620,5 +1683,6 @@
 </script>
 
 <script src="../js/theme-switcher.js"></script>
+
 </body>
 </html>

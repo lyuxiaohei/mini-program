@@ -43,11 +43,11 @@
 - [确认订单（商品）](pages/order_product.html) `V0.3 NEW` `V0.7`
 - [确认订单（蛋糕）](pages/order_cake.html) `V0.5` `V0.7`
 - [确认订单（电影票）](pages/order_movie.html) `V0.5` `V0.7`
-- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6` `V0.61` `V0.62` `已废弃→V0.7` `V0.7`
+- [确认订单（虚拟商品）](pages/order_virtual.html) `V0.6` `V0.61` `V0.62已废弃` `V0.7`
 - [订单详情（虚拟商品）](pages/order_detail_virtual.html) `V0.6`
-- [订单详情（虚拟-直充）](pages/order_detail_virtual_direct.html) `V0.61` `V0.62` `已废弃→V0.7`
+- [订单详情（虚拟-直充）](pages/order_detail_virtual_direct.html) `V0.61` `V0.62已废弃`
 - [订单支付](pages/order_pay.html)
-- [支付成功](pages/pay_success.html) `V0.61` `V0.62` `已废弃→V0.7`
+- [支付成功](pages/pay_success.html) `V0.61` `V0.62已废弃`
 - [订单详情](pages/order_detail.html)
 - [取消订单](pages/order_cancel.html)
 - [订单投诉](pages/order_complaint.html)

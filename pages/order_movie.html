@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -890,7 +890,7 @@
   var movieActive = false;
   var pointsActive = false;
   var selectedMovieCard = null;
-  var selectedBatch = null;
+  var selectedBatches = [];
   var currentMode = 'cash';
   var currentChannel = 'wechat';
 
@@ -920,18 +920,39 @@
     return { uses: uses, value: uses * perUse };
   }
 
-  function getMaxConsumable() {
-    var b = getBatch(selectedBatch);
+  function getMaxConsumable(batchId) {
+    var b = getBatch(batchId);
     if (!b) return 0;
-    return b.balance;
+    return Math.min(b.balance, getTotal());
   }
 
-  function findBestBatch() {
+  function getAggregateConsumable(batchIds, cap) {
+    var batches = (batchIds || []).map(getBatch).filter(Boolean);
+    if (!batches.length) return { total: 0, items: [] };
+    var sumBal = batches.reduce(function(s, b) { return s + b.balance; }, 0);
+    var total = Math.min(sumBal, cap);
+    var sorted = batches.slice().sort(function(a, b) {
+      return new Date(a.expireDate).getTime() - new Date(b.expireDate).getTime();
+    });
+    var remaining = total, items = [];
+    sorted.forEach(function(b) {
+      if (remaining <= 0) { items.push({ batch: b, consumed: 0 }); return; }
+      var c = Math.min(b.balance, remaining); remaining -= c;
+      items.push({ batch: b, consumed: c });
+    });
+    return { total: total, items: items };
+  }
+
+  function findBestGroup() {
     var best = null, bestVal = 0;
     POINTS_BATCHES.forEach(function(b) {
-      if (b.balance > bestVal) { bestVal = b.balance; best = b.id; }
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b; }
     });
-    return best;
+    if (!best) return [];
+    return POINTS_BATCHES.filter(function(b) {
+      return b.type === best.type && b.matchAttr === best.matchAttr && b.matchValue === best.matchValue;
+    }).map(function(b) { return b.id; });
   }
 
   function getTotal() {
@@ -953,11 +974,12 @@
   }
 
   function renderPointsEntry() {
-    if (pointsActive && selectedBatch) {
-      var b = getBatch(selectedBatch);
+    if (pointsActive && selectedBatches.length) {
       var total = getTotal();
-      var pointsUsed = Math.min(getMaxConsumable(), total);
-      return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + b.name + '抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + pointsUsed + '积分（¥' + (pointsUsed / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+      var agg = getAggregateConsumable(selectedBatches, total);
+      var firstBatch = getBatch(selectedBatches[0]);
+      var label = (selectedBatches.length === 1) ? (firstBatch.name + '抵扣') : (firstBatch.name + ' 等' + selectedBatches.length + '张抵扣');
+      return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + label + '</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + agg.total + '积分（¥' + (agg.total / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
     }
     return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--text-tertiary);">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
   }
@@ -989,7 +1011,8 @@
     }
     else if (pointsActive) {
       html += payModeHtml('points', '积分支付');
-      if (getMaxConsumable() < total) {
+      var maxCons = getAggregateConsumable(selectedBatches, total).total;
+      if (maxCons < total) {
         html += payModeHtml('combo', '组合支付');
       }
       currentMode = 'points';
@@ -1014,7 +1037,7 @@
     if (movieActive) {
       movieUsed = Math.min(getMovieCardCover().value, total);
     } else if (pointsActive) {
-      pointsUsed = Math.min(getMaxConsumable(), total);
+      pointsUsed = getAggregateConsumable(selectedBatches, total).total;
     }
     var cashAmount = total - movieUsed - pointsUsed;
     if (cashAmount < 0) cashAmount = 0;
@@ -1057,7 +1080,13 @@
     localStorage.setItem('nav_source', 'batch');
     localStorage.setItem('order_type', 'movie');
     localStorage.setItem('return_page', 'order_movie.html');
-    if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
+    if (selectedBatches.length) {
+      localStorage.setItem('selected_batch_ids', JSON.stringify(selectedBatches));
+      localStorage.setItem('selected_batch_id', selectedBatches[0]);
+    } else {
+      localStorage.removeItem('selected_batch_ids');
+      localStorage.removeItem('selected_batch_id');
+    }
     location.href = 'points_batch_select.html';
   };
 
@@ -1118,8 +1147,8 @@
   };
 
   window.handleSubmit = function() {
-    if (!usesCash(currentMode)) { location.href = 'pay_success.html'; return; }
     var info = calcAmounts();
+    if (info.cashAmount <= 0) { location.href = 'pay_success.html'; return; }
     var ch = channelData[currentChannel] || channelData.wechat;
     document.getElementById('popupAmount').innerHTML = '<span class="symbol">&yen;</span>' + (info.cashAmount / 100).toFixed(2);
     document.getElementById('popupChIcon').style.background = ch.color;
@@ -1164,9 +1193,15 @@
 
   // ===== Init =====
   selectedMovieCard = localStorage.getItem('selected_movie_card_id') || null;
-  selectedBatch = localStorage.getItem('selected_batch_id') || null;
+  var rawInitIds = localStorage.getItem('selected_batch_ids');
+  selectedBatches = [];
+  if (rawInitIds) { try { selectedBatches = JSON.parse(rawInitIds) || []; } catch(e) { selectedBatches = []; } }
+  if (!selectedBatches.length) {
+    var singleInitId = localStorage.getItem('selected_batch_id');
+    if (singleInitId) selectedBatches = [singleInitId];
+  }
   movieActive = !!selectedMovieCard;
-  pointsActive = !!selectedBatch;
+  pointsActive = selectedBatches.length > 0;
 
   renderPayModes();
 
@@ -1179,18 +1214,25 @@
       var newCard = localStorage.getItem('selected_movie_card_id');
       if (newCard) {
         movieActive = true; selectedMovieCard = newCard;
-        pointsActive = false; selectedBatch = null;
+        pointsActive = false; selectedBatches = [];
+        localStorage.removeItem('selected_batch_ids');
         localStorage.removeItem('selected_batch_id');
       } else { movieActive = false; selectedMovieCard = null; }
       renderPayModes();
     }
     else if (source === 'batch') {
-      var newBatch = localStorage.getItem('selected_batch_id');
-      if (newBatch) {
-        pointsActive = true; selectedBatch = newBatch;
+      var rawBackIds = localStorage.getItem('selected_batch_ids');
+      selectedBatches = [];
+      if (rawBackIds) { try { selectedBatches = JSON.parse(rawBackIds) || []; } catch(e) { selectedBatches = []; } }
+      if (!selectedBatches.length) {
+        var singleBackId = localStorage.getItem('selected_batch_id');
+        if (singleBackId) selectedBatches = [singleBackId];
+      }
+      if (selectedBatches.length) {
+        pointsActive = true;
         movieActive = false; selectedMovieCard = null;
         localStorage.removeItem('selected_movie_card_id');
-      } else { pointsActive = false; selectedBatch = null; }
+      } else { pointsActive = false; }
       renderPayModes();
     }
   });
@@ -1200,5 +1242,6 @@
 
 
 <script src="../js/theme-switcher.js"></script>
+
 </body>
 </html>

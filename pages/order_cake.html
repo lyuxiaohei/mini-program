@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -899,7 +899,7 @@
 
   var pointsActive = false;
   var couponActive = false;
-  var selectedBatch = null;
+  var selectedBatches = [];
   var selectedCoupon = null;
   var currentMode = 'cash';
   var currentChannel = 'wechat';
@@ -975,6 +975,35 @@
     return Math.min(b.balance, matchedTotal);
   }
 
+  function getAggregateConsumable(batchIds, cap) {
+    var batches = (batchIds || []).map(getBatch).filter(Boolean);
+    if (!batches.length) return { total: 0, items: [] };
+    var sumBal = batches.reduce(function(s, b) { return s + b.balance; }, 0);
+    var total = Math.min(sumBal, cap);
+    var sorted = batches.slice().sort(function(a, b) {
+      return new Date(a.expireDate).getTime() - new Date(b.expireDate).getTime();
+    });
+    var remaining = total, items = [];
+    sorted.forEach(function(b) {
+      if (remaining <= 0) { items.push({ batch: b, consumed: 0 }); return; }
+      var c = Math.min(b.balance, remaining); remaining -= c;
+      items.push({ batch: b, consumed: c });
+    });
+    return { total: total, items: items };
+  }
+
+  function findBestGroup() {
+    var best = null, bestVal = 0;
+    POINTS_BATCHES.forEach(function(b) {
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b; }
+    });
+    if (!best) return [];
+    return POINTS_BATCHES.filter(function(b) {
+      return b.type === best.type && b.matchAttr === best.matchAttr && b.matchValue === best.matchValue;
+    }).map(function(b) { return b.id; });
+  }
+
   function getCouponDiscount() {
     if (!selectedCoupon) return 0;
     var c = getCoupon(selectedCoupon);
@@ -1005,10 +1034,12 @@
   // ===== Price Summary Entry Rows =====
 
   function renderPointsEntry() {
-    if (pointsActive && selectedBatch) {
-      var b = getBatch(selectedBatch);
-      var maxCons = getMaxConsumable(selectedBatch);
-      return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + b.name + '抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + maxCons + '积分（¥' + (maxCons / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+    if (pointsActive && selectedBatches.length) {
+      var cap = couponActive ? (Math.round(getGoodsTotal() * 100) - getCouponDiscount()) : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var agg = getAggregateConsumable(selectedBatches, cap);
+      var firstBatch = getBatch(selectedBatches[0]);
+      var label = (selectedBatches.length === 1) ? (firstBatch.name + '抵扣') : (firstBatch.name + ' 等' + selectedBatches.length + '张抵扣');
+      return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>' + label + '</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--primary-start);">-' + agg.total + '积分（¥' + (agg.total / 100).toFixed(2) + '）</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
     }
     return '<div class="summary-row clickable" onclick="goToBatchSelect()"><span>积分抵扣</span><div style="display:flex;align-items:center;gap:2px;"><span style="color:var(--text-tertiary);">不使用</span><svg class="sr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
   }
@@ -1041,7 +1072,11 @@
     else if (pointsActive && !couponActive) {
       // Points only
       html += payModeHtml('beans', '积分支付');
-      html += payModeHtml('beans_cash', '组合支付');
+      var capNc = Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var maxCons = getAggregateConsumable(selectedBatches, capNc).total;
+      if (maxCons < Math.round(getGoodsTotal() * 100)) {
+        html += payModeHtml('beans_cash', '组合支付');
+      }
       currentMode = 'beans';
     }
     else if (couponActive && !pointsActive) {
@@ -1052,7 +1087,7 @@
     else if (pointsActive && couponActive) {
       var couponUsed = getCouponDiscount();
       var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
-      var maxCons = getMaxConsumable(selectedBatch);
+      var maxCons = getAggregateConsumable(selectedBatches, afterCoupon).total;
       html += payModeHtml('beans_coupon', '积分支付');
       if (maxCons < afterCoupon) {
         html += payModeHtml('beans_coupon_cash', '组合支付');
@@ -1074,14 +1109,16 @@
   // ===== Render Product Allocation Tags =====
 
   function renderProductAlloc() {
-    var matched = getMatchedProducts(selectedBatch);
+    var matched = getMatchedProducts(selectedBatches[0]);
     var all = getProducts();
     var totalPoints = 0;
-    if (pointsActive && selectedBatch) {
-      if (currentMode === 'beans') totalPoints = getMaxConsumable(selectedBatch);
-      else if (currentMode === 'beans_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
-      else if (currentMode === 'beans_coupon') totalPoints = getMaxConsumable(selectedBatch);
-      else if (currentMode === 'beans_coupon_cash') totalPoints = Math.min(comboPoints, getMaxConsumable(selectedBatch));
+    if (pointsActive && selectedBatches.length) {
+      var cap = couponActive ? (Math.round(getGoodsTotal() * 100) - getCouponDiscount()) : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var agg = getAggregateConsumable(selectedBatches, cap);
+      if (currentMode === 'beans') totalPoints = agg.total;
+      else if (currentMode === 'beans_cash') totalPoints = Math.min(comboPoints, agg.total);
+      else if (currentMode === 'beans_coupon') totalPoints = agg.total;
+      else if (currentMode === 'beans_coupon_cash') totalPoints = Math.min(comboPoints, agg.total);
     }
 
     var alloc = allocateByWeight(totalPoints, matched);
@@ -1089,7 +1126,7 @@
 
     all.forEach(function(prod) {
       var item = alloc.find(function(a) { return a.product.el === prod.el; });
-      var isMatch = isMatched(selectedBatch, prod);
+      var isMatch = isMatched(selectedBatches[0], prod);
       var allocEl = prod.el.querySelector('.prod-alloc');
       if (!showAlloc) { allocEl.className = 'prod-alloc'; allocEl.innerHTML = ''; return; }
       allocEl.className = 'prod-alloc show';
@@ -1120,12 +1157,13 @@
     if (couponActive) couponUsed = getCouponDiscount();
     var afterCoupon = goodsCents - couponUsed;
 
-    if (pointsActive && selectedBatch) {
-      var maxCons = getMaxConsumable(selectedBatch);
-      if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
-      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
-      else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
-      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
+    if (pointsActive && selectedBatches.length) {
+      var cap = couponActive ? afterCoupon : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var agg = getAggregateConsumable(selectedBatches, cap);
+      if (currentMode === 'beans') pointsUsed = agg.total;
+      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, agg.total);
+      else if (currentMode === 'beans_coupon') pointsUsed = agg.total;
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, agg.total);
     }
 
     var cashAmount = goodsCents - couponUsed - pointsUsed;
@@ -1147,12 +1185,12 @@
     document.getElementById('comboInput').classList.toggle('show', showCombo);
     document.getElementById('payChannel').classList.toggle('show', usesCash(currentMode));
 
-    if (showCombo && selectedBatch) {
-      var b2 = getBatch(selectedBatch);
-      var maxCons2 = getMaxConsumable(selectedBatch);
-      var effectiveMax = couponActive ? Math.min(maxCons2, afterCoupon) : maxCons2;
-      document.getElementById('balanceHint').textContent = b2.balance.toLocaleString();
-      document.getElementById('maxDeductHint').textContent = '¥' + (effectiveMax / 100).toFixed(2);
+    if (showCombo && selectedBatches.length) {
+      var capHint = couponActive ? afterCoupon : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var aggHint = getAggregateConsumable(selectedBatches, capHint);
+      var sumBalance = selectedBatches.map(getBatch).filter(Boolean).reduce(function(s, b) { return s + b.balance; }, 0);
+      document.getElementById('balanceHint').textContent = sumBalance.toLocaleString();
+      document.getElementById('maxDeductHint').textContent = '¥' + (aggHint.total / 100).toFixed(2);
     }
 
     var payModeSection = document.querySelector('.pay-mode-section');
@@ -1170,7 +1208,13 @@
     localStorage.setItem('nav_source', 'batch');
     localStorage.setItem('order_type', 'cake');
     localStorage.setItem('return_page', 'order_cake.html');
-    if (selectedBatch) localStorage.setItem('selected_batch_id', selectedBatch);
+    if (selectedBatches.length) {
+      localStorage.setItem('selected_batch_ids', JSON.stringify(selectedBatches));
+      localStorage.setItem('selected_batch_id', selectedBatches[0]);
+    } else {
+      localStorage.removeItem('selected_batch_ids');
+      localStorage.removeItem('selected_batch_id');
+    }
     location.href = 'points_batch_select.html';
   };
 
@@ -1187,7 +1231,16 @@
   window.selectPayMode = function(el) {
     document.querySelectorAll('#payModeList .pay-mode-item .pm-radio').forEach(function(r) { r.classList.remove('checked'); });
     el.querySelector('.pm-radio').classList.add('checked');
-    currentMode = el.dataset.mode;
+    var mode = el.dataset.mode;
+    currentMode = mode;
+
+    if (mode === 'beans_coupon' && couponActive && !pointsActive) {
+      pointsActive = true;
+      selectedBatches = findBestGroup();
+      renderPayModes();
+      return;
+    }
+
     renderSummary();
   };
 
@@ -1200,12 +1253,10 @@
   // ===== Combo Points Input =====
 
   window.fillMaxPoints = function() {
-    if (!selectedBatch) return;
-    var maxCons = getMaxConsumable(selectedBatch);
-    var couponUsed = couponActive ? getCouponDiscount() : 0;
-    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
-    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
-    comboPoints = effectiveMax;
+    if (!selectedBatches.length) return;
+    var cap = couponActive ? (Math.round(getGoodsTotal() * 100) - getCouponDiscount()) : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+    var agg = getAggregateConsumable(selectedBatches, cap);
+    comboPoints = agg.total;
     document.getElementById('comboPointsInput').value = comboPoints;
     document.getElementById('comboError').classList.remove('show');
     renderSummary();
@@ -1213,29 +1264,26 @@
 
   document.getElementById('comboPointsInput').addEventListener('input', function() {
     var val = parseInt(this.value) || 0;
-    var b = getBatch(selectedBatch);
-    if (!b) return;
-    var maxCons = getMaxConsumable(selectedBatch);
-    var couponUsed = couponActive ? getCouponDiscount() : 0;
-    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
-    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
+    if (!selectedBatches.length) return;
+    var cap = couponActive ? (Math.round(getGoodsTotal() * 100) - getCouponDiscount()) : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+    var agg = getAggregateConsumable(selectedBatches, cap);
+    var sumBalance = selectedBatches.map(getBatch).filter(Boolean).reduce(function(s, b) { return s + b.balance; }, 0);
     var errorEl = document.getElementById('comboError');
-    if (val > b.balance) {
-      errorEl.textContent = '积分数量不能超过可用余额（' + b.balance + '）';
-      errorEl.classList.add('show'); comboPoints = effectiveMax;
-    } else if (val > effectiveMax) {
-      errorEl.textContent = '积分数量不能超过可抵扣金额（' + effectiveMax + '）';
-      errorEl.classList.add('show'); comboPoints = effectiveMax;
+    if (val > sumBalance) {
+      errorEl.textContent = '积分数量不能超过合计可用余额（' + sumBalance + '）';
+      errorEl.classList.add('show'); comboPoints = agg.total;
+    } else if (val > agg.total) {
+      errorEl.textContent = '积分数量不能超过合计可抵扣金额（' + agg.total + '）';
+      errorEl.classList.add('show'); comboPoints = agg.total;
     } else { errorEl.classList.remove('show'); comboPoints = val; }
     renderSummary();
   });
 
   document.getElementById('comboPointsInput').addEventListener('blur', function() {
-    var maxCons = selectedBatch ? getMaxConsumable(selectedBatch) : 0;
-    var couponUsed = couponActive ? getCouponDiscount() : 0;
-    var afterCoupon = Math.round(getGoodsTotal() * 100) - couponUsed;
-    var effectiveMax = couponActive ? Math.min(maxCons, afterCoupon) : maxCons;
-    comboPoints = Math.max(0, Math.min(comboPoints, effectiveMax));
+    if (!selectedBatches.length) return;
+    var cap = couponActive ? (Math.round(getGoodsTotal() * 100) - getCouponDiscount()) : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+    var maxCons = getAggregateConsumable(selectedBatches, cap).total;
+    comboPoints = Math.max(0, Math.min(comboPoints, maxCons));
     document.getElementById('comboPointsInput').value = comboPoints;
     renderSummary();
   });
@@ -1273,12 +1321,13 @@
     var pointsUsed = 0, couponUsed = 0;
     if (couponActive) couponUsed = getCouponDiscount();
     var afterCoupon = goodsCents - couponUsed;
-    if (pointsActive && selectedBatch) {
-      var maxCons = getMaxConsumable(selectedBatch);
-      if (currentMode === 'beans') pointsUsed = Math.min(maxCons, goodsCents);
-      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, maxCons);
-      else if (currentMode === 'beans_coupon') pointsUsed = Math.min(maxCons, afterCoupon);
-      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, maxCons, afterCoupon);
+    if (pointsActive && selectedBatches.length) {
+      var cap = couponActive ? afterCoupon : Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+      var agg = getAggregateConsumable(selectedBatches, cap);
+      if (currentMode === 'beans') pointsUsed = agg.total;
+      else if (currentMode === 'beans_cash') pointsUsed = Math.min(comboPoints, agg.total);
+      else if (currentMode === 'beans_coupon') pointsUsed = agg.total;
+      else if (currentMode === 'beans_coupon_cash') pointsUsed = Math.min(comboPoints, agg.total);
     }
     var cashAmount = goodsCents - couponUsed - pointsUsed;
     if (cashAmount < 0) cashAmount = 0;
@@ -1286,8 +1335,8 @@
   }
 
   window.handleSubmit = function() {
-    if (!usesCash(currentMode)) { location.href = 'pay_success.html'; return; }
     var info = getCashInfo();
+    if (info.cashAmount <= 0) { location.href = 'pay_success.html'; return; }
     var ch = channelData[currentChannel] || channelData.wechat;
 
     // Show cash amount (could be 0 in beans_coupon mode that uses cash channel for confirmation)
@@ -1356,13 +1405,19 @@
   });
 
   // ===== Init =====
-  selectedBatch = localStorage.getItem('selected_batch_id') || null;
+  var rawInitIds = localStorage.getItem('selected_batch_ids');
+  selectedBatches = [];
+  if (rawInitIds) { try { selectedBatches = JSON.parse(rawInitIds) || []; } catch(e) { selectedBatches = []; } }
+  if (!selectedBatches.length) {
+    var singleInitId = localStorage.getItem('selected_batch_id');
+    if (singleInitId) selectedBatches = [singleInitId];
+  }
   selectedCoupon = localStorage.getItem('selected_coupon_id') || null;
-  pointsActive = !!selectedBatch;
+  pointsActive = selectedBatches.length > 0;
   couponActive = !!selectedCoupon;
 
   if (pointsActive) {
-    comboPoints = getMaxConsumable(selectedBatch);
+    comboPoints = getAggregateConsumable(selectedBatches, Math.round(getMatchedTotal(selectedBatches[0]) * 100)).total;
     document.getElementById('comboPointsInput').value = comboPoints;
   }
 
@@ -1374,15 +1429,15 @@
     localStorage.removeItem('nav_source');
 
     if (source === 'batch') {
-      var newBatch = localStorage.getItem('selected_batch_id');
-      if (newBatch) {
-        pointsActive = true;
-        selectedBatch = newBatch;
-      } else {
-        pointsActive = false;
-        selectedBatch = null;
+      var rawBackIds = localStorage.getItem('selected_batch_ids');
+      selectedBatches = [];
+      if (rawBackIds) { try { selectedBatches = JSON.parse(rawBackIds) || []; } catch(e) { selectedBatches = []; } }
+      if (!selectedBatches.length) {
+        var singleBackId = localStorage.getItem('selected_batch_id');
+        if (singleBackId) selectedBatches = [singleBackId];
       }
-      comboPoints = selectedBatch ? getMaxConsumable(selectedBatch) : 0;
+      pointsActive = selectedBatches.length > 0;
+      comboPoints = pointsActive ? getAggregateConsumable(selectedBatches, Math.round(getMatchedTotal(selectedBatches[0]) * 100)).total : 0;
       document.getElementById('comboPointsInput').value = comboPoints;
       renderPayModes();
     }
@@ -1402,5 +1457,6 @@
 </script>
 
 <script src="../js/theme-switcher.js"></script>
+
 </body>
 </html>

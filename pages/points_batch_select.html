@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -26,6 +26,7 @@
   }
   .product-summary-item {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     padding: var(--space-sm) 0;
@@ -56,6 +57,7 @@
   }
   .ps-match.matched { background: var(--success-bg); color: var(--success-color); }
   .ps-match.unmatched { background: var(--bg-color); color: var(--text-muted); }
+  .product-summary-item .ps-split-hint { width: 100%; margin-top: 6px; padding: 6px 8px; background: var(--bg-color); color: var(--price-color); font-size: var(--font-xs); border-radius: var(--radius-xs); line-height: 1.5; }
 
   /* Batch selector */
   .batch-section {
@@ -317,7 +319,10 @@
   ];
 
   var products = [];
-  var selectedBatch = null;
+  var selectedBatches = [];
+  function sameGroup(a, b) {
+    return a && b && a.type === b.type && a.matchAttr === b.matchAttr && a.matchValue === b.matchValue;
+  }
   var orderType = localStorage.getItem('order_type') || 'product';
 
   // Load products from localStorage
@@ -327,7 +332,12 @@
   } catch(e) {}
 
   // Load previously selected batch
-  var prevSelection = localStorage.getItem('selected_batch_id');
+  var prevSelection = [];
+  try {
+    var rawIds = localStorage.getItem('selected_batch_ids');
+    if (rawIds) prevSelection = JSON.parse(rawIds) || [];
+    else if (localStorage.getItem('selected_batch_id')) prevSelection = [localStorage.getItem('selected_batch_id')];
+  } catch(e) {}
 
   function getBatch(id) {
     for (var i = 0; i < POINTS_BATCHES.length; i++) {
@@ -365,25 +375,45 @@
   function findBestBatch() {
     var best = null, bestVal = 0;
     POINTS_BATCHES.forEach(function(b) {
-      if ((orderType === 'movie' || orderType === 'cake') && b.type !== 'general') return;
+      if ((orderType === 'movie' || orderType === 'cake' || orderType === 'virtual') && b.type !== 'general') return;
       var v = getMaxConsumable(b.id);
       if (v > bestVal) { bestVal = v; best = b.id; }
     });
     return best;
+  }
+  // 推荐组：可消耗最大的批次所在的同组（同 type+matchAttr+matchValue）全部 id
+  function findBestGroup() {
+    var best = null, bestVal = 0;
+    POINTS_BATCHES.forEach(function(b) {
+      if ((orderType === 'movie' || orderType === 'cake' || orderType === 'virtual') && b.type !== 'general') return;
+      var v = getMaxConsumable(b.id);
+      if (v > bestVal) { bestVal = v; best = b; }
+    });
+    if (!best) return [];
+    return POINTS_BATCHES.filter(function(b) {
+      return b.type === best.type && b.matchAttr === best.matchAttr && b.matchValue === best.matchValue;
+    }).map(function(b) { return b.id; });
   }
 
   function renderProductSummary() {
     var html = '';
     products.forEach(function(p) {
       var matchHtml = '';
-      if (selectedBatch) {
-        var isMatch = isMatched(selectedBatch, p);
-        matchHtml = '<span class="ps-match ' + (isMatch ? 'matched' : 'unmatched') + '">' + (isMatch ? '可用' : '不支持') + '</span>';
+      var splitHint = '';
+      if (selectedBatches.length) {
+        var isMatch = isMatched(selectedBatches[0], p);
+        if (isMatch) {
+          matchHtml = '<span class="ps-match matched">可用</span>';
+        } else {
+          matchHtml = '<span class="ps-match unmatched">不支持</span>';
+          splitHint = '<div class="ps-split-hint">该商品不适用所选积分，建议此商品分开下单以便使用积分</div>';
+        }
       }
       html += '<div class="product-summary-item">';
       html += '<span class="ps-name">' + p.name + '</span>';
       html += '<span class="ps-price">&yen;' + (p.price * p.qty).toFixed(2) + '</span>';
       html += matchHtml;
+      html += splitHint;
       html += '</div>';
     });
     document.getElementById('productList').innerHTML = html;
@@ -391,25 +421,15 @@
 
   function renderBatchSelector() {
     var html = '';
-    var best = findBestBatch();
-    var now = Date.now();
+    var bestGroup = findBestGroup();
+    // 多选：按到期先后升序，先扣最快过期的批次
     var sorted = POINTS_BATCHES.slice().sort(function(a, b) {
-      if (a.id === best && b.id !== best) return -1;
-      if (b.id === best && a.id !== best) return 1;
-      var aExp = new Date(a.expireDate).getTime();
-      var bExp = new Date(b.expireDate).getTime();
-      var a30 = aExp - now < 30 * 86400000;
-      var b30 = bExp - now < 30 * 86400000;
-      if (a30 && !b30) return -1;
-      if (b30 && !a30) return 1;
-      if (a30 && b30) return aExp - bExp;
-      var aCons = getMaxConsumable(a.id), bCons = getMaxConsumable(b.id);
-      if (aCons !== bCons) return bCons - aCons;
-      return getMatchedProducts(a.id).length - getMatchedProducts(b.id).length;
+      return new Date(a.expireDate).getTime() - new Date(b.expireDate).getTime();
     });
+    var selRep = selectedBatches.length ? getBatch(selectedBatches[0]) : null;
 
     // "Not using" option
-    html += '<div class="batch-card' + (selectedBatch === null ? ' active' : '') + '" data-batch="" onclick="selectBatch(this)">';
+    html += '<div class="batch-card' + (selectedBatches.length === 0 ? ' active' : '') + '" data-batch="" onclick="selectBatch(this)">';
     html += '<div class="bc-radio"></div>';
     html += '<div class="bc-body"><div class="bc-header"><span class="bc-name">不使用积分</span></div>';
     html += '<div class="bc-sublabel" style="color:var(--text-tertiary)">不使用积分抵扣</div>';
@@ -418,9 +438,15 @@
     sorted.forEach(function(b) {
       var matched = getMatchedProducts(b.id);
       var maxCons = getMaxConsumable(b.id);
-      var isActive = b.id === selectedBatch;
-      var isBest = b.id === best;
-      var disabled = (orderType === 'movie' || orderType === 'cake') && b.type !== 'general';
+      var isActive = selectedBatches.indexOf(b.id) !== -1;
+      var isBest = bestGroup.indexOf(b.id) !== -1;
+      var baseDisabled = (orderType === 'movie' || orderType === 'cake' || orderType === 'virtual') && b.type !== 'general';
+      // 调整2：订单商品均未命中的批次置灰
+      var notMatchedDisabled = products.length > 0 && matched.length === 0;
+      // 调整1/2：已选某组后，与该组不同类型/范围的批次置灰（互斥不可叠加）
+      var groupDisabled = selRep && !sameGroup(selRep, b) && selectedBatches.indexOf(b.id) === -1;
+      var disabled = baseDisabled || notMatchedDisabled || groupDisabled;
+      var disabledLabel = baseDisabled ? (orderType === 'cake' ? '不支持蛋糕订单' : orderType === 'virtual' ? '不支持虚拟商品订单' : '不支持电影票') : notMatchedDisabled ? '未命中订单商品' : '与已选类型不同，不可叠加';
       html += '<div class="batch-card' + (isActive ? ' active' : '') + (disabled ? ' unavailable' : '') + '" data-batch="' + b.id + '" onclick="selectBatch(this)">';
       html += '<div class="bc-radio"></div>';
       html += '<div class="bc-body">';
@@ -432,7 +458,6 @@
       var scopeText = '';
       if (b.scopeList) scopeText = b.scopeList[0] + '等';
       else scopeText = b.subLabel;
-      var disabledLabel = orderType === 'cake' ? '不支持蛋糕订单' : '不支持电影票';
       html += '<div class="bc-sublabel">' + (showScope ? b.label + ' · ' + scopeText : b.label) + (disabled ? '<span style="color:var(--text-muted);margin-left:6px;">' + disabledLabel + '</span>' : '') + ' <span class="bc-help" onclick="event.stopPropagation();showHelp(\'' + b.id + '\')">?</span></div>';
       html += '<div class="bc-match">';
       if (matched.length > 0) {
@@ -454,7 +479,28 @@
 
   window.selectBatch = function(el) {
     var id = el.dataset.batch;
-    selectedBatch = id === '' ? null : id;
+    if (id === '') {
+      selectedBatches = [];
+    } else {
+      var idx = selectedBatches.indexOf(id);
+      if (idx !== -1) {
+        selectedBatches.splice(idx, 1);
+      } else {
+        // 调整3：已选积分已覆盖订单全额时，继续勾选同组批次给提示（不阻止）
+        if (selectedBatches.length) {
+          var rep = getBatch(selectedBatches[0]);
+          var newB = getBatch(id);
+          if (rep && newB && sameGroup(rep, newB)) {
+            var sumBal = selectedBatches.reduce(function(s,sid){ var bb=getBatch(sid); return s + (bb?bb.balance:0); },0);
+            var cap = Math.round(getMatchedTotal(selectedBatches[0]) * 100);
+            if (cap > 0 && sumBal >= cap) {
+              alert('当前积分已可全额抵扣订单金额，继续选择该批次不会扣减更多积分。');
+            }
+          }
+        }
+        selectedBatches.push(id);
+      }
+    }
     renderBatchSelector();
     renderProductSummary();
   };
@@ -499,9 +545,11 @@
   };
 
   window.confirmSelect = function() {
-    if (selectedBatch) {
-      localStorage.setItem('selected_batch_id', selectedBatch);
+    if (selectedBatches.length) {
+      localStorage.setItem('selected_batch_ids', JSON.stringify(selectedBatches));
+      localStorage.setItem('selected_batch_id', selectedBatches[0]);  // 兼容订单页主流程的单值读取
     } else {
+      localStorage.removeItem('selected_batch_ids');
       localStorage.removeItem('selected_batch_id');
     }
     location.href = localStorage.getItem('return_page') || 'order_product.html';
@@ -511,16 +559,59 @@
     location.href = localStorage.getItem('return_page') || 'order_product.html';
   };
 
-  // Init
-  selectedBatch = prevSelection || findBestBatch();
-  if ((orderType === 'movie' || orderType === 'cake') && selectedBatch) {
-    var sel = getBatch(selectedBatch);
-    if (sel && sel.type !== 'general') selectedBatch = findBestBatch();
+  // V0.7 场景切换（供框外按钮调用）
+  window.setScene = function(ids) {
+    selectedBatches = (ids || []).slice();
+    renderBatchSelector();
+    renderProductSummary();
+  };
+  // 演示：余额已够提示（设小金额商品 + 选一张大余额批次；继续选同组会弹提示）
+  window.setSceneLimitDemo = function() {
+    products = [{ name: '演示商品（小金额）', price: 50, qty: 1 }];
+    selectedBatches = ['B005'];
+    renderBatchSelector();
+    renderProductSummary();
+  };
+  // 演示：拆单提示（选品牌积分→耳机不适用→商品处提示拆单）
+  window.setSceneSplitDemo = function() {
+    products = [
+      { name: '蓝牙耳机', price: 89, qty: 1, sku: 'SKU002' },
+      { name: 'T恤', price: 99, qty: 1, brand: 'brand-tshirt' }
+    ];
+    selectedBatches = ['B003']; // 选品牌积分（适用T恤），耳机不适用
+    renderBatchSelector();
+    renderProductSummary();
+  };
+  // 清除：恢复订单商品 + 清空选择
+  window.clearScene = function() {
+    try { var d = localStorage.getItem('order_products'); products = d ? JSON.parse(d) : []; } catch(e) { products = []; }
+    selectedBatches = [];
+    renderBatchSelector();
+    renderProductSummary();
+  };
+
+  // Init：回显之前选中的批次组（多选默认全部可选，不预选）
+  selectedBatches = prevSelection.slice();
+  if (orderType === 'movie' || orderType === 'cake' || orderType === 'virtual') {
+    selectedBatches = selectedBatches.filter(function(id) { var b = getBatch(id); return b && b.type === 'general'; });
   }
   renderBatchSelector();
   renderProductSummary();
 })();
 </script>
 <script src="../js/theme-switcher.js"></script>
+<!-- V0.7 场景切换（框外，精简）-->
+<style>
+  .v07-scene { position: fixed; top: 8px; left: 8px; z-index: 100; display: flex; flex-wrap: wrap; gap: 6px; max-width: 180px; }
+  .v07-scene button { height: 26px; padding: 0 8px; font-size: 11px; line-height: 1; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-secondary); border-radius: var(--radius-xs); cursor: pointer; white-space: nowrap; }
+  .v07-scene button:hover { border-color: var(--primary-start); color: var(--primary-start); }
+</style>
+<div class="v07-scene">
+  <button onclick="setScene(['B005','B006'])">演示：两张通兑叠加</button>
+  <button onclick="setScene(['B001'])">演示：跨类型互斥</button>
+  <button onclick="setSceneLimitDemo()">演示：余额已够提示</button>
+  <button onclick="setSceneSplitDemo()">演示：拆单提示</button>
+  <button onclick="clearScene()">清除</button>
+</div>
 </body>
 </html>
